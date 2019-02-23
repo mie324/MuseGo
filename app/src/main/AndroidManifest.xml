@@ -10,12 +10,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
+
+        </activity>
+
+        <activity android:name=".UI.Tour.TourDetailActivity" />
+        <activity android:name=".UI.Tour.UploadTourActivity" />
+        <activity android:name=".UI.Tour.ArCreateTourActivity" />
+        <activity android:name=".UI.Tour.ArShowTourActivity" />
+        <activity android:name=".UI.Tour.TourListActivity" />
+        <activity android:name=".UI.Museum.MuseumListActivity" />
+        <activity android:name=".UI.Auth.SigninActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".UI.Auth.SiginupActivity" />
     </application>
 
 </manifest>
