@@ -1,10 +1,11 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.ar.sceneform.plugin'
 
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.ece1778.musego"
-        minSdkVersion 15
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -16,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
 }
 
 dependencies {
@@ -25,4 +30,23 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    //Add SceneForm library
+    implementation "com.google.ar.sceneform.ux:sceneform-ux:1.6.0"
 }
+
+
+sceneform.asset('sampledata/marker.obj',
+        'default',
+        'sampledata/marker.sfa',
+        'src/main/res/raw/marker')
+
+sceneform.asset('sampledata/model.obj',
+        'default',
+        'sampledata/model.sfa',
+        'src/main/res/raw/model')
+
+sceneform.asset('sampledata/star.obj',
+        'default',
+        'sampledata/star.sfa',
+        'src/main/res/raw/star')
