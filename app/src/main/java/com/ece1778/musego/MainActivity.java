@@ -3,6 +3,7 @@ package com.ece1778.musego;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.ece1778.musego.Manager.FirebaseManager;
@@ -29,6 +30,13 @@ public class MainActivity extends AppCompatActivity {
         Class a = SigninActivity.class;
 
        firebaseManager = new FirebaseManager(MainActivity.this);
+
+        Translation t = firebaseManager.getPathT("BfVa8wZ3SfGwbeqXv7oQ");
+
+        if(t != null){
+            Log.d("!!!!!!!!!!", t.toString());
+        }
+
 
 
 

@@ -11,9 +11,11 @@ import com.ece1778.musego.Model.Rotation;
 import com.ece1778.musego.Model.Translation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class FirebaseManager extends BaseActivity {
@@ -54,6 +56,11 @@ public class FirebaseManager extends BaseActivity {
    }
 
 
+   public CollectionReference getRef(){
+       return pathsRef;
+   }
+
+
    // Add the Path object to collection
     public void addPath(Path path, final Class nextActivity){
         pathsRef.add(path)
@@ -75,7 +82,42 @@ public class FirebaseManager extends BaseActivity {
 
    }
 
-   // Filter 
+   // Get the path by pid
+
+    public Path getPath(String pid){
+
+       final Path[] path = {null};
+       pathsRef.document(pid)
+               .get()
+               .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                   @Override
+                   public void onSuccess(DocumentSnapshot documentSnapshot) {
+                       path[0] = documentSnapshot.toObject(Path.class);
+
+                   }
+               });
+
+       return path[0];
+    }
+
+//    public Translation getPathT(String pid){
+//
+//        final Translation[] t = {null};
+//        final Task<DocumentSnapshot> documentSnapshotTask = pathsRef.document(pid)
+//                .get()
+//                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                        t[0] = documentSnapshot.toObject(Translation.class);
+//                        Log.d("!!!!!!!!!!!hhhhhh",t[0].getTx()+"");
+//
+//                    }
+//                });
+//
+//
+//        return t[0];
+//    }
+
 
 
 
