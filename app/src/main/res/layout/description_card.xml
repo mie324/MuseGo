@@ -7,12 +7,18 @@
     android:orientation="vertical"
     app:layout_constraintCircleRadius="8dp">
 
-    <TextView
+    <EditText
         android:id="@+id/card_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add your comment..."
+        android:hint="Add your comment..."
         android:textColor="#fff"
         android:textSize="26dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/card_upload"
+        android:text="Upliad"/>
 
 </LinearLayout>

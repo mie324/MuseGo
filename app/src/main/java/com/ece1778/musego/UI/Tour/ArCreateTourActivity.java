@@ -2,6 +2,7 @@ package com.ece1778.musego.UI.Tour;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -12,8 +13,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ece1778.musego.BaseActivity;
@@ -42,7 +46,6 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
     private static final int MARKER = 1;
     private static final int ARROW = 2;
     private static final int STAR = 3;
-
 
     private ArFragment arFragment;
     private ModelRenderable markerRenderable, arrowRenderable, starRenderable;
@@ -134,7 +137,6 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void addInfoCard(Node flag) {
-
         Node infoCard = new Node();
         infoCard.setParent(flag);
         infoCard.setLocalPosition(new Vector3(0f, 0.25f, 0f));
@@ -145,6 +147,16 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
                 .thenAccept(
                         (renderable) -> {
                             infoCard.setRenderable(renderable);
+                            EditText mContent = (EditText) renderable.getView().findViewById(R.id.card_content);
+                            Button mUploadBtn = (Button) renderable.getView().findViewById(R.id.card_upload);
+                            mUploadBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Log.d(TAG, "Content is"+mContent.getText().toString());
+                                    mUploadBtn.setVisibility(View.INVISIBLE);
+
+                                }
+                            });
                         })
                 .exceptionally(
                         throwable -> {
@@ -186,7 +198,6 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
                     } else if (selected == STAR) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 180f));
                         object.setRenderable(starRenderable);
-
                         addInfoCard(object);
                     }
 
