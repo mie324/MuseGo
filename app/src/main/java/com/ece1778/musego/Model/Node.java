@@ -27,6 +27,7 @@ public class Node {
     }
 
 
+
     public Translation getT() {
         return t;
     }
@@ -58,4 +59,7 @@ public class Node {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
+
 }
