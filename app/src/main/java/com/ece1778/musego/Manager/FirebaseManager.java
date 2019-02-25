@@ -1,13 +1,21 @@
 package com.ece1778.musego.Manager;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.ece1778.musego.Model.Path;
+import com.ece1778.musego.Model.Rotation;
+import com.ece1778.musego.Model.Translation;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class FirebaseManager {
-    private static final String TAG = 
+    private static final String TAG = "FIREBASEMANAGER";
 
     private final FirebaseApp app;
     private final CollectionReference pathsRef;
@@ -29,19 +37,53 @@ public class FirebaseManager {
     public static final String KEY_NODES_LIST = "nodes";
 
 
-   FirebaseManager(Context context){
+   public FirebaseManager(Context context) {
        app = FirebaseApp.initializeApp(context);
-       if(app != null){
+       if (app != null) {
            FirebaseFirestore db = FirebaseFirestore.getInstance();
            pathsRef = db.collection(COLLECTION_PATHS);
+       } else {
+           Log.d(TAG, "Could not connect to Firebase Firestore!");
+           pathsRef = null;
        }
-       else{
-           Log.d()
-       }
+   }
 
 
+   // Add the Path object to collection
+    public void addPath(Path path){
+        pathsRef.add(path)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "Path written with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
 
    }
+
+    public void addT(Translation t) {
+        pathsRef.add(t)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "Path written with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
+    }
+
+
 
 
 
