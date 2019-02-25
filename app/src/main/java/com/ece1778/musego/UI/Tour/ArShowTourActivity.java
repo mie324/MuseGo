@@ -9,9 +9,12 @@ import android.widget.Button;
 import com.ece1778.musego.BaseActivity;
 import com.ece1778.musego.R;
 
-public class ArShowTourActivity extends BaseActivity {
+public class ArShowTourActivity extends BaseActivity implements View.OnClickListener{
 
-    private Button endTourBtn;
+    private static final String TAG = ArShowTourActivity.class.getSimpleName();
+    private static final double MIN_OPENGL_VERSION = 3.0;
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -23,14 +26,11 @@ public class ArShowTourActivity extends BaseActivity {
 
     private void initView() {
 
-        endTourBtn = (Button) findViewById(R.id.endTourBtn);
 
-        endTourBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ArShowTourActivity.this, TourDetailActivity.class));
-            }
-        });
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
 }
