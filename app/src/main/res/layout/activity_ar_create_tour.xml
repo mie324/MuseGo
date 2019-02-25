@@ -22,7 +22,13 @@
             android:id="@+id/renderable_start"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="start/end"/>
+            android:text="start"/>
+
+        <Button
+            android:id="@+id/renderable_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="end" />
 
         <Button
             android:id="@+id/renderable_arrow"

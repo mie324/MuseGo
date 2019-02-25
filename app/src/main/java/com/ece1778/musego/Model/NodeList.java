@@ -1,12 +1,17 @@
 package com.ece1778.musego.Model;
 
+
 import java.util.List;
 
+
+
 public class NodeList {
+
 
     private Node start_node;
     private Node end_node;
     private List<Node> nodes;
+
 
     public NodeList(){
 
@@ -43,4 +48,6 @@ public class NodeList {
     }
 
 
+
 }
+

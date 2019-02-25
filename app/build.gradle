@@ -56,3 +56,8 @@ sceneform.asset('sampledata/star.obj',
         'default',
         'sampledata/star.sfa',
         'src/main/res/raw/star')
+
+sceneform.asset('sampledata/marker_yellow.obj',
+        'default',
+        'sampledata/marker_yellow.sfa',
+        'src/main/res/raw/marker_yellow')

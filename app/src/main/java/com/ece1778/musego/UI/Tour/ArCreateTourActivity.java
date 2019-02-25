@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Gravity;
@@ -21,10 +22,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ece1778.musego.BaseActivity;
+import com.ece1778.musego.Model.NodeList;
+import com.ece1778.musego.Model.Rotation;
+import com.ece1778.musego.Model.Translation;
 import com.ece1778.musego.R;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
+import com.google.ar.core.Pose;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.HitTestResult;
 import com.google.ar.sceneform.Node;
@@ -35,6 +40,7 @@ import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,13 +49,18 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
 
     private static final String TAG = ArCreateTourActivity.class.getSimpleName();
     private static final double MIN_OPENGL_VERSION = 3.0;
-    private static final int MARKER = 1;
+    private static final int START_MARKER = 1;
     private static final int ARROW = 2;
     private static final int STAR = 3;
+    private static final int END_MARKER = 4;
 
     private ArFragment arFragment;
-    private ModelRenderable markerRenderable, arrowRenderable, starRenderable;
-    private int selected = MARKER;
+    private ModelRenderable startRenderable, endRenderable, arrowRenderable, starRenderable;
+    private int selected = START_MARKER;
+
+    private com.ece1778.musego.Model.Node starter;
+    private com.ece1778.musego.Model.Node end;
+    private List<com.ece1778.musego.Model.Node> nodes = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,22 +86,33 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
         findViewById(R.id.renderable_start).setOnClickListener(this);
         findViewById(R.id.renderable_arrow).setOnClickListener(this);
         findViewById(R.id.renderable_flag).setOnClickListener(this);
+        findViewById(R.id.renderable_end).setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.ux_fragment_upload) {
-            startActivity(new Intent(ArCreateTourActivity.this, UploadTourActivity.class));
+        if (i == R.id.finishArBtn) {
+
+            NodeList nodeList = new NodeList(starter, end, nodes);
+            Intent intent = new Intent(ArCreateTourActivity.this, UploadTourActivity.class);
+            intent.putExtra("nodeList", new Gson().toJson(nodeList));
+            startActivity(intent);
+
         } else if (i == R.id.cancelArBtn) {
+
             startActivity(new Intent(ArCreateTourActivity.this, TourListActivity.class));
+
         } else if (i == R.id.renderable_start) {
-            selected = MARKER;
+
+            selected = START_MARKER;
         } else if (i == R.id.renderable_arrow) {
             selected = ARROW;
         } else if (i == R.id.renderable_flag) {
             selected = STAR;
+        }else  if(i == R.id.renderable_end){
+            selected = END_MARKER;
         }
 
     }
@@ -100,10 +122,10 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
         ModelRenderable.builder()
                 .setSource(this, R.raw.marker)
                 .build()
-                .thenAccept(renderable -> markerRenderable = renderable)
+                .thenAccept(renderable -> startRenderable = renderable)
                 .exceptionally(
                         throwable -> {
-                            Toast toast = Toast.makeText(this, "Unable to load marker renderable", Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(this, "Unable to load start marker renderable", Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.CENTER, 0, 0);
                             toast.show();
                             return null;
@@ -134,6 +156,18 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
                             return null;
                         });
 
+        ModelRenderable.builder()
+                .setSource(this, R.raw.marker_yellow)
+                .build()
+                .thenAccept(renderable -> endRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
     }
 
     private void addInfoCard(Node flag) {
@@ -152,7 +186,7 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
                             mUploadBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Log.d(TAG, "Content is"+mContent.getText().toString());
+                                    Log.d(TAG, "Content is"+ mContent.getText().toString());
                                     mUploadBtn.setVisibility(View.INVISIBLE);
 
                                 }
@@ -173,7 +207,7 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
         arFragment.setOnTapArPlaneListener(
 
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
-                    if (markerRenderable == null || starRenderable == null || arrowRenderable == null) {
+                    if (startRenderable == null || endRenderable == null ||starRenderable == null || arrowRenderable == null) {
                         Log.d(TAG, "Renderable unprovided!");
                         return;
                     }
@@ -182,26 +216,41 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
                     AnchorNode anchorNode = new AnchorNode(anchor);
                     anchorNode.setParent(arFragment.getArSceneView().getScene());
 
+                    Translation t = new Translation(anchor.getPose().tx(),anchor.getPose().ty(), anchor.getPose().tz());
+                    Rotation r = new Rotation(anchor.getPose().qx(),anchor.getPose().qy(),anchor.getPose().qz(),anchor.getPose().qw());
+
                     TransformableNode object = new TransformableNode(arFragment.getTransformationSystem());
                     object.setParent(anchorNode);
 
-                    if (selected == MARKER) {
-                        object.setRenderable(markerRenderable);
+                    if (selected == START_MARKER) {
+                        object.setRenderable(startRenderable);
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
+                        starter = new com.ece1778.musego.Model.Node(t,r,"start");
 
 
                     } else if (selected == ARROW) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 225f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(arrowRenderable);
+                        nodes.add(new com.ece1778.musego.Model.Node(t,r,"arrow"));
+
 
                     } else if (selected == STAR) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 180f));
                         object.setRenderable(starRenderable);
                         addInfoCard(object);
+                        nodes.add(new com.ece1778.musego.Model.Node(t,r,"star", "Comments"));
+
+                    }else if (selected == END_MARKER) {
+
+                        object.setRenderable(endRenderable);
+                        object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
+                        end = new com.ece1778.musego.Model.Node(t,r,"end");
+
                     }
 
                     object.select();
+
                 });
 
         removeRenderableByClick();
@@ -241,7 +290,7 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
                     Log.d(TAG, "handleOnTouch hitTestResult.getNode() != null");
                     Node hitNode = hitTestResult.getNode();
 
-                    if (hitNode.getRenderable() == markerRenderable || hitNode.getRenderable() == arrowRenderable || hitNode.getRenderable() == starRenderable) {
+                    if (hitNode.getRenderable() == startRenderable || hitNode.getRenderable() == endRenderable ||hitNode.getRenderable() == arrowRenderable || hitNode.getRenderable() == starRenderable) {
                         arFragment.getArSceneView().getScene().removeChild(hitNode);
                         hitNode.setParent(null);
                         hitNode = null;
