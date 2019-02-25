@@ -27,15 +27,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Class a = SigninActivity.class;
-
        firebaseManager = new FirebaseManager(MainActivity.this);
 
-        Translation t = firebaseManager.getPathT("BfVa8wZ3SfGwbeqXv7oQ");
 
-        if(t != null){
-            Log.d("!!!!!!!!!!", t.toString());
-        }
+
 
 
 

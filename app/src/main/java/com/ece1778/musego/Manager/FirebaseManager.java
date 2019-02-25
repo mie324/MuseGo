@@ -79,49 +79,6 @@ public class FirebaseManager extends BaseActivity {
                         Log.w(TAG, "Error adding document", e);
                     }
                 });
-
    }
-
-   // Get the path by pid
-
-    public Path getPath(String pid){
-
-       final Path[] path = {null};
-       pathsRef.document(pid)
-               .get()
-               .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                   @Override
-                   public void onSuccess(DocumentSnapshot documentSnapshot) {
-                       path[0] = documentSnapshot.toObject(Path.class);
-
-                   }
-               });
-
-       return path[0];
-    }
-
-//    public Translation getPathT(String pid){
-//
-//        final Translation[] t = {null};
-//        final Task<DocumentSnapshot> documentSnapshotTask = pathsRef.document(pid)
-//                .get()
-//                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                        t[0] = documentSnapshot.toObject(Translation.class);
-//                        Log.d("!!!!!!!!!!!hhhhhh",t[0].getTx()+"");
-//
-//                    }
-//                });
-//
-//
-//        return t[0];
-//    }
-
-
-
-
-
-
 
 }
