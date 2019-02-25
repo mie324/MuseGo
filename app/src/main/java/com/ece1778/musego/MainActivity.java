@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.ece1778.musego.Manager.FirebaseManager;
 import com.ece1778.musego.Model.Translation;
+import com.ece1778.musego.UI.Auth.SigninActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,9 +26,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       firebaseManager = new FirebaseManager(this);
+        Class a = SigninActivity.class;
 
-       firebaseManager.addT(new Translation(1,2,3));
+       firebaseManager = new FirebaseManager(MainActivity.this);
+
 
 
 

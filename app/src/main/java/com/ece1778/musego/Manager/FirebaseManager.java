@@ -1,9 +1,11 @@
 package com.ece1778.musego.Manager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.ece1778.musego.BaseActivity;
 import com.ece1778.musego.Model.Path;
 import com.ece1778.musego.Model.Rotation;
 import com.ece1778.musego.Model.Translation;
@@ -14,8 +16,10 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class FirebaseManager {
+public class FirebaseManager extends BaseActivity {
     private static final String TAG = "FIREBASEMANAGER";
+
+    private Context context;
 
     private final FirebaseApp app;
     private final CollectionReference pathsRef;
@@ -38,6 +42,7 @@ public class FirebaseManager {
 
 
    public FirebaseManager(Context context) {
+       this.context = context;
        app = FirebaseApp.initializeApp(context);
        if (app != null) {
            FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -50,12 +55,15 @@ public class FirebaseManager {
 
 
    // Add the Path object to collection
-    public void addPath(Path path){
+    public void addPath(Path path, final Class nextActivity){
         pathsRef.add(path)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "Path written with ID: " + documentReference.getId());
+                        Intent intent = new Intent(context, nextActivity);
+                        context.startActivity(intent);
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -67,21 +75,8 @@ public class FirebaseManager {
 
    }
 
-    public void addT(Translation t) {
-        pathsRef.add(t)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "Path written with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
-    }
+   // Filter 
+
 
 
 
