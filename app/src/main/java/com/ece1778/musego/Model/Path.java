@@ -4,6 +4,8 @@ import java.util.List;
 
 public class Path {
 
+
+    private String pId;
     private String userId;
     private String timestamp;
     private String title;
@@ -34,6 +36,29 @@ public class Path {
         this.start_node = start_node;
         this.end_node = end_node;
         this.nodes = nodes;
+    }
+
+    public Path(String pId, String userId, String timestamp, String title, String description, String floor, String estimated_time, List<String> tags, String privacy, Node start_node, Node end_node, List<Node> nodes) {
+        this.pId = pId;
+        this.userId = userId;
+        this.timestamp = timestamp;
+        this.title = title;
+        this.description = description;
+        this.floor = floor;
+        this.estimated_time = estimated_time;
+        this.tags = tags;
+        this.privacy = privacy;
+        this.start_node = start_node;
+        this.end_node = end_node;
+        this.nodes = nodes;
+    }
+
+    public String getpId() {
+        return pId;
+    }
+
+    public void setpId(String pId) {
+        this.pId = pId;
     }
 
     public String getUserId() {
