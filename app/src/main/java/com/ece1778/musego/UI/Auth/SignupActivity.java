@@ -10,7 +10,7 @@ import com.ece1778.musego.BaseActivity;
 import com.ece1778.musego.R;
 import com.ece1778.musego.UI.Museum.MuseumListActivity;
 
-public class SiginupActivity extends BaseActivity {
+public class SignupActivity extends BaseActivity {
 
     private Button signupBtn;
 
@@ -33,7 +33,7 @@ public class SiginupActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(SiginupActivity.this, MuseumListActivity.class));
+                startActivity(new Intent(SignupActivity.this, MuseumListActivity.class));
             }
         });
     }

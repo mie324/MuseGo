@@ -26,6 +26,10 @@
         </activity>
 
         <activity android:name=".UI.Tour.TourListActivity">
+
+        </activity>
+        <activity android:name=".UI.Museum.MuseumListActivity" />
+        <activity android:name=".UI.Auth.SigninActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,11 +37,7 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".UI.Museum.MuseumListActivity" />
-        <activity android:name=".UI.Auth.SigninActivity" >
-
-        </activity>
-        <activity android:name=".UI.Auth.SiginupActivity" />
+        <activity android:name=".UI.Auth.SignupActivity" />
     </application>
 
 </manifest>
