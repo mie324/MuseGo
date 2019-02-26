@@ -5,6 +5,9 @@ import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -26,11 +29,19 @@ import com.ece1778.musego.Model.NodeList;
 import com.ece1778.musego.Model.Rotation;
 import com.ece1778.musego.Model.Translation;
 import com.ece1778.musego.R;
+import com.ece1778.musego.Utils.CustomArFragment;
 import com.google.ar.core.Anchor;
+import com.google.ar.core.AugmentedImage;
+import com.google.ar.core.AugmentedImageDatabase;
+import com.google.ar.core.Config;
+import com.google.ar.core.Frame;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
 import com.google.ar.core.Pose;
+import com.google.ar.core.Session;
+import com.google.ar.core.TrackingState;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.FrameTime;
 import com.google.ar.sceneform.HitTestResult;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.Scene;
@@ -43,9 +54,10 @@ import com.google.ar.sceneform.ux.TransformableNode;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class ArCreateTourActivity extends BaseActivity implements View.OnClickListener {
+public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdateListener, View.OnClickListener {
 
     private static final String TAG = ArCreateTourActivity.class.getSimpleName();
     private static final double MIN_OPENGL_VERSION = 3.0;
@@ -54,9 +66,9 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
     private static final int STAR = 3;
     private static final int END_MARKER = 4;
 
-    private ArFragment arFragment;
+    private CustomArFragment arFragment;
     private ModelRenderable startRenderable, endRenderable, arrowRenderable, starRenderable;
-    private int selected = START_MARKER;
+    private int selected = ARROW;
 
     private com.ece1778.musego.Model.Node starter;
     private com.ece1778.musego.Model.Node end;
@@ -79,7 +91,8 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
 
     private void initView() {
 
-        arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment_upload);
+        arFragment = (CustomArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment_upload);
+        arFragment.getArSceneView().getScene().addOnUpdateListener(this);
 
         findViewById(R.id.finishArBtn).setOnClickListener(this);
         findViewById(R.id.cancelArBtn).setOnClickListener(this);
@@ -94,11 +107,12 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.finishArBtn) {
-
-            NodeList nodeList = new NodeList(starter, end, nodes);
-            Intent intent = new Intent(ArCreateTourActivity.this, UploadTourActivity.class);
-            intent.putExtra("nodeList", new Gson().toJson(nodeList));
-            startActivity(intent);
+            if (checkNodes()) {
+                NodeList nodeList = new NodeList(starter, end, nodes);
+                Intent intent = new Intent(ArCreateTourActivity.this, UploadTourActivity.class);
+                intent.putExtra("nodeList", new Gson().toJson(nodeList));
+                startActivity(intent);
+            }
 
         } else if (i == R.id.cancelArBtn) {
 
@@ -111,10 +125,24 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
             selected = ARROW;
         } else if (i == R.id.renderable_flag) {
             selected = STAR;
-        }else  if(i == R.id.renderable_end){
+        } else if (i == R.id.renderable_end) {
             selected = END_MARKER;
         }
 
+    }
+
+    private Boolean checkNodes() {
+        if (starter == null) {
+            Toast.makeText(ArCreateTourActivity.this, "Please enter start node", Toast.LENGTH_SHORT).show();
+            return false;
+
+        } else if (end == null) {
+            Toast.makeText(ArCreateTourActivity.this, "Please enter end node", Toast.LENGTH_SHORT).show();
+            return false;
+
+        }
+
+        return true;
     }
 
     private void setRenderable() {
@@ -130,6 +158,7 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
                             toast.show();
                             return null;
                         });
+
 
         ModelRenderable.builder()
                 .setSource(this, R.raw.model)
@@ -186,7 +215,7 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
                             mUploadBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Log.d(TAG, "Content is"+ mContent.getText().toString());
+                                    Log.d(TAG, "Content is" + mContent.getText().toString());
                                     mUploadBtn.setVisibility(View.INVISIBLE);
 
                                 }
@@ -207,7 +236,7 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
         arFragment.setOnTapArPlaneListener(
 
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
-                    if (startRenderable == null || endRenderable == null ||starRenderable == null || arrowRenderable == null) {
+                    if (startRenderable == null || endRenderable == null || starRenderable == null || arrowRenderable == null) {
                         Log.d(TAG, "Renderable unprovided!");
                         return;
                     }
@@ -216,37 +245,44 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
                     AnchorNode anchorNode = new AnchorNode(anchor);
                     anchorNode.setParent(arFragment.getArSceneView().getScene());
 
-                    Translation t = new Translation(anchor.getPose().tx(),anchor.getPose().ty(), anchor.getPose().tz());
-                    Rotation r = new Rotation(anchor.getPose().qx(),anchor.getPose().qy(),anchor.getPose().qz(),anchor.getPose().qw());
+                    Translation t = new Translation(anchor.getPose().tx(), anchor.getPose().ty(), anchor.getPose().tz());
+                    Rotation r = new Rotation(anchor.getPose().qx(), anchor.getPose().qy(), anchor.getPose().qz(), anchor.getPose().qw());
 
                     TransformableNode object = new TransformableNode(arFragment.getTransformationSystem());
                     object.setParent(anchorNode);
 
                     if (selected == START_MARKER) {
-                        object.setRenderable(startRenderable);
-                        object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
-                        starter = new com.ece1778.musego.Model.Node(t,r,"start");
 
+                        if (starter == null) {
+                            object.setRenderable(startRenderable);
+                            object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
+//                            starter = new com.ece1778.musego.Model.Node(t, r, START_MARKER);
+                        } else {
+                            Toast.makeText(ArCreateTourActivity.this, "Start Node existed!", Toast.LENGTH_SHORT).show();
+                        }
 
                     } else if (selected == ARROW) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 225f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(arrowRenderable);
-                        nodes.add(new com.ece1778.musego.Model.Node(t,r,"arrow"));
+                        nodes.add(new com.ece1778.musego.Model.Node(t, r, ARROW));
 
 
                     } else if (selected == STAR) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 180f));
                         object.setRenderable(starRenderable);
-                        addInfoCard(object);
-                        nodes.add(new com.ece1778.musego.Model.Node(t,r,"star", "Comments"));
+//                        addInfoCard(object);
+                        nodes.add(new com.ece1778.musego.Model.Node(t, r, STAR, "Comments"));
 
-                    }else if (selected == END_MARKER) {
+                    } else if (selected == END_MARKER) {
+                        if (end == null) {
+                            object.setRenderable(endRenderable);
+                            object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
+                            end = new com.ece1778.musego.Model.Node(t, r, END_MARKER);
+                        } else {
+                            Toast.makeText(ArCreateTourActivity.this, "End Node existed!", Toast.LENGTH_SHORT).show();
 
-                        object.setRenderable(endRenderable);
-                        object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
-                        end = new com.ece1778.musego.Model.Node(t,r,"end");
-
+                        }
                     }
 
                     object.select();
@@ -258,6 +294,11 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
 
 
     private void removePreviousAnchors() {
+
+        starter = null;
+        end = null;
+        nodes.clear();
+
         List<Node> nodeList = new ArrayList<>(arFragment.getArSceneView().getScene().getChildren());
         for (Node childNode : nodeList) {
             if (childNode instanceof AnchorNode) {
@@ -290,18 +331,25 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
                     Log.d(TAG, "handleOnTouch hitTestResult.getNode() != null");
                     Node hitNode = hitTestResult.getNode();
 
-                    if (hitNode.getRenderable() == startRenderable || hitNode.getRenderable() == endRenderable ||hitNode.getRenderable() == arrowRenderable || hitNode.getRenderable() == starRenderable) {
+                    if (hitNode.getRenderable() == startRenderable) {
                         arFragment.getArSceneView().getScene().removeChild(hitNode);
                         hitNode.setParent(null);
                         hitNode = null;
+                        starter = null;
                         Toast.makeText(ArCreateTourActivity.this, "Node Deleted", Toast.LENGTH_SHORT).show();
+
+                    } else if (hitNode.getRenderable() == endRenderable) {
+                        arFragment.getArSceneView().getScene().removeChild(hitNode);
+                        hitNode.setParent(null);
+                        hitNode = null;
+                        end = null;
+                        Toast.makeText(ArCreateTourActivity.this, "Node Deleted", Toast.LENGTH_SHORT).show();
+
                     }
                 }
             }
         });
     }
-
-
 
     public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) {
 
@@ -326,6 +374,61 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
         return true;
     }
 
+    public void setupDatabase(Config config, Session session){
+
+        Bitmap ramenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ramen);
+        AugmentedImageDatabase aid = new AugmentedImageDatabase(session);
+        aid.addImage("ramen", ramenBitmap);
+        config.setAugmentedImageDatabase(aid);
+
+    }
+
+    @Override
+    public void onUpdate(FrameTime frameTime) {
+
+        Frame frame = arFragment.getArSceneView().getArFrame();
+        Collection<AugmentedImage> images = frame.getUpdatedTrackables(AugmentedImage.class);
+
+        for(AugmentedImage  image: images){
+            if(image.getTrackingState() == TrackingState.TRACKING){
+                if(image.getName().equals("ramen")){
+                    Anchor anchor = image.createAnchor(image.getCenterPose());
+
+                    Translation t = new Translation(
+                            image.getCenterPose().tx(),
+                            image.getCenterPose().ty(),
+                            image.getCenterPose().tz());
+
+                    Rotation r = new Rotation(
+                            image.getCenterPose().qx(),
+                            image.getCenterPose().qy(),
+                            image.getCenterPose().qz(),
+                            image.getCenterPose().qw());
+
+                    starter = new com.ece1778.musego.Model.Node(t,r,START_MARKER);
+                    placeModel(startRenderable, anchor);
+                }
+            }
+
+        }
+
+    }
+
+    private void createModel(Anchor anchor) {
+
+
+
+
+    }
+
+
+
+    private void placeModel(ModelRenderable modelRenderable, Anchor anchor) {
+
+        AnchorNode anchorNode = new AnchorNode(anchor);
+        anchorNode.setRenderable(modelRenderable);
+        arFragment.getArSceneView().getScene().addChild(anchorNode);
+    }
 }
 
 

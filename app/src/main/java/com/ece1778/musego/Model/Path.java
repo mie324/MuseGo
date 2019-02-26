@@ -1,8 +1,11 @@
 package com.ece1778.musego.Model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Path {
+public class Path implements Serializable {
+
+    private static final long serialVersionUID=1L;
 
 
     private String pId;
@@ -51,6 +54,8 @@ public class Path {
         this.start_node = start_node;
         this.end_node = end_node;
         this.nodes = nodes;
+
+
     }
 
     public String getpId() {

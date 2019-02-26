@@ -1,13 +1,21 @@
 package com.ece1778.musego.Model;
 
-import java.io.Serializable;
+
 import java.util.List;
 
-public class NodeList implements Serializable {
+
+
+public class NodeList {
+
 
     private Node start_node;
     private Node end_node;
     private List<Node> nodes;
+
+
+    public NodeList(){
+
+    }
 
     public NodeList(Node start_node, Node end_node, List<Node> nodes) {
         this.start_node = start_node;
@@ -40,4 +48,6 @@ public class NodeList implements Serializable {
     }
 
 
+
 }
+

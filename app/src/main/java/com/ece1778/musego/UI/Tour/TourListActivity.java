@@ -2,19 +2,39 @@ package com.ece1778.musego.UI.Tour;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.ece1778.musego.Adapter.TourListAdapter;
 import com.ece1778.musego.BaseActivity;
+import com.ece1778.musego.Manager.FirebaseManager;
+import com.ece1778.musego.Model.Path;
 import com.ece1778.musego.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
-public class TourListActivity extends BaseActivity {
+import java.util.ArrayList;
+import java.util.List;
 
-    //recyclerview here, this is just an example
+public class TourListActivity extends BaseActivity implements View.OnClickListener{
 
-    private Button chooseTourBtn;
-    private Button createTourBtn;
+    private RecyclerView recyclerView;
+    private GridLayoutManager layoutManager;
+    private TourListAdapter adapter;
+    private List<Path> pathList;
+
+    private FloatingActionButton createPathBtn;
+
+    private FirebaseManager firebaseManager;
+
 
 
     @Override
@@ -23,27 +43,81 @@ public class TourListActivity extends BaseActivity {
         setContentView(R.layout.activity_tour_list);
 
         initView();
+        initFirebase();
+        fetchDataAndRenderView();
+
+    }
+
+    private void initFirebase() {
+
+        firebaseManager = new FirebaseManager(TourListActivity.this);
+
+    }
+
+    private void fetchDataAndRenderView() {
+
+        pathList = new ArrayList<>();
+
+        firebaseManager.getRef()
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        Path path = document.toObject(Path.class);
+
+                                        Path pathModel = new Path(
+                                                document.getId(),
+                                                path.getUserId(),
+                                                path.getTimestamp(),
+                                                path.getTitle(),
+                                                path.getDescription(),
+                                                path.getFloor(),
+                                                path.getEstimated_time(),
+                                                path.getTags(),
+                                                path.getPrivacy(),
+                                                path.getStart_node(),
+                                                path.getEnd_node(),
+                                                path.getNodes());
+
+                                        pathList.add(pathModel);
+
+                                    }
+
+
+                                    adapter = new TourListAdapter(TourListActivity.this, pathList);
+                                    recyclerView.setAdapter(adapter);
+                                }
+
+                            }
+                        });
+
+    }
+
+
+
+    private void initView() {
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycleViewId);
+        layoutManager = new GridLayoutManager(TourListActivity.this,1);
+        recyclerView.setLayoutManager(layoutManager);
+
+        findViewById(R.id.createTourBtn).setOnClickListener(this);
 
 
     }
 
-    private void initView() {
 
-        chooseTourBtn = (Button) findViewById(R.id.chooseTourBtn);
-        createTourBtn = (Button) findViewById(R.id.createTourBtn);
 
-        chooseTourBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(TourListActivity.this, TourDetailActivity.class));
-            }
-        });
 
-        createTourBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(TourListActivity.this, ArCreateTourActivity.class));
-            }
-        });
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.createTourBtn) {
+            Log.d("！！！！！！CLick","dfdfd");
+            startActivity(new Intent(TourListActivity.this, ArCreateTourActivity.class));
+        }
+
     }
 }

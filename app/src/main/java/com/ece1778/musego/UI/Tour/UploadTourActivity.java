@@ -1,15 +1,21 @@
 package com.ece1778.musego.UI.Tour;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import com.cunoraz.tagview.Tag;
+import com.cunoraz.tagview.TagView;
 import com.ece1778.musego.BaseActivity;
 import com.ece1778.musego.MainActivity;
 import com.ece1778.musego.Manager.FirebaseManager;
@@ -31,38 +37,40 @@ public class UploadTourActivity extends BaseActivity {
 
     private static final String TAG = "UploadTour";
 
-    private Node startNode;
-    private Node endNode;
-    private List<Node> nodes;
-
     private EditText title;
     private EditText desc;
     private EditText time;
     private RadioGroup floorRadioGroup;
     private RadioGroup privacyRadioGroup;
+    private EditText tagContent;
+    private Button addTag;
     private Button uploadTourBtn;
 
     private FirebaseManager firebaseManager;
-
 
     private String pId;
     private String userId;
     private String timestamp;
     private String floor;
-    private List<String> tags;
+    private ArrayList<String> tags = new ArrayList<>();
     private String privacy;
+    private Node startNode;
+    private Node endNode;
+    private List<Node> nodes;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_tour);
 
+        firebaseManager = new FirebaseManager(UploadTourActivity.this);
+
         initView();
 
         String extra = this.getIntent().getStringExtra("nodeList");
-        NodeList nodeList = new Gson().fromJson(extra,NodeList.class);
+        NodeList nodeList = new Gson().fromJson(extra, NodeList.class);
         startNode = nodeList.getStart_node();
-        endNode  =nodeList.getEnd_node();
+        endNode = nodeList.getEnd_node();
         nodes = nodeList.getNodes();
 
     }
@@ -72,6 +80,43 @@ public class UploadTourActivity extends BaseActivity {
         title = findViewById(R.id.uploadTour_title);
         desc = findViewById(R.id.uploadTour_desc);
         time = findViewById(R.id.uploadTour_time);
+        tagContent = findViewById(R.id.uploadTour_addContent);
+
+        TagView tagGroup = (TagView) findViewById(R.id.tag_group);
+        tagGroup.setOnTagDeleteListener(new TagView.OnTagDeleteListener() {
+
+            @Override
+            public void onTagDeleted(final TagView view, final Tag tag, final int position) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(UploadTourActivity.this);
+                builder.setMessage("\"" + tag.text + "\" will be delete. Are you sure?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        view.remove(position);
+                        Toast.makeText(UploadTourActivity.this, "\"" + tag.text + "\" deleted", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.setNegativeButton("No", null);
+                builder.show();
+                tags.remove(position);
+
+            }
+        });
+
+        addTag = findViewById(R.id.uploadTour_addTag);
+        addTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String content = tagContent.getText().toString();
+                Tag tag = new Tag(content);
+                tag.isDeletable = true;
+                tag.layoutColor = Color.parseColor("#A2AEBB");
+                tag.deleteIndicatorColor = Color.parseColor("#46494C");
+                tagGroup.addTag(tag);
+                tags.add(content);
+                tagContent.setText("");
+            }
+        });
 
         floorRadioGroup = findViewById(R.id.uploadTour_floorGroup);
         floorRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -96,8 +141,6 @@ public class UploadTourActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                startActivity(new Intent(UploadTourActivity.this, TourDetailActivity.class));
-
                 firebaseManager = new FirebaseManager(UploadTourActivity.this);
 
                 Path path = new Path(
@@ -107,7 +150,7 @@ public class UploadTourActivity extends BaseActivity {
                         desc.getText().toString(),
                         floor,
                         time.getText().toString(),
-                        Arrays.asList("aa","bb"),
+                        (List<String>) tags,
                         privacy,
                         startNode,
                         endNode,
