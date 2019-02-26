@@ -1,33 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:text="upload tour here add description tag etc"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/uploadTourBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginLeft="28dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="272dp"
-        android:text="upload tour..."
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Finish Creating Your Tour"/>
 
-</android.support.constraint.ConstraintLayout>
+        <EditText
+            android:id="@+id/uploadTour_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tour Title"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Floor"/>
+
+            <RadioGroup
+                android:id="@+id/uploadTour_floorGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton android:id="@+id/uploadTour_groundFloor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="G"
+                    />
+
+                <RadioButton android:id="@+id/uploadTour_firstFloor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1" />
+
+                <RadioButton android:id="@+id/ruploadTour_secondFloor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2" />
+
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"/>
+
+        <EditText
+            android:id="@+id/uploadTour_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/uploadTour_cnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="word count"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estimated Time"/>
+
+            <EditText
+                android:id="@+id/uploadTour_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="hh/mm/ss"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add tags"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"/>
+
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/uploadTour_privacyGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton android:id="@+id/uploadTour_public"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Private" />
+
+            <RadioButton android:id="@+id/ruploadTour_private"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Public" />
+
+        </RadioGroup>
+
+
+        <Button
+            android:id="@+id/uploadTourBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create" />
+
+    </LinearLayout>
+
+</ScrollView>

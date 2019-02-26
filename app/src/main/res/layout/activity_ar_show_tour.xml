@@ -9,7 +9,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="show tour in ar here"/>
+        android:layout_marginTop="8dp"
+        android:text="show tour in ar here"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="67dp" />
 
     <Button
         android:id="@+id/endTourBtn"

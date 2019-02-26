@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ece1778.musego">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- This tag indicates that this application requires ARCore. This results in the application
+        only being visible in the Google Play Store on devices that support ARCore. -->
+    <uses-feature android:name="android.hardware.camera.ar" android:required="true"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,22 +14,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data android:name="com.google.ar.core" android:value="required" />
         <activity android:name=".MainActivity">
+
 
         </activity>
 
         <activity android:name=".UI.Tour.TourDetailActivity" />
         <activity android:name=".UI.Tour.UploadTourActivity" />
-        <activity android:name=".UI.Tour.ArCreateTourActivity" />
-        <activity android:name=".UI.Tour.ArShowTourActivity" />
-        <activity android:name=".UI.Tour.TourListActivity" />
-        <activity android:name=".UI.Museum.MuseumListActivity" />
-        <activity android:name=".UI.Auth.SigninActivity" >
+        <activity android:name=".UI.Tour.ArCreateTourActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".UI.Tour.ArShowTourActivity">
+        </activity>
+
+        <activity android:name=".UI.Tour.TourListActivity" />
+        <activity android:name=".UI.Museum.MuseumListActivity" />
+        <activity android:name=".UI.Auth.SigninActivity" >
+
         </activity>
         <activity android:name=".UI.Auth.SiginupActivity" />
     </application>

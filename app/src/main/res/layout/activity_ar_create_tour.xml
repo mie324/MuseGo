@@ -1,36 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <TextView
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ArCreateTour"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.Tour.ArCreateTourActivity">
+
+    <fragment
+        android:id="@+id/ux_fragment_upload"
+        android:name="com.google.ar.sceneform.ux.ArFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="create tour using ar"
-        app:layout_constraintBottom_toTopOf="@+id/finishArBtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:gravity="center">
 
-    <Button
-        android:id="@+id/finishArBtn"
-        android:layout_width="136dp"
+        <Button
+            android:id="@+id/renderable_start"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="start"/>
+
+        <Button
+            android:id="@+id/renderable_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="end" />
+
+        <Button
+            android:id="@+id/renderable_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="arrow" />
+
+        <Button
+            android:id="@+id/renderable_flag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="flag" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="284dp"
-        android:text="Finish creating"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.455"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_gravity="bottom|center"
+        android:orientation="horizontal">
 
-</android.support.constraint.ConstraintLayout>
+        <Button
+            android:id="@+id/cancelArBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel" />
+
+        <Button
+            android:id="@+id/finishArBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Upload" />
+
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

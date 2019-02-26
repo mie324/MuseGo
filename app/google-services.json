@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "53963633602",
+    "firebase_url": "https://musego-7a169.firebaseio.com",
+    "project_id": "musego-7a169",
+    "storage_bucket": "musego-7a169.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53963633602:android:f11372a65a469b78",
+        "android_client_info": {
+          "package_name": "com.ece1778.musego"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "53963633602-2fg5t3mi61g151b1arrj58qa08b7ad9i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ece1778.musego",
+            "certificate_hash": "11e69195d6627a157556ea2a19079df0bb5ae6d1"
+          }
+        },
+        {
+          "client_id": "53963633602-4n7f6tv9agd0nq0n6fmkf668bu0l26he.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAKm7DdDAmAxKqXMwv2EVLuIxHwKUxk7k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "53963633602-4n7f6tv9agd0nq0n6fmkf668bu0l26he.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
