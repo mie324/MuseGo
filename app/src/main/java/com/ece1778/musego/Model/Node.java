@@ -4,21 +4,21 @@ public class Node {
 
     private Translation t;
     private Rotation r;
-    private String tag;
+    private int tag;
     private String description;
 
     public Node(){
 
     }
 
-    public Node(Translation t, Rotation r, String tag){
+    public Node(Translation t, Rotation r, int tag){
         this.t = t;
         this.r = r;
         this.tag = tag;
 
     }
 
-    public Node(Translation t, Rotation r, String tag, String description){
+    public Node(Translation t, Rotation r, int tag, String description){
         this.t = t;
         this.r = r;
         this.tag = tag;
@@ -44,11 +44,11 @@ public class Node {
         this.r = r;
     }
 
-    public String getTag() {
+    public int getTag() {
         return tag;
     }
 
-    public void setTag(String tag) {
+    public void setTag(int tag) {
         this.tag = tag;
     }
 

@@ -37,6 +37,8 @@ dependencies {
 
     //Add SceneForm library
     implementation "com.google.ar.sceneform.ux:sceneform-ux:1.6.0"
+
+    implementation 'com.github.Cutta:TagView:1.3'
 }
 
 

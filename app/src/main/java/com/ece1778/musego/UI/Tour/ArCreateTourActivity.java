@@ -94,11 +94,12 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.finishArBtn) {
-
-            NodeList nodeList = new NodeList(starter, end, nodes);
-            Intent intent = new Intent(ArCreateTourActivity.this, UploadTourActivity.class);
-            intent.putExtra("nodeList", new Gson().toJson(nodeList));
-            startActivity(intent);
+            if (checkNodes()) {
+                NodeList nodeList = new NodeList(starter, end, nodes);
+                Intent intent = new Intent(ArCreateTourActivity.this, UploadTourActivity.class);
+                intent.putExtra("nodeList", new Gson().toJson(nodeList));
+                startActivity(intent);
+            }
 
         } else if (i == R.id.cancelArBtn) {
 
@@ -111,10 +112,24 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
             selected = ARROW;
         } else if (i == R.id.renderable_flag) {
             selected = STAR;
-        }else  if(i == R.id.renderable_end){
+        } else if (i == R.id.renderable_end) {
             selected = END_MARKER;
         }
 
+    }
+
+    private Boolean checkNodes() {
+        if (starter == null) {
+            Toast.makeText(ArCreateTourActivity.this, "Please enter start node", Toast.LENGTH_SHORT).show();
+            return false;
+
+        } else if (end == null) {
+            Toast.makeText(ArCreateTourActivity.this, "Please enter end node", Toast.LENGTH_SHORT).show();
+            return false;
+
+        }
+
+        return true;
     }
 
     private void setRenderable() {
@@ -186,7 +201,7 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
                             mUploadBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    Log.d(TAG, "Content is"+ mContent.getText().toString());
+                                    Log.d(TAG, "Content is" + mContent.getText().toString());
                                     mUploadBtn.setVisibility(View.INVISIBLE);
 
                                 }
@@ -207,7 +222,7 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
         arFragment.setOnTapArPlaneListener(
 
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
-                    if (startRenderable == null || endRenderable == null ||starRenderable == null || arrowRenderable == null) {
+                    if (startRenderable == null || endRenderable == null || starRenderable == null || arrowRenderable == null) {
                         Log.d(TAG, "Renderable unprovided!");
                         return;
                     }
@@ -216,37 +231,43 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
                     AnchorNode anchorNode = new AnchorNode(anchor);
                     anchorNode.setParent(arFragment.getArSceneView().getScene());
 
-                    Translation t = new Translation(anchor.getPose().tx(),anchor.getPose().ty(), anchor.getPose().tz());
-                    Rotation r = new Rotation(anchor.getPose().qx(),anchor.getPose().qy(),anchor.getPose().qz(),anchor.getPose().qw());
+                    Translation t = new Translation(anchor.getPose().tx(), anchor.getPose().ty(), anchor.getPose().tz());
+                    Rotation r = new Rotation(anchor.getPose().qx(), anchor.getPose().qy(), anchor.getPose().qz(), anchor.getPose().qw());
 
                     TransformableNode object = new TransformableNode(arFragment.getTransformationSystem());
                     object.setParent(anchorNode);
 
                     if (selected == START_MARKER) {
-                        object.setRenderable(startRenderable);
-                        object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
-                        starter = new com.ece1778.musego.Model.Node(t,r,"start");
-
+                        if (starter == null) {
+                            object.setRenderable(startRenderable);
+                            object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
+                            starter = new com.ece1778.musego.Model.Node(t, r, START_MARKER);
+                        } else {
+                            Toast.makeText(ArCreateTourActivity.this, "Start Node existed!", Toast.LENGTH_SHORT).show();
+                        }
 
                     } else if (selected == ARROW) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 225f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(arrowRenderable);
-                        nodes.add(new com.ece1778.musego.Model.Node(t,r,"arrow"));
+                        nodes.add(new com.ece1778.musego.Model.Node(t, r, ARROW));
 
 
                     } else if (selected == STAR) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 180f));
                         object.setRenderable(starRenderable);
                         addInfoCard(object);
-                        nodes.add(new com.ece1778.musego.Model.Node(t,r,"star", "Comments"));
+                        nodes.add(new com.ece1778.musego.Model.Node(t, r, STAR, "Comments"));
 
-                    }else if (selected == END_MARKER) {
+                    } else if (selected == END_MARKER) {
+                        if (end == null) {
+                            object.setRenderable(endRenderable);
+                            object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
+                            end = new com.ece1778.musego.Model.Node(t, r, END_MARKER);
+                        } else {
+                            Toast.makeText(ArCreateTourActivity.this, "End Node existed!", Toast.LENGTH_SHORT).show();
 
-                        object.setRenderable(endRenderable);
-                        object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
-                        end = new com.ece1778.musego.Model.Node(t,r,"end");
-
+                        }
                     }
 
                     object.select();
@@ -258,6 +279,11 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
 
 
     private void removePreviousAnchors() {
+
+        starter = null;
+        end = null;
+        nodes.clear();
+
         List<Node> nodeList = new ArrayList<>(arFragment.getArSceneView().getScene().getChildren());
         for (Node childNode : nodeList) {
             if (childNode instanceof AnchorNode) {
@@ -290,18 +316,25 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
                     Log.d(TAG, "handleOnTouch hitTestResult.getNode() != null");
                     Node hitNode = hitTestResult.getNode();
 
-                    if (hitNode.getRenderable() == startRenderable || hitNode.getRenderable() == endRenderable ||hitNode.getRenderable() == arrowRenderable || hitNode.getRenderable() == starRenderable) {
+                    if (hitNode.getRenderable() == startRenderable) {
                         arFragment.getArSceneView().getScene().removeChild(hitNode);
                         hitNode.setParent(null);
                         hitNode = null;
+                        starter = null;
                         Toast.makeText(ArCreateTourActivity.this, "Node Deleted", Toast.LENGTH_SHORT).show();
+
+                    } else if (hitNode.getRenderable() == endRenderable) {
+                        arFragment.getArSceneView().getScene().removeChild(hitNode);
+                        hitNode.setParent(null);
+                        hitNode = null;
+                        end = null;
+                        Toast.makeText(ArCreateTourActivity.this, "Node Deleted", Toast.LENGTH_SHORT).show();
+
                     }
                 }
             }
         });
     }
-
-
 
     public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) {
 

@@ -15,10 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data android:name="com.google.ar.core" android:value="required" />
-        <activity android:name=".MainActivity">
-
-
-        </activity>
+        <activity android:name=".MainActivity"></activity>
 
         <activity android:name=".UI.Tour.TourDetailActivity" />
         <activity android:name=".UI.Tour.UploadTourActivity" />
