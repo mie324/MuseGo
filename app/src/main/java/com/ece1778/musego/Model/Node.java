@@ -11,7 +11,8 @@ public class Node {
 
     }
 
-    public Node(Translation t, Rotation r, int tag){
+
+    public Node(Translation t, Rotation r, int tag ){
         this.t = t;
         this.r = r;
         this.tag = tag;

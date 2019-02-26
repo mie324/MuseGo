@@ -1,39 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="204dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="TOUR DETAIL HERE"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+   <ScrollView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_weight="1.0">
 
-    <Button
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical">
+
+           <TextView
+               android:id="@+id/tags"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text=""/>
+
+           <TextView
+               android:id="@+id/title"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="title"/>
+
+           <ImageView
+               android:layout_width="match_parent"
+               android:layout_height="300dp"
+               android:background="#FFDE03"/>
+
+           <TextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="Image Credit"/>
+
+           <TextView
+               android:id="@+id/username"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="By Keren He"/>
+
+           <TextView
+               android:id="@+id/timestamp"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="timestamp"/>
+
+           <TextView
+               android:id="@+id/description"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras pulvinar mauris non eros lacinia maximus. Nulla ullamcorper nisi quis orci convallis, nec lobortis diam elementum. Sed ullamcorper, purus at elementum laoreet, metus dui viverra dui, sed sollicitudin urna nisi blandit orci. Donec ac purus quis nunc malesuada volutpat non at lacus. "/>
+
+       </LinearLayout>
+   </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/startArBtn"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="Click here to start ar tour"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        android:layout_gravity="right"
+        android:layout_alignParentBottom ="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        />
 
-</android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

@@ -63,6 +63,8 @@ public class UploadTourActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_tour);
 
+        firebaseManager = new FirebaseManager(UploadTourActivity.this);
+
         initView();
 
         String extra = this.getIntent().getStringExtra("nodeList");
