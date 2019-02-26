@@ -37,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
        firebaseManager = new FirebaseManager(MainActivity.this);
 
        List<Node> nodes = new ArrayList<>();
-       nodes.add(new Node(new Translation(1,1,1),new Rotation(1,1,1,1),"tag")
+       nodes.add(new Node(new Translation(1,1,1),new Rotation(1,1,1,1),1)
                );
-       nodes.add(new Node(new Translation(1,1,1),new Rotation(1,1,1,1),"tag")
+       nodes.add(new Node(new Translation(1,1,1),new Rotation(1,1,1,1),1)
         );
 
        Path path = new Path(
@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
                "time",
                Arrays.asList("aa","bb"),
                "private",
-               new Node(new Translation(1,1,1),new Rotation(1,1,1,1),"tag"),
-               new Node(new Translation(1,1,1),new Rotation(1,1,1,1),"tag"),
+               new Node(new Translation(1,1,1),new Rotation(1,1,1,1),1),
+               new Node(new Translation(1,1,1),new Rotation(1,1,1,1),1),
                 nodes
                );
 

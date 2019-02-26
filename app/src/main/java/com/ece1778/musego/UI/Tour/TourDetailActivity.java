@@ -17,6 +17,10 @@ import com.google.gson.Gson;
 public class TourDetailActivity extends BaseActivity implements View.OnClickListener{
 
     private TextView title;
+    private TextView tags;
+    private TextView username;
+    private TextView timestamp;
+    private TextView description;
     private Path path;
     private NodeList nodeList;
 
@@ -33,9 +37,18 @@ public class TourDetailActivity extends BaseActivity implements View.OnClickList
     private void initData() {
 
         String pathJson = getIntent().getStringExtra("path");
+
         path = new Gson().fromJson(pathJson,Path.class);
 
         title.setText(path.getDescription());
+
+        for(String tag: path.getTags()){
+            tags.append("#"+tag+" ");
+        }
+
+        timestamp.setText(path.getTimestamp());
+        description.setText(path.getDescription());
+
 
         nodeList = new NodeList(path.getStart_node(),path.getEnd_node(),path.getNodes());
 
@@ -46,6 +59,11 @@ public class TourDetailActivity extends BaseActivity implements View.OnClickList
     private void initView() {
 
         title = (TextView) findViewById(R.id.title);
+        tags = (TextView) findViewById(R.id.tags);
+        username = (TextView) findViewById(R.id.username);
+        timestamp = (TextView) findViewById(R.id.timestamp);
+        description = (TextView) findViewById(R.id.description);
+
 
         findViewById(R.id.startArBtn).setOnClickListener(this);
 

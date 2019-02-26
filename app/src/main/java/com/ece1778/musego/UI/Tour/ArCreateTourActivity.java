@@ -225,27 +225,27 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
                     if (selected == START_MARKER) {
                         object.setRenderable(startRenderable);
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
-                        starter = new com.ece1778.musego.Model.Node(t,r,"start");
+                        starter = new com.ece1778.musego.Model.Node(t,r,START_MARKER);
 
 
                     } else if (selected == ARROW) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 225f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(arrowRenderable);
-                        nodes.add(new com.ece1778.musego.Model.Node(t,r,"arrow"));
+                        nodes.add(new com.ece1778.musego.Model.Node(t,r,ARROW));
 
 
                     } else if (selected == STAR) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 180f));
                         object.setRenderable(starRenderable);
                         addInfoCard(object);
-                        nodes.add(new com.ece1778.musego.Model.Node(t,r,"star", "Comments"));
+                        nodes.add(new com.ece1778.musego.Model.Node(t,r,STAR, "Comments"));
 
                     }else if (selected == END_MARKER) {
 
                         object.setRenderable(endRenderable);
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
-                        end = new com.ece1778.musego.Model.Node(t,r,"end");
+                        end = new com.ece1778.musego.Model.Node(t,r,END_MARKER);
 
                     }
 

@@ -25,7 +25,7 @@ public class TourListAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private Context mContext;
 
-    private Path path;
+    //private Path path;
     private List<Path> pathList;
 
     public TourListAdapter(Context context, List<Path> pathList){
@@ -50,15 +50,17 @@ public class TourListAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
-        path = pathList.get(i);
+        Path path = pathList.get(i);
 
-        Log.d("!!!!!!hhhh",path.getpId());
+       // Log.d("!!!!!!hhhh",path.getpId());
 
         ((ViewHolder_Path) viewHolder).title.setText(path.getTitle());
         ((ViewHolder_Path) viewHolder).cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+
+                Log.d("!!!!",path.getpId()+"    "+i);
                 Intent intent = new Intent(mContext, TourDetailActivity.class);
                 //intent.putExtra("path", path);
                 intent.putExtra("path", new Gson().toJson(path));

@@ -57,6 +57,8 @@ public class UploadTourActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_tour);
 
+        firebaseManager = new FirebaseManager(UploadTourActivity.this);
+
         initView();
 
         String extra = this.getIntent().getStringExtra("nodeList");
@@ -96,9 +98,6 @@ public class UploadTourActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                startActivity(new Intent(UploadTourActivity.this, TourDetailActivity.class));
-
-                firebaseManager = new FirebaseManager(UploadTourActivity.this);
 
                 Path path = new Path(
                         "userId",
