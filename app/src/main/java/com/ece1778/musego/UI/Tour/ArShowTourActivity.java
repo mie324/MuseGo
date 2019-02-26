@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,10 +24,21 @@ import com.ece1778.musego.Model.NodeList;
 import com.ece1778.musego.Model.Rotation;
 import com.ece1778.musego.Model.Translation;
 import com.ece1778.musego.R;
+import com.ece1778.musego.Utils.CustomArFragment;
+import com.ece1778.musego.Utils.CustomArFragmentShow;
 import com.google.ar.core.Anchor;
+import com.google.ar.core.AugmentedImage;
+import com.google.ar.core.AugmentedImageDatabase;
+import com.google.ar.core.Config;
+import com.google.ar.core.Frame;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
+import com.google.ar.core.Pose;
+import com.google.ar.core.Session;
+import com.google.ar.core.TrackingState;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.FrameTime;
+import com.google.ar.sceneform.Scene;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
@@ -35,9 +49,10 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class ArShowTourActivity extends BaseActivity implements View.OnClickListener{
+public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateListener, View.OnClickListener {
 
     private static final String TAG = ArShowTourActivity.class.getSimpleName();
     private static final double MIN_OPENGL_VERSION = 3.0;
@@ -46,9 +61,9 @@ public class ArShowTourActivity extends BaseActivity implements View.OnClickList
     private static final int STAR = 3;
     private static final int END_MARKER = 4;
 
-    private ArFragment arFragment;
+    private CustomArFragmentShow arFragment;
     private ModelRenderable startRenderable, endRenderable, arrowRenderable, starRenderable;
-    private int selected = START_MARKER;
+
 
 
     private CollectionReference pathRef;
@@ -66,17 +81,22 @@ public class ArShowTourActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ar_show_tour);
 
+        if (!checkIsSupportedDeviceOrFinish(this)) {
+            return;
+        }
+
         initView();
         initData();
         setRenderable();
-        downloadPath();
+
     }
 
 
 
     private void initView() {
 
-        arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment_download);
+        arFragment = (CustomArFragmentShow) getSupportFragmentManager().findFragmentById(R.id.ux_fragment_download);
+        arFragment.getArSceneView().getScene().addOnUpdateListener(this);
 
         findViewById(R.id.cancelArBtn).setOnClickListener(this);
 
@@ -157,40 +177,36 @@ public class ArShowTourActivity extends BaseActivity implements View.OnClickList
 
     }
 
-    private void downloadPath(){
+    private void downloadPath(Pose starterPose){
 
-        removePreviousAnchors();
-
-        arFragment.setOnTapArPlaneListener(
-                (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
-                    if (startRenderable == null || endRenderable == null ||starRenderable == null || arrowRenderable == null) {
-                        Log.d(TAG, "Renderable unprovided!");
-                        return;
-                    }
-
-                    counter++;
-
-                    Anchor anchor = hitResult.createAnchor();
-                    AnchorNode anchorNode = new AnchorNode(anchor);
-                    anchorNode.setParent(arFragment.getArSceneView().getScene());
-
-                    Translation t = new Translation(anchor.getPose().tx(), anchor.getPose().ty(), anchor.getPose().tz());
-                    Rotation r = new Rotation(anchor.getPose().qx(), anchor.getPose().qy(), anchor.getPose().qz(), anchor.getPose().qw());
+        //removePreviousAnchors();
 
 
-                    if(counter == 1){
-                        Toast.makeText(ArShowTourActivity.this, "Get Path", Toast.LENGTH_SHORT).show();
+        if (startRenderable == null || endRenderable == null ||starRenderable == null || arrowRenderable == null) {
+            Log.d(TAG, "!!!!!!!Renderable unprovided!");
+            return;
+        }
 
-                        renderObj(previous_starter,t,r);
-                        for(Node node: nodes){
-                            renderObj(node,t,r);
-                        }
-                        renderObj(previous_end,t,r);
+        Translation t = new Translation(
+                starterPose.tx(),
+                starterPose.ty(),
+                starterPose.tz());
 
-                    }
+        Rotation r = new Rotation(
+                starterPose.qx(),
+                starterPose.qy(),
+                starterPose.qz(),
+                starterPose.qw());
 
-                }
-        );
+
+        for(Node node: nodes){
+            renderObj(node,t,r);
+        }
+        renderObj(previous_end,t,r);
+
+
+        Toast.makeText(ArShowTourActivity.this, "Get Path", Toast.LENGTH_SHORT).show();
+
 
     }
 
@@ -294,4 +310,50 @@ public class ArShowTourActivity extends BaseActivity implements View.OnClickList
 
         return true;
     }
+
+    public void setupDatabase(Config config, Session session){
+
+        Bitmap ramenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ramen);
+        AugmentedImageDatabase aid = new AugmentedImageDatabase(session);
+        aid.addImage("ramen", ramenBitmap);
+        config.setAugmentedImageDatabase(aid);
+
+    }
+
+    @Override
+    public void onUpdate(FrameTime frameTime) {
+
+        Frame frame = arFragment.getArSceneView().getArFrame();
+        Collection<AugmentedImage> images = frame.getUpdatedTrackables(AugmentedImage.class);
+
+        for(AugmentedImage  image: images){
+            if(image.getTrackingState() == TrackingState.TRACKING){
+                if(image.getName().equals("ramen")){
+                    Anchor anchor = image.createAnchor(image.getCenterPose());
+                    placeModel(startRenderable, anchor);
+                    downloadPath(image.getCenterPose());
+
+                }
+            }
+
+        }
+
+    }
+
+    private void createModel(Anchor anchor) {
+
+        ModelRenderable.builder()
+                .setSource(this, Uri.parse("model.sfb"))
+                .build()
+                .thenAccept(modelRenderable -> placeModel(modelRenderable, anchor));
+
+    }
+
+    private void placeModel(ModelRenderable modelRenderable, Anchor anchor) {
+
+        AnchorNode anchorNode = new AnchorNode(anchor);
+        anchorNode.setRenderable(modelRenderable);
+        arFragment.getArSceneView().getScene().addChild(anchorNode);
+    }
+
 }
