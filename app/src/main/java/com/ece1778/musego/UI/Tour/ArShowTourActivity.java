@@ -217,7 +217,7 @@ public class ArShowTourActivity extends BaseActivity implements View.OnClickList
             andy.setLocalPosition(new Vector3(0f, 0.2f, 0f));
         }
         else if(node.getTag() == STAR){
-            andy.setRenderable(startRenderable);
+            andy.setRenderable(starRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 180f));
         }
         else{
@@ -241,7 +241,7 @@ public class ArShowTourActivity extends BaseActivity implements View.OnClickList
     }
 
     private float[] calRoffset(Node node, Rotation r){
-
+//
         float[] f2 = new float[]{
                 r.getQx() - previous_starter.getR().getQx() + node.getR().getQx(),
                 r.getQy() - previous_starter.getR().getQy() + node.getR().getQy(),

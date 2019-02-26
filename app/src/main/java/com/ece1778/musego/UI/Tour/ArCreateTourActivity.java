@@ -238,7 +238,7 @@ public class ArCreateTourActivity extends BaseActivity implements View.OnClickLi
                     } else if (selected == STAR) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 180f));
                         object.setRenderable(starRenderable);
-                        addInfoCard(object);
+                        //addInfoCard(object);
                         nodes.add(new com.ece1778.musego.Model.Node(t,r,STAR, "Comments"));
 
                     }else if (selected == END_MARKER) {
