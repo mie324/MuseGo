@@ -51,8 +51,6 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
     private static final String TAG = "SIGNUP";
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_GALLERY = 2;
-    private static final int REQUEST_TAKE_PHOTO = 1;
-
 
     private ImageView mAvatarField;
     private EditText mEmailField;
@@ -170,7 +168,7 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void uploadProfile(String downloadUrl) {
-        // Save username and bio in Firestore
+
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder().build();
         mDatabase.setFirestoreSettings(settings);
 
