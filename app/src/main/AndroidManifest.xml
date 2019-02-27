@@ -4,13 +4,15 @@
     package="com.ece1778.musego">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <!--
- This tag indicates that this application requires ARCore. This results in the application
-        only being visible in the Google Play Store on devices that support ARCore.
-    -->
-    <uses-feature
-        android:name="android.hardware.camera.ar"
-        android:required="true" />
+    <!-- This tag indicates that this application requires ARCore. This results in the application
+        only being visible in the Google Play Store on devices that support ARCore. -->
+    <uses-feature android:name="android.hardware.camera.ar" android:required="true"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
 
     <application
         android:allowBackup="true"
@@ -31,15 +33,18 @@
         <activity android:name=".UI.Tour.ArCreateTourActivity"></activity>
         <activity android:name=".UI.Tour.ArShowTourActivity"></activity>
         <activity android:name=".UI.Tour.TourListActivity">
+
+        </activity>
+        <activity android:name=".UI.Museum.MuseumListActivity" />
+        <activity android:name=".UI.Auth.SigninActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UI.Museum.MuseumListActivity" />
-        <activity android:name=".UI.Auth.SigninActivity"></activity>
-        <activity android:name=".UI.Auth.SiginupActivity" />
+        <activity android:name=".UI.Auth.SignupActivity" />
+
     </application>
 
 </manifest>
