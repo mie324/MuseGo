@@ -52,6 +52,7 @@ import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 import com.google.gson.Gson;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -394,19 +395,24 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                 if(image.getName().equals("ramen")){
                     Anchor anchor = image.createAnchor(image.getCenterPose());
 
-                    Translation t = new Translation(
-                            image.getCenterPose().tx(),
-                            image.getCenterPose().ty(),
-                            image.getCenterPose().tz());
+                    if(!existAnchor()) {
 
-                    Rotation r = new Rotation(
-                            image.getCenterPose().qx(),
-                            image.getCenterPose().qy(),
-                            image.getCenterPose().qz(),
-                            image.getCenterPose().qw());
+                        Translation t = new Translation(
+                                image.getCenterPose().tx(),
+                                image.getCenterPose().ty(),
+                                image.getCenterPose().tz());
 
-                    starter = new com.ece1778.musego.Model.Node(t,r,START_MARKER);
-                    placeModel(startRenderable, anchor);
+                        Rotation r = new Rotation(
+                                image.getCenterPose().qx(),
+                                image.getCenterPose().qy(),
+                                image.getCenterPose().qz(),
+                                image.getCenterPose().qw());
+
+                        starter = new com.ece1778.musego.Model.Node(t, r, START_MARKER);
+                        placeModel(startRenderable, anchor);
+                        TastyToast.makeText(getApplicationContext(), "Success!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+
+                    }
                 }
             }
 
@@ -426,8 +432,23 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
     private void placeModel(ModelRenderable modelRenderable, Anchor anchor) {
 
         AnchorNode anchorNode = new AnchorNode(anchor);
-        anchorNode.setRenderable(modelRenderable);
+        anchorNode.setName("starter");
         arFragment.getArSceneView().getScene().addChild(anchorNode);
+    }
+
+    private boolean existAnchor() {
+
+        List<com.google.ar.sceneform.Node> nodeList = new ArrayList<>(arFragment.getArSceneView().getScene().getChildren());
+        for (com.google.ar.sceneform.Node childNode : nodeList) {
+            if (childNode instanceof AnchorNode) {
+                if (childNode.getName().equals("starter")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+
     }
 }
 
