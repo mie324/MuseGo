@@ -20,6 +20,7 @@ public class BaseActivity extends AppCompatActivity {
             mProgressDialog = new ProgressDialog(this);
             mProgressDialog.setMessage("Loading...");
             mProgressDialog.setIndeterminate(true);
+
         }
 
         mProgressDialog.show();

@@ -38,6 +38,7 @@ dependencies {
 
     implementation 'com.sdsmdg.tastytoast:tastytoast:0.1.1'
 
+
     //Add SceneForm library
     implementation "com.google.ar.sceneform.ux:sceneform-ux:1.6.0"
 
