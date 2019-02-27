@@ -47,10 +47,13 @@ import com.google.ar.sceneform.ux.TransformableNode;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.gson.Gson;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
 public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateListener, View.OnClickListener {
 
@@ -73,6 +76,9 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
     private List<Node> nodes;
     private Node previous_end;
     private NodeList nodeList;
+
+    private Button cancelArBtn;
+    private ZXingView scanBox;
 
 
 
@@ -98,7 +104,12 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
         arFragment = (CustomArFragmentShow) getSupportFragmentManager().findFragmentById(R.id.ux_fragment_download);
         arFragment.getArSceneView().getScene().addOnUpdateListener(this);
 
-        findViewById(R.id.cancelArBtn).setOnClickListener(this);
+        cancelArBtn = (Button) findViewById(R.id.cancelArBtn);
+        cancelArBtn.setOnClickListener(this);
+        cancelArBtn.setVisibility(View.GONE);
+
+        scanBox = (ZXingView) findViewById(R.id.scanbox);
+
 
 
     }
@@ -205,7 +216,7 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
         renderObj(previous_end,t,r);
 
 
-        Toast.makeText(ArShowTourActivity.this, "Get Path", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(ArShowTourActivity.this, "Get Path", Toast.LENGTH_SHORT).show();
 
 
     }
@@ -330,8 +341,20 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
             if(image.getTrackingState() == TrackingState.TRACKING){
                 if(image.getName().equals("ramen")){
                     Anchor anchor = image.createAnchor(image.getCenterPose());
-                    placeModel(startRenderable, anchor);
-                    downloadPath(image.getCenterPose());
+                    scanBox.setVisibility(View.GONE);
+
+
+
+
+                    if(!existAnchor()) {
+
+                        placeModel(startRenderable,anchor);
+
+                        TastyToast.makeText(getApplicationContext(), "Success!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+
+                        cancelArBtn.setVisibility(View.VISIBLE);
+                        downloadPath(image.getCenterPose());
+                    }
 
                 }
             }
@@ -352,8 +375,24 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
     private void placeModel(ModelRenderable modelRenderable, Anchor anchor) {
 
         AnchorNode anchorNode = new AnchorNode(anchor);
-        anchorNode.setRenderable(modelRenderable);
+        anchorNode.setName("starter");
+        //anchorNode.setRenderable(modelRenderable);
         arFragment.getArSceneView().getScene().addChild(anchorNode);
+    }
+
+    private boolean existAnchor() {
+
+        List<com.google.ar.sceneform.Node> nodeList = new ArrayList<>(arFragment.getArSceneView().getScene().getChildren());
+        for (com.google.ar.sceneform.Node childNode : nodeList) {
+            if (childNode instanceof AnchorNode) {
+                if (childNode.getName().equals("starter")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+
     }
 
 }
