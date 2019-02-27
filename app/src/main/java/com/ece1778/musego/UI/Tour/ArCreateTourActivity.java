@@ -52,10 +52,13 @@ import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 import com.google.gson.Gson;
+import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
 public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdateListener, View.OnClickListener {
 
@@ -73,6 +76,15 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
     private com.ece1778.musego.Model.Node starter;
     private com.ece1778.musego.Model.Node end;
     private List<com.ece1778.musego.Model.Node> nodes = new ArrayList<>();
+
+    private Button finishArBtn;
+    private Button cancelArBtn;
+    private Button renderable_start;
+    private Button renderable_arrow;
+    private Button renderable_flag;
+    private Button renderable_end;
+
+    private ZXingView scanBox;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,12 +106,29 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
         arFragment = (CustomArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment_upload);
         arFragment.getArSceneView().getScene().addOnUpdateListener(this);
 
-        findViewById(R.id.finishArBtn).setOnClickListener(this);
-        findViewById(R.id.cancelArBtn).setOnClickListener(this);
-        findViewById(R.id.renderable_start).setOnClickListener(this);
-        findViewById(R.id.renderable_arrow).setOnClickListener(this);
-        findViewById(R.id.renderable_flag).setOnClickListener(this);
-        findViewById(R.id.renderable_end).setOnClickListener(this);
+
+        scanBox = (ZXingView) findViewById(R.id.scanbox);
+
+        finishArBtn = (Button) findViewById(R.id.finishArBtn);
+        finishArBtn.setOnClickListener(this);
+        finishArBtn.setVisibility(View.GONE);
+        cancelArBtn = (Button) findViewById(R.id.cancelArBtn);
+        cancelArBtn.setOnClickListener(this);
+        cancelArBtn.setVisibility(View.GONE);
+        renderable_start = (Button)findViewById(R.id.renderable_start);
+        renderable_start.setOnClickListener(this);
+        renderable_start.setVisibility(View.GONE);
+        renderable_arrow = (Button) findViewById(R.id.renderable_arrow);
+        renderable_arrow.setOnClickListener(this);
+        renderable_arrow.setVisibility(View.GONE);
+        renderable_flag = (Button) findViewById(R.id.renderable_flag);
+        renderable_flag.setOnClickListener(this);
+        renderable_flag.setVisibility(View.GONE);
+        renderable_end = (Button) findViewById(R.id.renderable_end);
+        renderable_end.setOnClickListener(this);
+        renderable_end.setVisibility(View.GONE);
+
+
 
     }
 
@@ -394,23 +423,45 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                 if(image.getName().equals("ramen")){
                     Anchor anchor = image.createAnchor(image.getCenterPose());
 
-                    Translation t = new Translation(
-                            image.getCenterPose().tx(),
-                            image.getCenterPose().ty(),
-                            image.getCenterPose().tz());
+                    if(!existAnchor()) {
 
-                    Rotation r = new Rotation(
-                            image.getCenterPose().qx(),
-                            image.getCenterPose().qy(),
-                            image.getCenterPose().qz(),
-                            image.getCenterPose().qw());
+                        Translation t = new Translation(
+                                image.getCenterPose().tx(),
+                                image.getCenterPose().ty(),
+                                image.getCenterPose().tz());
 
-                    starter = new com.ece1778.musego.Model.Node(t,r,START_MARKER);
-                    placeModel(startRenderable, anchor);
+                        Rotation r = new Rotation(
+                                image.getCenterPose().qx(),
+                                image.getCenterPose().qy(),
+                                image.getCenterPose().qz(),
+                                image.getCenterPose().qw());
+
+                        starter = new com.ece1778.musego.Model.Node(t, r, START_MARKER);
+                        placeModel(startRenderable, anchor);
+                        showBtnAndHideBox();
+                        TastyToast.makeText(getApplicationContext(), "Create StartNode Success!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
+
+                    }
                 }
             }
 
         }
+
+    }
+
+    private void showBtnAndHideBox(){
+
+        scanBox.setVisibility(View.GONE);
+
+
+        finishArBtn.setVisibility(View.VISIBLE);
+        cancelArBtn.setVisibility(View.VISIBLE);
+        renderable_start.setVisibility(View.VISIBLE);
+        renderable_arrow.setVisibility(View.VISIBLE);
+        renderable_flag.setVisibility(View.VISIBLE);
+        renderable_end.setVisibility(View.VISIBLE);
+
+
 
     }
 
@@ -426,8 +477,23 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
     private void placeModel(ModelRenderable modelRenderable, Anchor anchor) {
 
         AnchorNode anchorNode = new AnchorNode(anchor);
-        anchorNode.setRenderable(modelRenderable);
+        anchorNode.setName("starter");
         arFragment.getArSceneView().getScene().addChild(anchorNode);
+    }
+
+    private boolean existAnchor() {
+
+        List<com.google.ar.sceneform.Node> nodeList = new ArrayList<>(arFragment.getArSceneView().getScene().getChildren());
+        for (com.google.ar.sceneform.Node childNode : nodeList) {
+            if (childNode instanceof AnchorNode) {
+                if (childNode.getName().equals("starter")) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+
     }
 }
 
