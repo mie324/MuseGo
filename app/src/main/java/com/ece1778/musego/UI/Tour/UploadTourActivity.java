@@ -110,8 +110,9 @@ public class UploadTourActivity extends BaseActivity {
                 String content = tagContent.getText().toString();
                 Tag tag = new Tag(content);
                 tag.isDeletable = true;
-                tag.layoutColor = Color.parseColor("#A2AEBB");
-                tag.deleteIndicatorColor = Color.parseColor("#46494C");
+                tag.tagTextColor = Color.parseColor("#000000");
+                tag.layoutColor = Color.parseColor("#C4C4C4");
+                tag.deleteIndicatorColor = Color.parseColor("#000000");
                 tagGroup.addTag(tag);
                 tags.add(content);
                 tagContent.setText("");
