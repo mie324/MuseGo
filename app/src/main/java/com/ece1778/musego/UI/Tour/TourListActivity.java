@@ -115,8 +115,8 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.createTourBtn) {
-            Log.d("！！！！！！CLick","dfdfd");
-            startActivity(new Intent(TourListActivity.this, ArCreateTourActivity.class));
+
+            startActivity(new Intent(TourListActivity.this, CreateInstructionActivity.class));
         }
 
     }
