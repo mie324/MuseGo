@@ -6,12 +6,16 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cunoraz.tagview.Tag;
@@ -40,6 +44,7 @@ public class UploadTourActivity extends BaseActivity {
     private EditText title;
     private EditText desc;
     private EditText time;
+    private TextView cnt;
     private RadioGroup floorRadioGroup;
     private RadioGroup privacyRadioGroup;
     private EditText tagContent;
@@ -81,6 +86,31 @@ public class UploadTourActivity extends BaseActivity {
         desc = findViewById(R.id.uploadTour_desc);
         time = findViewById(R.id.uploadTour_time);
         tagContent = findViewById(R.id.uploadTour_addContent);
+        cnt = findViewById(R.id.uploadTour_cnt);
+
+        desc.addTextChangedListener(new TextWatcher() {
+
+            int MAX_WORDS = 120;
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                int wordsLength = countWords(s.toString());
+                if (count == 0 && wordsLength >= MAX_WORDS) {
+                    setCharLimit(desc, desc.getText().length());
+                } else {
+                    removeFilter(desc);
+                }
+                cnt.setText(String.valueOf(wordsLength) + "/" + MAX_WORDS);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+        });
 
         TagView tagGroup = (TagView) findViewById(R.id.tag_group);
         tagGroup.setOnTagDeleteListener(new TagView.OnTagDeleteListener() {
@@ -161,5 +191,26 @@ public class UploadTourActivity extends BaseActivity {
                 firebaseManager.addPath(path, TourListActivity.class);
             }
         });
+    }
+
+    private int countWords(String s) {
+        String trim = s.trim();
+        if (trim.isEmpty())
+            return 0;
+        return trim.split("\\s+").length;
+    }
+
+    private InputFilter filter;
+    private void setCharLimit(EditText et, int max) {
+        filter = new InputFilter.LengthFilter(max);
+        et.setFilters(new InputFilter[] { filter });
+    }
+
+    private void removeFilter(EditText et) {
+        if (filter != null) {
+            et.setFilters(new InputFilter[0]);
+            filter = null;
+        }
+
     }
 }

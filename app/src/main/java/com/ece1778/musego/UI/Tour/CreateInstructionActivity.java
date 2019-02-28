@@ -50,7 +50,7 @@ public class CreateInstructionActivity extends AhoyOnboarderActivity implements 
             page.setIconLayoutParams(850, 700, 300, 0, 0, 20);
         }
 
-        setFinishButtonTitle("Finish");
+        setFinishButtonTitle("Let's begin");
         showNavigationControls(true);
         List<Integer> colorList = new ArrayList<>();
         colorList.add(R.color.green);

@@ -110,7 +110,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_gravity="right"
-            android:text="word count"/>
+            android:text="0/120"/>
 
         <LinearLayout
             android:layout_width="match_parent"
