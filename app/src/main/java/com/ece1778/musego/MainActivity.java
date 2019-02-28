@@ -13,9 +13,14 @@ import com.ece1778.musego.Model.Rotation;
 import com.ece1778.musego.Model.Translation;
 import com.ece1778.musego.UI.Auth.SigninActivity;
 import com.ece1778.musego.UI.Tour.TourListActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,36 +32,49 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
 
-    private FirebaseManager firebaseManager;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       firebaseManager = new FirebaseManager(MainActivity.this);
+       db = FirebaseFirestore.getInstance();
 
-       List<Node> nodes = new ArrayList<>();
-       nodes.add(new Node(new Translation(1,1,1),new Rotation(1,1,1,1),1)
-               );
-       nodes.add(new Node(new Translation(1,1,1),new Rotation(1,1,1,1),1)
-        );
+       List<String> tagList = new ArrayList<>();
+       tagList.add("ee");
+       tagList.add("zz");
+       tagList.add("121");
+       tagList.add("121");
 
-       Path path = new Path(
-               "userId",
-               "timestamp",
-               "title",
-               "description",
-               "floor",
-               "time",
-               Arrays.asList("aa","bb"),
-               "private",
-               new Node(new Translation(1,1,1),new Rotation(1,1,1,1),1),
-               new Node(new Translation(1,1,1),new Rotation(1,1,1,1),1),
-                nodes
-               );
+       for(String tag:tagList){
 
-       firebaseManager.addPath(path, TourListActivity.class);
+           Log.d("!!!this term",tag);
+
+           db.collection("tags")
+                   .whereEqualTo("tagName",tag)
+                   .get()
+                   .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                       @Override
+                       public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                           if (task.isSuccessful()) {
+                               for (QueryDocumentSnapshot document : task.getResult()) {
+                                   Log.d("!!!!!exist",tag);
+                               }
+                           } else {
+
+                               Log.d("!!!!!not exist", tag);
+
+                           }
+                       }
+                   });
+
+
+
+       }
+
+
+
 
     }
 }
