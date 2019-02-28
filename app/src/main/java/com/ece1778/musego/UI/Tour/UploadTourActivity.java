@@ -138,14 +138,19 @@ public class UploadTourActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 String content = tagContent.getText().toString();
-                Tag tag = new Tag(content);
-                tag.isDeletable = true;
-                tag.tagTextColor = Color.parseColor("#000000");
-                tag.layoutColor = Color.parseColor("#C4C4C4");
-                tag.deleteIndicatorColor = Color.parseColor("#000000");
-                tagGroup.addTag(tag);
-                tags.add(content);
-                tagContent.setText("");
+                if(tags.contains(content)){
+                    Toast.makeText(UploadTourActivity.this, "TAG already existed!", Toast.LENGTH_SHORT);
+
+                }else{
+                    Tag tag = new Tag(content);
+                    tag.isDeletable = true;
+                    tag.tagTextColor = Color.parseColor("#000000");
+                    tag.layoutColor = Color.parseColor("#C4C4C4");
+                    tag.deleteIndicatorColor = Color.parseColor("#000000");
+                    tagGroup.addTag(tag);
+                    tags.add(content);
+                    tagContent.setText("");
+                }
             }
         });
 
@@ -181,7 +186,7 @@ public class UploadTourActivity extends BaseActivity {
                         desc.getText().toString(),
                         floor,
                         time.getText().toString(),
-                        (List<String>) tags,
+                        tags,
                         privacy,
                         startNode,
                         endNode,
