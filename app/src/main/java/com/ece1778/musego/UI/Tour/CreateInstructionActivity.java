@@ -1,33 +1,72 @@
 package com.ece1778.musego.UI.Tour;
 
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
+import com.codemybrainsout.onboarder.AhoyOnboarderActivity;
+import com.codemybrainsout.onboarder.AhoyOnboarderCard;
 import com.ece1778.musego.R;
 
-public class CreateInstructionActivity extends AppCompatActivity implements View.OnClickListener {
+import java.util.ArrayList;
+import java.util.List;
+
+public class CreateInstructionActivity extends AhoyOnboarderActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_instruction);
+//        setContentView(R.layout.activity_create_instruction);
 
         initView();
     }
 
     private void initView() {
 
-        findViewById(R.id.createTourBtn).setOnClickListener(this);
-    }
+        AhoyOnboarderCard ahoyOnboarderCard1 = new AhoyOnboarderCard("Step One", "Stand in front of the image and click the button towards the image.", R.drawable.instruction1);
+        AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Step Two", "Adjust camera until detect successfully.", R.drawable.introduction2);
+        AhoyOnboarderCard ahoyOnboarderCard3 = new AhoyOnboarderCard("Step Three", "Place indicator by clicking on screen and place End Node at the end of tour.", R.drawable.introduction3);
 
-    @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if(i == R.id.createTourBtn){
-            startActivity(new Intent(CreateInstructionActivity.this, ArCreateTourActivity.class));
+        ahoyOnboarderCard1.setBackgroundColor(R.color.white);
+        ahoyOnboarderCard2.setBackgroundColor(R.color.white);
+        ahoyOnboarderCard3.setBackgroundColor(R.color.white);
+
+        List<AhoyOnboarderCard> pages = new ArrayList<>();
+
+        pages.add(ahoyOnboarderCard1);
+        pages.add(ahoyOnboarderCard2);
+        pages.add(ahoyOnboarderCard3);
+
+        for (AhoyOnboarderCard page : pages) {
+            page.setTitleColor(R.color.black);
+            page.setDescriptionColor(R.color.grey_600);
+            //page.setTitleTextSize(dpToPixels(12, this));
+            //page.setDescriptionTextSize(dpToPixels(8, this));
+            page.setIconLayoutParams(850, 700, 300, 0, 0, 20);
         }
 
+        setFinishButtonTitle("Finish");
+        showNavigationControls(true);
+        List<Integer> colorList = new ArrayList<>();
+        colorList.add(R.color.green);
+        colorList.add(R.color.blue);
+        colorList.add(R.color.grey_600);
+        setColorBackground(colorList);
+
+        setOnboardPages(pages);
+
     }
+
+
+    @Override
+    public void onFinishButtonPressed() {
+        startActivity(new Intent(CreateInstructionActivity.this, ArCreateTourActivity.class));
+    }
+
+
 }

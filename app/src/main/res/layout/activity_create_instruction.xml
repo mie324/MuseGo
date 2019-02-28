@@ -8,26 +8,75 @@
     android:orientation="vertical">
 
     <TextView
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Instruction"
-        android:textSize="24sp"
+        android:textSize="24dp"
+        android:textStyle="bold"
         android:textAlignment="center"/>
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Please click the button towards the image"
-        android:textSize="24sp"
-        android:textAlignment="center"/>
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="60dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1. Please stand in front of the image"
+            android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2. Click the button towards the button"
+            android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3. Keep still until detect successfully"
+            android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="4. Place indicator by clicking on screen"
+            android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="5. Place end indicator at the end of tour"
+            android:textSize="18dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="6. Click finish to upload the tour"
+            android:textSize="18dp"/>
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:layout_width="280dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center"
+        android:background="@drawable/instruction1" />
 
     <Button
         android:id="@+id/createTourBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="Let's Begin"
-        android:layout_marginTop="50dp"
+        android:textColor="@color/white"
+        android:background="@color/green"
+        android:layout_marginTop="40dp"
         android:layout_gravity="center"/>
 
 </LinearLayout>
