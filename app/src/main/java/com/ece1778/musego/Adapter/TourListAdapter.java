@@ -56,6 +56,8 @@ public class TourListAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         Path path = pathList.get(i);
 
+        //get User
+
         ((ViewHolder_Path) viewHolder).title.setText(path.getTitle());
 
         if(path.getDescription().length() > 0) {

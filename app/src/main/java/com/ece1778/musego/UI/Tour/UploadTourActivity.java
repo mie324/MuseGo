@@ -25,6 +25,8 @@ import com.ece1778.musego.Model.Path;
 import com.ece1778.musego.Model.Rotation;
 import com.ece1778.musego.Model.Translation;
 import com.ece1778.musego.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
@@ -47,6 +49,7 @@ public class UploadTourActivity extends BaseActivity {
     private Button uploadTourBtn;
 
     private FirebaseManager firebaseManager;
+    private FirebaseUser currentUser;
 
     private String pId;
     private String userId;
@@ -63,15 +66,23 @@ public class UploadTourActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_tour);
 
-        firebaseManager = new FirebaseManager(UploadTourActivity.this);
+
 
         initView();
+        initFirebase();
 
         String extra = this.getIntent().getStringExtra("nodeList");
         NodeList nodeList = new Gson().fromJson(extra, NodeList.class);
         startNode = nodeList.getStart_node();
         endNode = nodeList.getEnd_node();
         nodes = nodeList.getNodes();
+
+    }
+
+    private void initFirebase() {
+
+        firebaseManager = new FirebaseManager(UploadTourActivity.this);
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     }
 
@@ -145,7 +156,7 @@ public class UploadTourActivity extends BaseActivity {
                 firebaseManager = new FirebaseManager(UploadTourActivity.this);
 
                 Path path = new Path(
-                        "userId",
+                        currentUser.getUid(),
                         timestamp,
                         title.getText().toString(),
                         desc.getText().toString(),
