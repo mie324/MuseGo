@@ -1,3 +1,4 @@
+
 package com.ece1778.musego.UI.Tour;
 
 import android.content.Intent;
@@ -51,6 +52,7 @@ public class CreateInstructionActivity extends AhoyOnboarderActivity implements 
         }
 
         setFinishButtonTitle("Let's begin");
+
         showNavigationControls(true);
         List<Integer> colorList = new ArrayList<>();
         colorList.add(R.color.green);
@@ -65,6 +67,8 @@ public class CreateInstructionActivity extends AhoyOnboarderActivity implements 
 
     @Override
     public void onFinishButtonPressed() {
+
+        setContentView(R.layout.activity_create_instruction);
         startActivity(new Intent(CreateInstructionActivity.this, ArCreateTourActivity.class));
     }
 

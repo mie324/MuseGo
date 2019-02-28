@@ -1,5 +1,7 @@
 package com.ece1778.musego.UI.Tour;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -18,8 +20,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +64,7 @@ import java.util.List;
 
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
+
 public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdateListener, View.OnClickListener {
 
     private static final String TAG = ArCreateTourActivity.class.getSimpleName();
@@ -89,15 +94,33 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_ar_create_tour);
 
         if (!checkIsSupportedDeviceOrFinish(this)) {
             return;
         }
 
-        initView();
-        setRenderable();
-        createPath();
+       initView();
+
+
+
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //setRenderable();
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //createPath();
 
     }
 
@@ -105,6 +128,7 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
 
         arFragment = (CustomArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment_upload);
         arFragment.getArSceneView().getScene().addOnUpdateListener(this);
+
 
 
         scanBox = (ZXingView) findViewById(R.id.scanbox);
@@ -494,6 +518,13 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
         return false;
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        startActivity(new Intent(this, TourListActivity.class));
     }
 }
 

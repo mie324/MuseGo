@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ece1778.musego">
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -34,6 +35,8 @@
             android:value="required" />
 
         <activity android:name=".MainActivity" />
+        <activity android:name=".UI.Tour.ShowInstructionActivity" />
+
         <activity android:name=".UI.Tour.TourDetailActivity" />
 
         <activity android:name=".UI.Tour.UploadTourActivity">

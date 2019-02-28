@@ -73,7 +73,7 @@ public class TourDetailActivity extends BaseActivity implements View.OnClickList
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.startArBtn) {
-            Intent intent = new Intent(TourDetailActivity.this, ArShowTourActivity.class);
+            Intent intent = new Intent(TourDetailActivity.this, ShowInstructionActivity.class);
             intent.putExtra("nodeList", new Gson().toJson(nodeList));
             startActivity(intent);
         }

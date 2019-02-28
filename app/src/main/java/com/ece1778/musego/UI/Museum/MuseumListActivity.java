@@ -34,7 +34,11 @@ public class MuseumListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
+
+
                 startActivity(new Intent(MuseumListActivity.this, TourListActivity.class));
+
+
             }
         });
     }
