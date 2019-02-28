@@ -2,18 +2,25 @@ package com.ece1778.musego;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 
-public class BaseActivity extends AppCompatActivity {
 
+
+public class BaseActivity extends AppCompatActivity {
 
 
     @VisibleForTesting
     public ProgressDialog mProgressDialog;
+
+    @VisibleForTesting
+
+
 
     public void showProgressDialog() {
         if (mProgressDialog == null) {
@@ -25,6 +32,10 @@ public class BaseActivity extends AppCompatActivity {
 
         mProgressDialog.show();
     }
+
+
+
+
 
     public void hideProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
@@ -43,6 +54,7 @@ public class BaseActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         hideProgressDialog();
+
     }
 
 }

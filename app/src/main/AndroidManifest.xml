@@ -28,6 +28,8 @@
             android:value="required" />
 
         <activity android:name=".MainActivity" />
+        <activity android:name=".UI.Tour.ShowInstructionActivity" />
+
         <activity android:name=".UI.Tour.TourDetailActivity" />
         <activity android:name=".UI.Tour.UploadTourActivity" />
         <activity android:name=".UI.Tour.ArCreateTourActivity"></activity>
