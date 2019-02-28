@@ -70,7 +70,7 @@ public class FirebaseManager extends BaseActivity {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "Path written with ID: " + documentReference.getId());
-                        addTag(path.getTags(), documentReference.getId());
+                        addTag(path.getTags());
                         Intent intent = new Intent(context, nextActivity);
                         context.startActivity(intent);
 
@@ -85,11 +85,10 @@ public class FirebaseManager extends BaseActivity {
     }
 
     //Add the Tag object to collection
-    public void addTag(List<String> tags, String pID) {
+    public void addTag(List<String> tags) {
         for (String tag : tags) {
-
+            tagsRef.add(tag);
         }
     }
-
 
 }
