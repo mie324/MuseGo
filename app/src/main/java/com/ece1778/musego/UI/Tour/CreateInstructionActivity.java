@@ -51,7 +51,7 @@ public class CreateInstructionActivity extends AhoyOnboarderActivity implements 
             page.setIconLayoutParams(850, 700, 300, 0, 0, 20);
         }
 
-        setFinishButtonTitle("Finish");
+        setFinishButtonTitle("Open Camera");
         showNavigationControls(true);
         List<Integer> colorList = new ArrayList<>();
         colorList.add(R.color.green);
@@ -66,6 +66,8 @@ public class CreateInstructionActivity extends AhoyOnboarderActivity implements 
 
     @Override
     public void onFinishButtonPressed() {
+
+        setContentView(R.layout.activity_create_instruction);
         startActivity(new Intent(CreateInstructionActivity.this, ArCreateTourActivity.class));
     }
 
