@@ -170,6 +170,7 @@ public class UploadTourActivity extends BaseActivity {
                 );
 
                 firebaseManager.addPath(path, TourListActivity.class);
+                finish();
             }
         });
     }

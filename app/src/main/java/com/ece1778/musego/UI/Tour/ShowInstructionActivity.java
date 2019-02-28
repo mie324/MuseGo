@@ -25,8 +25,9 @@ public class ShowInstructionActivity extends BaseActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_instruction);
 
-        initView();
+
         initData();
+        initView();
 
 
     }
@@ -44,7 +45,7 @@ public class ShowInstructionActivity extends BaseActivity implements View.OnClic
         loading.hideLoading();
 
         createArBtn = (Button) findViewById(R.id.createTourBtn);
-        createArBtn.setOnClickListener(this);
+        createArBtn.setOnClickListener(ShowInstructionActivity.this);
 
 
     }

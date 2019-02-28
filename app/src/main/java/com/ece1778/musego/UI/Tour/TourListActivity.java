@@ -81,6 +81,8 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                                                     @SuppressLint("RestrictedApi")
                                                     @Override
                                                     public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                        loading.hideLoading();
+
 
                                                         User user = documentSnapshot.toObject(User.class);
 
@@ -101,9 +103,9 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                                                                 path.getEnd_node(),
                                                                 path.getNodes());
 
-                                                        loading.hideLoading();
                                                         createTourBtn.setVisibility(View.VISIBLE);
                                                         adapter.addPath(pathModel);
+
 
 
 
