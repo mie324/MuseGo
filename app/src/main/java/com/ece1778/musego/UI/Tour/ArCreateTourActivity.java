@@ -111,7 +111,7 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
     @Override
     protected void onStart() {
         super.onStart();
-        //setRenderable();
+        setRenderable();
 
 
     }
@@ -120,7 +120,7 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
     protected void onResume() {
         super.onResume();
 
-        //createPath();
+        createPath();
 
     }
 

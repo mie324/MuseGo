@@ -4,17 +4,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.ece1778.musego.BaseActivity;
 import com.ece1778.musego.Model.Path;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FirebaseManager extends BaseActivity {
     private static final String TAG = "FIREBASEMANAGER";
@@ -86,9 +95,30 @@ public class FirebaseManager extends BaseActivity {
 
     //Add the Tag object to collection
     public void addTag(List<String> tags) {
-        for (String tag : tags) {
-            tagsRef.add(tag);
-        }
+
+        tagsRef.document("tagList").get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        ArrayList<String> tagList = new ArrayList<>();
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "Task get successfully");
+                            tagList = (ArrayList<String>) task.getResult().get("tagList");
+                            Log.d(TAG, "Taglist first item is"+ (String) tagList.get(0));
+
+                        }
+                        for (String tag : tags) {
+                            if (!tagList.contains(tag)) {
+                                tagList.add(tag);
+                            }
+                        }
+                        Map<String, ArrayList> map = new HashMap<>();
+                        map.put("tagList", tagList);
+                        tagsRef.document("tagList").set(map);
+
+                    }
+                });
     }
+
 
 }

@@ -60,6 +60,9 @@ dependencies {
     //Onboarding
     implementation 'com.codemybrainsout.onboarding:onboarder:1.0.4'
 
+    //thumb button
+    implementation 'com.github.jd-alexander:LikeButton:0.2.3'
+
 
 }
 
