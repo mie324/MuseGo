@@ -79,6 +79,25 @@ public class Path implements Serializable {
         this.nodes = nodes;
     }
 
+    public Path(String userId, String username, String userAvatar, String userBio, String timestamp, String title, String description, String floor, String estimated_time, List<String> tags, String privacy, Node start_node, Node end_node, List<Node> nodes) {
+
+        this.userId = userId;
+        this.username = username;
+        this.userAvatar = userAvatar;
+        this.userBio = userBio;
+        this.timestamp = timestamp;
+        this.title = title;
+        this.description = description;
+        this.floor = floor;
+        this.estimated_time = estimated_time;
+        this.tags = tags;
+        this.privacy = privacy;
+        this.start_node = start_node;
+        this.end_node = end_node;
+        this.nodes = nodes;
+    }
+
+
     public String getUsername() {
         return username;
     }

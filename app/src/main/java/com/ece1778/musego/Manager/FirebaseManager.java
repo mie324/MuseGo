@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.util.zip.CheckedOutputStream;
+
 public class FirebaseManager extends BaseActivity {
     private static final String TAG = "FIREBASEMANAGER";
 
@@ -35,11 +37,15 @@ public class FirebaseManager extends BaseActivity {
     private final CollectionReference tagsRef;
     private final CollectionReference userRef;
 
+//    private final CollectionReference tagsTestRef;
+
 
     // Names of the nodes used in the Firebase Database
     public static final String COLLECTION_PATHS = "paths";
     public static final String COLLECTION_TAGS = "tags";
     public static final String COLLECTION_USERS = "users";
+//    public static final String COLLECTION_TAGSTEST = "testsearchtags";
+
 
     // Some common keys and values used when writing to the Firebase Database.
     public static final String KEY_USER_ID = "userId";
@@ -55,22 +61,23 @@ public class FirebaseManager extends BaseActivity {
     public static final String KEY_NODES_LIST = "nodes";
 
 
-    public FirebaseManager(Context context) {
-        this.context = context;
-        app = FirebaseApp.initializeApp(context);
-        if (app != null) {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            pathsRef = db.collection(COLLECTION_PATHS);
-            tagsRef = db.collection(COLLECTION_TAGS);
-            userRef = db.collection(COLLECTION_USERS);
-
-        } else {
-            Log.d(TAG, "Could not connect to Firebase Firestore!");
-            pathsRef = null;
-            tagsRef = null;
-            userRef = null;
-        }
-    }
+   public FirebaseManager(Context context) {
+       this.context = context;
+       app = FirebaseApp.initializeApp(context);
+       if (app != null) {
+           FirebaseFirestore db = FirebaseFirestore.getInstance();
+           pathsRef = db.collection(COLLECTION_PATHS);
+           userRef = db.collection(COLLECTION_USERS);
+           tagsRef = db.collection(COLLECTION_TAGS);
+//           tagsTestRef = db.collection(COLLECTION_TAGSTEST);
+       } else {
+           Log.d(TAG, "Could not connect to Firebase Firestore!");
+           pathsRef = null;
+           userRef = null;
+           tagsRef = null;
+//           tagsTestRef = null;
+       }
+   }
 
 
     public CollectionReference getRef() {
@@ -78,6 +85,8 @@ public class FirebaseManager extends BaseActivity {
     }
 
    public CollectionReference getUserRef(){ return userRef; }
+
+   public CollectionReference getTagRef() { return tagsRef; }
 
 
     // Add the Path object to collection
@@ -90,6 +99,7 @@ public class FirebaseManager extends BaseActivity {
                         addTag(path.getTags());
                         Intent intent = new Intent(context, nextActivity);
                         context.startActivity(intent);
+                        finish();
 
                     }
                 })
@@ -103,12 +113,12 @@ public class FirebaseManager extends BaseActivity {
 
     //Add the Tag object to collection
     public void addTag(List<String> tags) {
-
         tagsRef.document("tagList").get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         ArrayList<String> tagList = new ArrayList<>();
+
                         if (task.isSuccessful()) {
                             Log.d(TAG, "Task get successfully");
                             tagList = (ArrayList<String>) task.getResult().get("tagList");
@@ -120,6 +130,7 @@ public class FirebaseManager extends BaseActivity {
                                 tagList.add(tag);
                             }
                         }
+
                         Map<String, ArrayList> map = new HashMap<>();
                         map.put("tagList", tagList);
                         tagsRef.document("tagList").set(map);

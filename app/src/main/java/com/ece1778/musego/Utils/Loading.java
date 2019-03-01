@@ -1,6 +1,7 @@
 package com.ece1778.musego.Utils;
 
 import android.content.Context;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Layout;
 import android.util.AttributeSet;
@@ -56,7 +57,9 @@ public class Loading extends RelativeLayout {
     }
 
     public void hideLoading(){
+
         relativeLayoutLoading.setVisibility(GONE);
+
     }
 
 

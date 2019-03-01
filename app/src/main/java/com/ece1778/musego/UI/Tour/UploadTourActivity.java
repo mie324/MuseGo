@@ -1,9 +1,12 @@
 package com.ece1778.musego.UI.Tour;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -28,16 +31,28 @@ import com.ece1778.musego.Model.NodeList;
 import com.ece1778.musego.Model.Path;
 import com.ece1778.musego.Model.Rotation;
 import com.ece1778.musego.Model.Translation;
+import com.ece1778.musego.Model.User;
 import com.ece1778.musego.R;
+import com.ece1778.musego.Utils.Loading;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.ar.core.Config;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UploadTourActivity extends BaseActivity {
 
@@ -66,6 +81,8 @@ public class UploadTourActivity extends BaseActivity {
     private Node endNode;
     private List<Node> nodes;
 
+    private Loading loading;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +106,9 @@ public class UploadTourActivity extends BaseActivity {
     }
 
     private void initView() {
+
+        loading = (Loading) findViewById(R.id.loading);
+        loading.hideLoading();
 
         title = findViewById(R.id.uploadTour_title);
         desc = findViewById(R.id.uploadTour_desc);
@@ -184,27 +204,94 @@ public class UploadTourActivity extends BaseActivity {
         uploadTourBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+                loading.setLoadingText("Saving the path...");
+                loading.showLoading();
+
                 timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 firebaseManager = new FirebaseManager(UploadTourActivity.this);
 
-                Path path = new Path(
-                        currentUser.getUid(),
-                        timestamp,
-                        title.getText().toString(),
-                        desc.getText().toString(),
-                        floor,
-                        time.getText().toString(),
-                        tags,
-                        privacy,
-                        startNode,
-                        endNode,
-                        nodes
-                );
+                firebaseManager.getUserRef().document(currentUser.getUid())
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @SuppressLint("RestrictedApi")
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                firebaseManager.addPath(path, TourListActivity.class);
-                finish();
+                                User user = documentSnapshot.toObject(User.class);
+
+                                Path path = new Path(
+                                        currentUser.getUid(),
+                                        user.getUsername(),
+                                        user.getAvatar(),
+                                        user.getBio(),
+                                        timestamp,
+                                        title.getText().toString(),
+                                        desc.getText().toString(),
+                                        floor,
+                                        time.getText().toString(),
+                                        (List<String>) tags,
+                                        privacy,
+                                        startNode,
+                                        endNode,
+                                        nodes
+                                );
+
+                                // saving the map
+                                firebaseManager.getRef()
+                                        .add(path)
+                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                            @Override
+                                            public void onSuccess(DocumentReference documentReference) {
+
+                                                new Handler().postDelayed(new Runnable(){
+                                                    public void run() {
+                                                        saveTags();
+                                                    }
+                                                }, 2000);
+
+
+                                            }
+                                        });
+
+                            }
+                        });
             }
+
         });
+    }
+
+    //Save Tags
+    private void saveTags(){
+        //Save tags
+        firebaseManager.getTagRef().document("tagList").get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        ArrayList<String> tagList = new ArrayList<>();
+
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "Task get successfully");
+                            tagList = (ArrayList<String>) task.getResult().get("tagList");
+                            Log.d(TAG, "Taglist first item is"+ (String) tagList.get(0));
+                        }
+
+                        for (String tag : tags) {
+                            if (!tagList.contains(tag)) {
+                                tagList.add(tag);
+                            }
+                        }
+
+                        Map<String, ArrayList> map = new HashMap<>();
+                        map.put("tagList", tagList);
+
+                        firebaseManager.getTagRef().document("tagList").set(map);
+                        startActivity(new Intent(UploadTourActivity.this, TourListActivity.class));
+                        finish();
+
+                    }
+                });
     }
 
     // Words Counter helper
@@ -228,4 +315,5 @@ public class UploadTourActivity extends BaseActivity {
         }
 
     }
+
 }
