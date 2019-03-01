@@ -16,6 +16,8 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class ShowInstructionActivity extends AhoyOnboarderActivity implements View.OnClickListener{
 
     private NodeList nodeList;
@@ -68,6 +70,7 @@ public class ShowInstructionActivity extends AhoyOnboarderActivity implements Vi
         Intent intent = new Intent(ShowInstructionActivity.this, ArShowTourActivity.class);
         intent.putExtra("nodeList",new Gson().toJson(nodeList));
         startActivity(intent);
+        finish();
 
     }
 }
