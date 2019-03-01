@@ -16,46 +16,90 @@
        <LinearLayout
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
+           android:layout_marginTop="20dp"
            android:orientation="vertical">
 
            <TextView
-               android:id="@+id/tags"
+               android:id="@+id/detail_title"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:text=""/>
+               android:layout_marginLeft="16dp"
+               android:layout_marginRight="16dp"
+               android:text="Curator’s Tour"
+               android:textSize="30dp"
+               android:textStyle="bold"/>
+
+           <com.cunoraz.tagview.TagView
+               xmlns:tagview="http://schemas.android.com/apk/res-auto"
+               android:id="@+id/detail_tags"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:layout_marginLeft="16dp"
+               android:layout_marginRight="16dp"
+               android:gravity="end"
+               tagview:lineMargin="5dp"
+               tagview:tagMargin="5dp"
+               tagview:textPaddingLeft="12dp"
+               tagview:textPaddingTop="4dp"
+               tagview:textPaddingRight="12dp"
+               tagview:textPaddingBottom="4dp" />
+
+           <com.daimajia.slider.library.SliderLayout
+               android:id="@+id/detail_img"
+               android:layout_width="match_parent"
+               android:layout_height="250dp"
+               android:layout_marginTop="4dp"/>
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:orientation="horizontal"
+               android:layout_marginTop="4dp"
+               android:layout_marginLeft="16dp"
+               android:layout_marginRight="16dp">
+
+               <ImageView
+                   android:id="@+id/detail_avatar"
+                   android:layout_width="45dp"
+                   android:layout_height="45dp" />
+
+               <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:orientation="vertical"
+                   android:layout_marginRight="16dp">
+
+                   <TextView
+                       android:id="@+id/detail_user"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:layout_marginLeft="16dp"
+                       android:layout_marginRight="16dp"
+                       android:layout_marginTop="8dp"
+                       android:text="By Keren He"
+                       android:textSize="15dp"
+                       android:textStyle="bold"/>
+
+                   <TextView
+                       android:id="@+id/detail_timestamp"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:layout_marginLeft="16dp"
+                       android:layout_marginRight="16dp"
+                       android:text="timestamp"/>
+
+               </LinearLayout>
+           </LinearLayout>
+
 
            <TextView
-               android:id="@+id/title"
+               android:id="@+id/detail_desc"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:text="title"/>
-
-           <ImageView
-               android:layout_width="match_parent"
-               android:layout_height="300dp"
-               android:background="#FFDE03"/>
-
-           <TextView
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:text="Image Credit"/>
-
-           <TextView
-               android:id="@+id/username"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:text="By Keren He"/>
-
-           <TextView
-               android:id="@+id/timestamp"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:text="timestamp"/>
-
-           <TextView
-               android:id="@+id/description"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
+               android:layout_marginLeft="16dp"
+               android:layout_marginRight="16dp"
+               android:layout_marginTop="8dp"
+               android:textSize="16dp"
                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras pulvinar mauris non eros lacinia maximus. Nulla ullamcorper nisi quis orci convallis, nec lobortis diam elementum. Sed ullamcorper, purus at elementum laoreet, metus dui viverra dui, sed sollicitudin urna nisi blandit orci. Donec ac purus quis nunc malesuada volutpat non at lacus. "/>
 
        </LinearLayout>
