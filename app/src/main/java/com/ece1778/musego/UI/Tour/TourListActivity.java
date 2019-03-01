@@ -124,14 +124,13 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                             }
                         });
 
-        firebaseManager.getTagRef().document("test")
+        firebaseManager.getTagRef().document("tagList")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @SuppressLint("RestrictedApi")
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         tagsList = (List<String>)documentSnapshot.get("tagList");
-
 
                     }
                 });

@@ -479,15 +479,12 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
 
         scanBox.setVisibility(View.GONE);
 
-
         finishArBtn.setVisibility(View.VISIBLE);
         cancelArBtn.setVisibility(View.VISIBLE);
         renderable_start.setVisibility(View.VISIBLE);
         renderable_arrow.setVisibility(View.VISIBLE);
         renderable_flag.setVisibility(View.VISIBLE);
         renderable_end.setVisibility(View.VISIBLE);
-
-
 
     }
 
