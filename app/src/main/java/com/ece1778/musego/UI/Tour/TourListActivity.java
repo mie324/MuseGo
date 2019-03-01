@@ -1,5 +1,6 @@
 package com.ece1778.musego.UI.Tour;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,9 +16,13 @@ import com.ece1778.musego.Adapter.TourListAdapter;
 import com.ece1778.musego.BaseActivity;
 import com.ece1778.musego.Manager.FirebaseManager;
 import com.ece1778.musego.Model.Path;
+import com.ece1778.musego.Model.User;
 import com.ece1778.musego.R;
+import com.ece1778.musego.Utils.Loading;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -29,11 +34,14 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     private RecyclerView recyclerView;
     private GridLayoutManager layoutManager;
     private TourListAdapter adapter;
-    private List<Path> pathList;
+    private List<Path> pathList = new ArrayList<>();
 
     private FloatingActionButton createPathBtn;
 
     private FirebaseManager firebaseManager;
+
+    private Loading loading;
+    private FloatingActionButton createTourBtn;
 
 
 
@@ -56,8 +64,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
     private void fetchDataAndRenderView() {
 
-        pathList = new ArrayList<>();
-
         firebaseManager.getRef()
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -67,29 +73,46 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Path path = document.toObject(Path.class);
 
-                                        Path pathModel = new Path(
-                                                document.getId(),
-                                                path.getUserId(),
-                                                path.getTimestamp(),
-                                                path.getTitle(),
-                                                path.getDescription(),
-                                                path.getFloor(),
-                                                path.getEstimated_time(),
-                                                path.getTags(),
-                                                path.getPrivacy(),
-                                                path.getStart_node(),
-                                                path.getEnd_node(),
-                                                path.getNodes());
+                                        String pid = document.getId();
 
-                                        pathList.add(pathModel);
-
-                                    }
+                                        firebaseManager.getUserRef().document(path.getUserId())
+                                                .get()
+                                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                    @SuppressLint("RestrictedApi")
+                                                    @Override
+                                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                        loading.hideLoading();
 
 
-                                    adapter = new TourListAdapter(TourListActivity.this, pathList);
-                                    recyclerView.setAdapter(adapter);
-                                }
+                                                        User user = documentSnapshot.toObject(User.class);
 
+                                                        Path pathModel = new Path(
+                                                                pid,
+                                                                path.getUserId(),
+                                                                user.getUsername(),
+                                                                user.getAvatar(),
+                                                                user.getBio(),
+                                                                path.getTimestamp(),
+                                                                path.getTitle(),
+                                                                path.getDescription(),
+                                                                path.getFloor(),
+                                                                path.getEstimated_time(),
+                                                                path.getTags(),
+                                                                path.getPrivacy(),
+                                                                path.getStart_node(),
+                                                                path.getEnd_node(),
+                                                                path.getNodes());
+
+                                                        createTourBtn.setVisibility(View.VISIBLE);
+                                                        adapter.addPath(pathModel);
+
+
+
+
+                                                    }
+                                                });
+                                                }
+                                        }
                             }
                         });
 
@@ -97,13 +120,24 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
 
 
+    @SuppressLint("RestrictedApi")
     private void initView() {
+
 
         recyclerView = (RecyclerView) findViewById(R.id.recycleViewId);
         layoutManager = new GridLayoutManager(TourListActivity.this,1);
         recyclerView.setLayoutManager(layoutManager);
+        adapter = new TourListAdapter(TourListActivity.this,pathList);
+        recyclerView.setAdapter(adapter);
 
-        findViewById(R.id.createTourBtn).setOnClickListener(this);
+        loading = (Loading) findViewById(R.id.loading);
+        loading.setLoadingText("I want data...");
+
+        createTourBtn = (FloatingActionButton) findViewById(R.id.createTourBtn);
+        createTourBtn.setOnClickListener(this);
+        createTourBtn.setVisibility(View.GONE);
+
+
 
 
     }

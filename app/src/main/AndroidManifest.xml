@@ -29,7 +29,7 @@
             android:name="com.google.ar.core"
             android:value="required" />
 
-        <activity android:name=".MainActivity" />
+
         <activity android:name=".UI.Tour.ShowInstructionActivity" />
 
         <activity android:name=".UI.Tour.TourDetailActivity" />
@@ -53,9 +53,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity android:name=".UI.Auth.SignupActivity" />
+
+        <activity android:name=".MainActivity">
+
+        </activity>
 
     </application>
 

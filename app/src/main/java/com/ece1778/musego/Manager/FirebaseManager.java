@@ -33,10 +33,13 @@ public class FirebaseManager extends BaseActivity {
     private final FirebaseApp app;
     private final CollectionReference pathsRef;
     private final CollectionReference tagsRef;
+    private final CollectionReference userRef;
+
 
     // Names of the nodes used in the Firebase Database
     public static final String COLLECTION_PATHS = "paths";
     public static final String COLLECTION_TAGS = "tags";
+    public static final String COLLECTION_USERS = "users";
 
     // Some common keys and values used when writing to the Firebase Database.
     public static final String KEY_USER_ID = "userId";
@@ -59,10 +62,13 @@ public class FirebaseManager extends BaseActivity {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             pathsRef = db.collection(COLLECTION_PATHS);
             tagsRef = db.collection(COLLECTION_TAGS);
+            userRef = db.collection(COLLECTION_USERS);
+
         } else {
             Log.d(TAG, "Could not connect to Firebase Firestore!");
             pathsRef = null;
             tagsRef = null;
+            userRef = null;
         }
     }
 
@@ -70,6 +76,8 @@ public class FirebaseManager extends BaseActivity {
     public CollectionReference getRef() {
         return pathsRef;
     }
+
+   public CollectionReference getUserRef(){ return userRef; }
 
 
     // Add the Path object to collection
