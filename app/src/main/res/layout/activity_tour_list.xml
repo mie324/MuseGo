@@ -14,9 +14,9 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycleViewId"
-            android:background="#26A69A"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#26A69A"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp" />
 
@@ -26,24 +26,22 @@
         android:id="@+id/createTourBtn"
         android:layout_width="58dp"
         android:layout_height="58dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="76dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        />
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="76dp" />
 
     <android.support.design.widget.FloatingActionButton
-
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="16dp"
-        android:layout_alignParentRight="true"
         android:tint="@color/filters_chips"
         android:id="@+id/fab2"
-        android:layout_width="58dp"
-        android:layout_height="58dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
         android:src="@drawable/ic_filter"
         app:backgroundTint="@color/filtersfab"
-        android:layout_alignParentTop="true"
         app:elevation="0dp" />
 
 

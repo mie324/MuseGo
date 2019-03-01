@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -80,6 +81,7 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     private void fetchDataAndRenderView() {
 
         firebaseManager.getRef()
+                        .orderBy("timestamp", Query.Direction.DESCENDING)
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @SuppressLint("RestrictedApi")
