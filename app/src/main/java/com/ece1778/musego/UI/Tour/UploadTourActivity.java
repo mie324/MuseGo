@@ -71,16 +71,14 @@ public class UploadTourActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_tour);
 
-
-
-        initView();
-        initFirebase();
-
         String extra = this.getIntent().getStringExtra("nodeList");
         NodeList nodeList = new Gson().fromJson(extra, NodeList.class);
         startNode = nodeList.getStart_node();
         endNode = nodeList.getEnd_node();
         nodes = nodeList.getNodes();
+
+        initView();
+        initFirebase();
 
     }
 
@@ -88,7 +86,6 @@ public class UploadTourActivity extends BaseActivity {
 
         firebaseManager = new FirebaseManager(UploadTourActivity.this);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
     }
 
     private void initView() {
@@ -210,6 +207,7 @@ public class UploadTourActivity extends BaseActivity {
         });
     }
 
+    // Words Counter helper
     private int countWords(String s) {
         String trim = s.trim();
         if (trim.isEmpty())

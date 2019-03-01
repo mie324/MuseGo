@@ -22,8 +22,6 @@ public class CreateInstructionActivity extends AhoyOnboarderActivity implements 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_create_instruction);
-
         initView();
     }
 
@@ -43,12 +41,15 @@ public class CreateInstructionActivity extends AhoyOnboarderActivity implements 
         pages.add(ahoyOnboarderCard2);
         pages.add(ahoyOnboarderCard3);
 
+        pages.get(0).setIconLayoutParams(950, 800, 300, 0, 0, 20);
+        pages.get(1).setIconLayoutParams(1200, 1000, 200, 0, 0, 20);
+        pages.get(2).setIconLayoutParams(1200, 1000, 200, 0, 0, 20);
+
         for (AhoyOnboarderCard page : pages) {
             page.setTitleColor(R.color.black);
             page.setDescriptionColor(R.color.grey_600);
             //page.setTitleTextSize(dpToPixels(12, this));
             //page.setDescriptionTextSize(dpToPixels(8, this));
-            page.setIconLayoutParams(850, 700, 300, 0, 0, 20);
         }
 
         setFinishButtonTitle("Let's begin");
@@ -61,13 +62,11 @@ public class CreateInstructionActivity extends AhoyOnboarderActivity implements 
         setColorBackground(colorList);
 
         setOnboardPages(pages);
-
     }
 
 
     @Override
     public void onFinishButtonPressed() {
-
         setContentView(R.layout.activity_create_instruction);
         startActivity(new Intent(CreateInstructionActivity.this, ArCreateTourActivity.class));
     }
