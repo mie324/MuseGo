@@ -18,6 +18,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.zip.CheckedOutputStream;
+
 public class FirebaseManager extends BaseActivity {
     private static final String TAG = "FIREBASEMANAGER";
 
@@ -26,11 +28,13 @@ public class FirebaseManager extends BaseActivity {
     private final FirebaseApp app;
     private final CollectionReference pathsRef;
     private final CollectionReference userRef;
+    private final CollectionReference tagRef;
 
 
     // Names of the nodes used in the Firebase Database
     public static final String COLLECTION_PATHS = "paths";
     public static final String COLLECTION_USERS = "users";
+    public static final String COLLECTION_TAGS = "testsearchtags";
 
 
 
@@ -55,10 +59,12 @@ public class FirebaseManager extends BaseActivity {
            FirebaseFirestore db = FirebaseFirestore.getInstance();
            pathsRef = db.collection(COLLECTION_PATHS);
            userRef = db.collection(COLLECTION_USERS);
+           tagRef = db.collection(COLLECTION_TAGS);
        } else {
            Log.d(TAG, "Could not connect to Firebase Firestore!");
            pathsRef = null;
            userRef = null;
+           tagRef = null;
        }
    }
 
@@ -68,6 +74,8 @@ public class FirebaseManager extends BaseActivity {
    }
 
    public CollectionReference getUserRef(){ return userRef; }
+
+   public CollectionReference getTagRef() { return tagRef; }
 
 
    // Add the Path object to collection

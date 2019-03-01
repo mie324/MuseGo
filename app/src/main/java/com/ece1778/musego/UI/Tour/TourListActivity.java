@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -34,6 +35,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class TourListActivity extends BaseActivity implements View.OnClickListener, AAH_FabulousFragment.Callbacks, AAH_FabulousFragment.AnimationListener {
 
@@ -41,6 +43,8 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     private GridLayoutManager layoutManager;
     private TourListAdapter adapter;
     private List<Path> pathList = new ArrayList<>();
+    private List<Path> allPath = new ArrayList<>();
+    public List<String> tagsList = new ArrayList<>();
 
     private FloatingActionButton createPathBtn, fab2;
     private SearchFabFragment dialogFrag;
@@ -50,6 +54,8 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
     private Loading loading;
     private FloatingActionButton createTourBtn;
+
+
 
 
 
@@ -64,10 +70,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
     }
 
-    @Override
-    public void onResult(Object result) {
-
-    }
 
     private void initFirebase() {
 
@@ -86,7 +88,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                                 if (task.isSuccessful()) {
 
                                     //loading.hideLoading();
-
 
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         Path path = document.toObject(Path.class);
@@ -110,14 +111,97 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                                                 path.getEnd_node(),
                                                 path.getNodes());
 
-                                        //pathList.add(path);
-                                        adapter.addPath(pathModel);
+                                        pathList.add(path);
+                                        allPath.add(path);
+                                        adapter.notifyDataSetChanged();
                                     }
 
                                     createTourBtn.setVisibility(View.VISIBLE);
+                                    fab2.setVisibility(View.VISIBLE);
                                 }
                             }
                         });
+
+        firebaseManager.getTagRef().document("test")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @SuppressLint("RestrictedApi")
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        tagsList = (List<String>)documentSnapshot.get("tagList");
+
+
+                    }
+                });
+
+
+
+
+    }
+
+    @Override
+    public void onResult(Object result) {
+
+        if(result.toString().equalsIgnoreCase("swiped_down")){
+            //
+        }
+        else{
+            if(result != null) {
+                ArrayMap<String, List<String>> applied_filters = (ArrayMap<String, List<String>>) result;
+                if (applied_filters.size() != 0) {
+                    List<Path> filteredList = allPath;
+                    Log.d("!!!!!!!again!!!!","hhh");
+
+                    for (Map.Entry<String, List<String>> entry : applied_filters.entrySet()) {
+
+                        switch (entry.getKey()) {
+                            case "TAG":
+                                Log.d("!!!!!!!", "tag");
+                                filteredList = getTagFilteredPath(entry.getValue(), filteredList);
+                                break;
+
+                        }
+                    }
+                    Log.d("!!!!!!filterList",filteredList.size()+"");
+                    pathList.clear();
+                    pathList.addAll(filteredList);
+                    adapter.notifyDataSetChanged();
+
+                } else {
+
+                    Log.d("!!!", "null");
+                    pathList.clear();
+                    pathList.addAll(allPath);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+        }
+
+    }
+
+    private List<Path> getTagFilteredPath(List<String> tags, List<Path> newPathList){
+        List<Path> tempList = new ArrayList<>();
+
+
+
+        for(String tag: tags){
+            Log.d("!!newPathSizebefore", newPathList.size()+"");
+            tempList = new ArrayList<>();
+            for(Path path: newPathList){
+
+                if(path.getTags().contains(tag)){
+                    if(!tempList.contains(path)){
+                        tempList.add(path);
+                    }
+                }
+            }
+            newPathList = tempList;
+            Log.d("!!newPathSizeafter", newPathList.size()+"");
+
+        }
+
+        return tempList;
 
     }
 
@@ -143,6 +227,7 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
         fab2 = (FloatingActionButton) findViewById(R.id.fab2);
         dialogFrag = SearchFabFragment.newInstance();
         dialogFrag.setParentFab(fab2);
+        fab2.setVisibility(View.GONE);
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
