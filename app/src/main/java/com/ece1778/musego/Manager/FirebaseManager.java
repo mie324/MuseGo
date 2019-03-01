@@ -79,6 +79,7 @@ public class FirebaseManager extends BaseActivity {
                         Log.d(TAG, "Path written with ID: " + documentReference.getId());
                         Intent intent = new Intent(context, nextActivity);
                         context.startActivity(intent);
+                        finish();
 
                     }
                 })

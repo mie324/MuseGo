@@ -6,4 +6,11 @@
     <color name="blue">#2B388F</color>
     <color name="green">#009588</color>
     <color name="white">#fff</color>
+
+
+    <color name="filtersfab">#3f51b5</color>
+    <color name="filters_header">#303f9f</color>
+    <color name="filters_buttons">#ff4081</color>
+    <color name="filters_buttons_selected">#c2185b</color>
+    <color name="filters_chips">#b3e5fc</color>
 </resources>

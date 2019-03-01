@@ -165,11 +165,13 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                 Intent intent = new Intent(ArCreateTourActivity.this, UploadTourActivity.class);
                 intent.putExtra("nodeList", new Gson().toJson(nodeList));
                 startActivity(intent);
+                finish();
             }
 
         } else if (i == R.id.cancelArBtn) {
 
             startActivity(new Intent(ArCreateTourActivity.this, TourListActivity.class));
+            finish();
 
         } else if (i == R.id.renderable_start) {
 

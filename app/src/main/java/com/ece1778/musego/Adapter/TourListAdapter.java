@@ -11,7 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,7 +37,7 @@ import com.like.OnLikeListener;
 
 import java.util.List;
 
-public class TourListAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     // anime
     private int lastAnimatedPosition=-1;
@@ -71,7 +74,7 @@ public class TourListAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
-        runEnterAnimation(viewHolder.itemView, i);
+        runEnterAnimation(viewHolder.itemView,i);
 
         Path path = pathList.get(i);
 
@@ -127,6 +130,33 @@ public class TourListAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     }
 
+    private void runEnterAnimation(View view, int position) {
+
+        if (animationsLocked) return;//animationsLocked是布尔类型变量，一开始为false，确保仅屏幕一开始能够显示的item项才开启动画
+
+
+        if (position > lastAnimatedPosition) {//lastAnimatedPosition是int类型变量，一开始为-1，这两行代码确保了recycleview滚动式回收利用视图时不会出现不连续的效果
+            lastAnimatedPosition = position;
+            view.setTranslationY(500);//相对于原始位置下方400
+            view.setAlpha(0.f);//完全透明
+            //每个item项两个动画，从透明到不透明，从下方移动到原来的位置
+            //并且根据item的位置设置延迟的时间，达到一个接着一个的效果
+            view.animate()
+                    .translationY(0).alpha(1.f)
+                    .setStartDelay(delayEnterAnimation ? 20 * (position) : 0)//根据item的位置设置延迟时间，达到依次动画一个接一个进行的效果
+                    .setInterpolator(new DecelerateInterpolator(0.5f))//设置动画效果为在动画开始的地方快然后慢
+                    .setDuration(700)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            animationsLocked = true;//确保仅屏幕一开始能够显示的item项才开启动画，也就是说屏幕下方还没有显示的item项滑动时是没有动画效果
+                        }
+                    })
+                    .start();
+        }
+    }
+
+
 
     public void addPath(Path path){
 
@@ -150,45 +180,6 @@ public class TourListAdapter  extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         return pathList.size();
     }
-
-
-    private void runEnterAnimation(View view, int position) {
-
-
-
-        if (animationsLocked) return;              //animationsLocked是布尔类型变量，一开始为false
-        //确保仅屏幕一开始能够容纳显示的item项才开启动画
-
-
-
-        if (position > lastAnimatedPosition) {//lastAnimatedPosition是int类型变量，默认-1，
-            //这两行代码确保了recyclerview滚动式回收利用视图时不会出现不连续效果
-            lastAnimatedPosition = position;
-            view.setTranslationY(500);     //Item项一开始相对于原始位置下方500距离
-            view.setAlpha(0.f);           //item项一开始完全透明
-            //每个item项两个动画，从透明到不透明，从下方移动到原始位置
-
-
-            view.animate()
-                    .translationY(0).alpha(1.f)                                //设置最终效果为完全不透明
-                    //并且在原来的位置
-                    .setStartDelay(delayEnterAnimation ? 20 * (position) : 0)//根据item的位置设置延迟时间
-                    //达到依次动画一个接一个进行的效果
-                    .setInterpolator(new DecelerateInterpolator(0.5f))     //设置动画位移先快后慢的效果
-                    .setDuration(700)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            animationsLocked = true;
-                            //确保仅屏幕一开始能够显示的item项才开启动画
-                            //也就是说屏幕下方还没有显示的item项滑动时是没有动画效果
-                        }
-                    })
-                    .start();
-        }
-    }
-
-
 
 
     public class ViewHolder_Path extends RecyclerView.ViewHolder {

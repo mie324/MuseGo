@@ -32,12 +32,27 @@
         android:layout_alignParentRight="true"
         />
 
+    <android.support.design.widget.FloatingActionButton
+
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentRight="true"
+        android:tint="@color/filters_chips"
+        android:id="@+id/fab2"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:src="@drawable/ic_filter"
+        app:backgroundTint="@color/filtersfab"
+        android:layout_alignParentTop="true"
+        app:elevation="0dp" />
 
 
-    <com.ece1778.musego.Utils.Loading
-        android:id="@+id/loading"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+
+
+    <!--<com.ece1778.musego.Utils.Loading-->
+    <!--android:id="@+id/loading"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--/>-->
 
 </RelativeLayout>
