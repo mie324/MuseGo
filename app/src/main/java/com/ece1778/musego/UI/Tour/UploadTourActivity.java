@@ -33,6 +33,7 @@ import com.ece1778.musego.Model.Rotation;
 import com.ece1778.musego.Model.Translation;
 import com.ece1778.musego.Model.User;
 import com.ece1778.musego.R;
+import com.ece1778.musego.UI.Museum.MuseumListActivity;
 import com.ece1778.musego.Utils.Loading;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -80,6 +81,7 @@ public class UploadTourActivity extends BaseActivity {
     private Node startNode;
     private Node endNode;
     private List<Node> nodes;
+    private String instName;
 
     private Loading loading;
 
@@ -93,6 +95,10 @@ public class UploadTourActivity extends BaseActivity {
         startNode = nodeList.getStart_node();
         endNode = nodeList.getEnd_node();
         nodes = nodeList.getNodes();
+
+        instName = this.getIntent().getStringExtra("instName");
+
+
 
         initView();
         initFirebase();
@@ -239,21 +245,23 @@ public class UploadTourActivity extends BaseActivity {
                                 );
 
                                 // saving the map
-                                firebaseManager.getRef()
-                                        .add(path)
-                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                            @Override
-                                            public void onSuccess(DocumentReference documentReference) {
+                                firebaseManager.getInstRef()
+                                                .document(instName)
+                                                .collection("paths")
+                                                .add(path)
+                                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                                    @Override
+                                                    public void onSuccess(DocumentReference documentReference) {
 
-                                                new Handler().postDelayed(new Runnable(){
+                                                        new Handler().postDelayed(new Runnable(){
                                                     public void run() {
                                                         saveTags();
                                                     }
-                                                }, 2000);
+                                                        }, 2000);
 
 
-                                            }
-                                        });
+                                                    }
+                                                });
 
                             }
                         });
@@ -272,9 +280,9 @@ public class UploadTourActivity extends BaseActivity {
                         ArrayList<String> tagList = new ArrayList<>();
 
                         if (task.isSuccessful()) {
-                            Log.d(TAG, "Task get successfully");
+                            Log.d("！！！！！！", "Task get successfully");
                             tagList = (ArrayList<String>) task.getResult().get("tagList");
-                            Log.d(TAG, "Taglist first item is"+ (String) tagList.get(0));
+                            Log.d("！！！！！", "Taglist first item is"+ (String) tagList.get(0));
                         }
 
                         for (String tag : tags) {
@@ -287,7 +295,10 @@ public class UploadTourActivity extends BaseActivity {
                         map.put("tagList", tagList);
 
                         firebaseManager.getTagRef().document("tagList").set(map);
-                        startActivity(new Intent(UploadTourActivity.this, TourListActivity.class));
+
+                        Intent intent = new Intent(UploadTourActivity.this, TourListActivity.class);
+                        intent.putExtra("instName", instName);
+                        startActivity(intent);
                         finish();
 
                     }

@@ -36,6 +36,7 @@ public class FirebaseManager extends BaseActivity {
     private final CollectionReference pathsRef;
     private final CollectionReference tagsRef;
     private final CollectionReference userRef;
+    private final CollectionReference instRef;
 
 //    private final CollectionReference tagsTestRef;
 
@@ -44,6 +45,7 @@ public class FirebaseManager extends BaseActivity {
     public static final String COLLECTION_PATHS = "paths";
     public static final String COLLECTION_TAGS = "tags";
     public static final String COLLECTION_USERS = "users";
+    public static final String COLLECTION_INST = "institutions";
 //    public static final String COLLECTION_TAGSTEST = "testsearchtags";
 
 
@@ -69,19 +71,23 @@ public class FirebaseManager extends BaseActivity {
            pathsRef = db.collection(COLLECTION_PATHS);
            userRef = db.collection(COLLECTION_USERS);
            tagsRef = db.collection(COLLECTION_TAGS);
-//           tagsTestRef = db.collection(COLLECTION_TAGSTEST);
+           instRef = db.collection(COLLECTION_INST);
+
        } else {
            Log.d(TAG, "Could not connect to Firebase Firestore!");
            pathsRef = null;
            userRef = null;
            tagsRef = null;
+           instRef = null;
 //           tagsTestRef = null;
        }
    }
 
+   public CollectionReference getRef() { return pathsRef; }
 
-    public CollectionReference getRef() {
-        return pathsRef;
+
+    public CollectionReference getInstRef() {
+        return instRef;
     }
 
    public CollectionReference getUserRef(){ return userRef; }
@@ -90,26 +96,26 @@ public class FirebaseManager extends BaseActivity {
 
 
     // Add the Path object to collection
-    public void addPath(Path path, final Class nextActivity) {
-        pathsRef.add(path)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "Path written with ID: " + documentReference.getId());
-                        addTag(path.getTags());
-                        Intent intent = new Intent(context, nextActivity);
-                        context.startActivity(intent);
-                        finish();
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
-    }
+//    public void addPath(Path path, final Class nextActivity) {
+//        pathsRef.add(path)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        Log.d(TAG, "Path written with ID: " + documentReference.getId());
+//                        addTag(path.getTags());
+//                        Intent intent = new Intent(context, nextActivity);
+//                        context.startActivity(intent);
+//                        finish();
+//
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.w(TAG, "Error adding document", e);
+//                    }
+//                });
+//    }
 
     //Add the Tag object to collection
     public void addTag(List<String> tags) {

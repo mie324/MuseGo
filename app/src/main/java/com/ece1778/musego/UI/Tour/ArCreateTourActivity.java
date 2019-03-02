@@ -164,13 +164,14 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                 NodeList nodeList = new NodeList(starter, end, nodes);
                 Intent intent = new Intent(ArCreateTourActivity.this, UploadTourActivity.class);
                 intent.putExtra("nodeList", new Gson().toJson(nodeList));
+                intent.putExtra("instName", getIntent().getStringExtra("instName"));
                 startActivity(intent);
                 finish();
             }
 
         } else if (i == R.id.cancelArBtn) {
 
-            startActivity(new Intent(ArCreateTourActivity.this, TourListActivity.class));
+            //startActivity(new Intent(ArCreateTourActivity.this, TourListActivity.class));
             finish();
 
         } else if (i == R.id.renderable_start) {
