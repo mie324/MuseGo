@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,8 +61,9 @@ public class UploadTourActivity extends BaseActivity {
 
     private EditText title;
     private EditText desc;
-    private EditText time;
     private TextView cnt;
+    private Spinner hour;
+    private Spinner minute;
     private RadioGroup floorRadioGroup;
     private RadioGroup privacyRadioGroup;
     private EditText tagContent;
@@ -112,9 +114,11 @@ public class UploadTourActivity extends BaseActivity {
 
         title = findViewById(R.id.uploadTour_title);
         desc = findViewById(R.id.uploadTour_desc);
-        time = findViewById(R.id.uploadTour_time);
         tagContent = findViewById(R.id.uploadTour_addContent);
         cnt = findViewById(R.id.uploadTour_cnt);
+
+        hour = findViewById(R.id.uploadTour_hour);
+        minute = findViewById(R.id.uploadTour_minute);
 
         desc.addTextChangedListener(new TextWatcher() {
 
@@ -204,11 +208,10 @@ public class UploadTourActivity extends BaseActivity {
         uploadTourBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 loading.setLoadingText("Saving the path...");
                 loading.showLoading();
 
+                String estimatedTime = timeFormat();
                 timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 firebaseManager = new FirebaseManager(UploadTourActivity.this);
 
@@ -230,7 +233,7 @@ public class UploadTourActivity extends BaseActivity {
                                         title.getText().toString(),
                                         desc.getText().toString(),
                                         floor,
-                                        time.getText().toString(),
+                                        estimatedTime,
                                         (List<String>) tags,
                                         privacy,
                                         startNode,
@@ -260,6 +263,16 @@ public class UploadTourActivity extends BaseActivity {
             }
 
         });
+    }
+
+    private String timeFormat() {
+
+        String hr = hour.getSelectedItem().toString();
+        String min = minute.getSelectedItem().toString();
+
+        String h = hr.substring(0,1);
+        String m = min.substring(0,2);
+        return h.concat("/").concat(m);
     }
 
     //Save Tags
