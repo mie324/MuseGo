@@ -33,6 +33,22 @@
         app:qrcv_verticalBias="0.5" />
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="94dp"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:layout_marginBottom="50dp">
+
+        <Button
+            android:id="@+id/endTour"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_check" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
@@ -41,11 +57,11 @@
 
         <Button
             android:id="@+id/renderable_end"
-            android:layout_width="58dp"
+            android:layout_width="55dp"
             android:layout_height="60dp"
-            android:layout_marginRight="60dp"
+            android:layout_marginRight="40dp"
             android:layout_gravity="center"
-            android:background="@drawable/cancel" />
+            android:background="@drawable/location" />
 
         <com.fangxu.allangleexpandablebutton.AllAngleExpandableButton
             android:id="@+id/button_expandable"
@@ -65,9 +81,9 @@
 
         <Button
             android:id="@+id/renderable_arrow"
-            android:layout_width="58dp"
+            android:layout_width="55dp"
             android:layout_height="60dp"
-            android:layout_marginLeft="60dp"
+            android:layout_marginLeft="40dp"
             android:layout_gravity="center"
             android:background="@drawable/arrow" />
 

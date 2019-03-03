@@ -61,12 +61,12 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
     private static final double MIN_OPENGL_VERSION = 3.0;
     private static final int START_MARKER = 1;
     private static final int ARROW = 2;
-    private static final int STAR = 3;
-    private static final int END_MARKER = 4;
+    private static final int END_MARKER = 3;
+    private static final int WHEEL = 4;
 
     private CustomArFragmentShow arFragment;
-    private ModelRenderable startRenderable, endRenderable, arrowRenderable, starRenderable;
-
+    private ModelRenderable startRenderable, endRenderable, arrowRenderable;
+    private ModelRenderable wheelRenderable;
 
 
     private CollectionReference pathRef;
@@ -79,7 +79,6 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
 
     private Button cancelArBtn;
     private ZXingView scanBox;
-
 
 
     @Override
@@ -98,7 +97,6 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
     }
 
 
-
     private void initView() {
 
         arFragment = (CustomArFragmentShow) getSupportFragmentManager().findFragmentById(R.id.ux_fragment_download);
@@ -109,7 +107,6 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
         cancelArBtn.setVisibility(View.GONE);
 
         scanBox = (ZXingView) findViewById(R.id.scanbox);
-
 
 
     }
@@ -129,7 +126,7 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if(i == R.id.cancelArBtn) {
+        if (i == R.id.cancelArBtn) {
             ArShowTourActivity.this.finish();
         }
 
@@ -161,19 +158,6 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
                             return null;
                         });
 
-
-        ModelRenderable.builder()
-                .setSource(this, R.raw.star)
-                .build()
-                .thenAccept(renderable -> starRenderable = renderable)
-                .exceptionally(
-                        throwable -> {
-                            Toast toast = Toast.makeText(this, "Unable to load star renderable", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER, 0, 0);
-                            toast.show();
-                            return null;
-                        });
-
         ModelRenderable.builder()
                 .setSource(this, R.raw.marker_yellow)
                 .build()
@@ -186,14 +170,26 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
                             return null;
                         });
 
+        ModelRenderable.builder()
+                .setSource(this, R.raw.tinker)
+                .build()
+                .thenAccept(renderable -> wheelRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load wheel marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
     }
 
-    private void downloadPath(Pose starterPose){
+    private void downloadPath(Pose starterPose) {
 
         //removePreviousAnchors();
 
 
-        if (startRenderable == null || endRenderable == null ||starRenderable == null || arrowRenderable == null) {
+        if (startRenderable == null || endRenderable == null || arrowRenderable == null || wheelRenderable == null) {
             Log.d(TAG, "!!!!!!!Renderable unprovided!");
             return;
         }
@@ -210,23 +206,23 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
                 starterPose.qw());
 
 
-        for(Node node: nodes){
-            renderObj(node,t,r);
+        for (Node node : nodes) {
+            renderObj(node, t, r);
         }
-        renderObj(previous_end,t,r);
+        renderObj(previous_end, t, r);
 
 
-       // Toast.makeText(ArShowTourActivity.this, "Get Path", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(ArShowTourActivity.this, "Get Path", Toast.LENGTH_SHORT).show();
 
 
     }
 
-    private void renderObj(Node node,Translation t,Rotation r){
+    private void renderObj(Node node, Translation t, Rotation r) {
 
-        float[] f1 = calToffset(node,t);
-        float[] f2 = calRoffset(node,r);
+        float[] f1 = calToffset(node, t);
+        float[] f2 = calRoffset(node, r);
 
-        Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(new com.google.ar.core.Pose(f1,f2));
+        Anchor anchor = arFragment.getArSceneView().getSession().createAnchor(new com.google.ar.core.Pose(f1, f2));
         AnchorNode anchorNode = new AnchorNode(anchor);
         anchorNode.setParent(arFragment.getArSceneView().getScene());
 
@@ -234,29 +230,30 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
         //andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1f, 0, 0), 90f));
         andy.setParent(anchorNode);
 
-        if(node.getTag() == START_MARKER) {
+        if (node.getTag() == START_MARKER) {
+
             andy.setRenderable(startRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
-        }
-        else if(node.getTag() == ARROW){
+        } else if (node.getTag() == ARROW) {
+
             andy.setRenderable(arrowRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 225f));
             andy.setLocalPosition(new Vector3(0f, 0.2f, 0f));
-        }
-        else if(node.getTag() == STAR){
-            andy.setRenderable(starRenderable);
+        } else if (node.getTag() == WHEEL) {
+
+            andy.setRenderable(wheelRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 180f));
-        }
-        else{
+        } else {
+
             andy.setRenderable(endRenderable);
-            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
+            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
         }
 
         andy.select();
 
     }
 
-    private float[] calToffset(Node node, Translation t){
+    private float[] calToffset(Node node, Translation t) {
 
         float[] f1 = new float[]{
                 t.getTx() - previous_starter.getT().getTx() + node.getT().getTx(),
@@ -267,7 +264,7 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
 
     }
 
-    private float[] calRoffset(Node node, Rotation r){
+    private float[] calRoffset(Node node, Rotation r) {
 //
         float[] f2 = new float[]{
                 r.getQx() - previous_starter.getR().getQx() + node.getR().getQx(),
@@ -298,7 +295,6 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
     }
 
 
-
     public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) {
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
@@ -322,7 +318,7 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
         return true;
     }
 
-    public void setupDatabase(Config config, Session session){
+    public void setupDatabase(Config config, Session session) {
 
         Bitmap ramenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ramen);
         AugmentedImageDatabase aid = new AugmentedImageDatabase(session);
@@ -337,18 +333,15 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
         Frame frame = arFragment.getArSceneView().getArFrame();
         Collection<AugmentedImage> images = frame.getUpdatedTrackables(AugmentedImage.class);
 
-        for(AugmentedImage  image: images){
-            if(image.getTrackingState() == TrackingState.TRACKING){
-                if(image.getName().equals("ramen")){
+        for (AugmentedImage image : images) {
+            if (image.getTrackingState() == TrackingState.TRACKING) {
+                if (image.getName().equals("ramen")) {
                     Anchor anchor = image.createAnchor(image.getCenterPose());
                     scanBox.setVisibility(View.GONE);
 
+                    if (!existAnchor()) {
 
-
-
-                    if(!existAnchor()) {
-
-                        placeModel(startRenderable,anchor);
+                        placeModel(startRenderable, anchor);
 
                         TastyToast.makeText(getApplicationContext(), "Success!", TastyToast.LENGTH_LONG, TastyToast.SUCCESS);
 

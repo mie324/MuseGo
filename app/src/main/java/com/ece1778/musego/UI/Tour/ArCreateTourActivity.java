@@ -77,11 +77,13 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
     private static final double MIN_OPENGL_VERSION = 3.0;
     private static final int START_MARKER = 1;
     private static final int ARROW = 2;
-    private static final int STAR = 3;
-    private static final int END_MARKER = 4;
+    private static final int END_MARKER = 3;
+    private static final int WHERECHAIR = 4;
+
 
     private CustomArFragment arFragment;
     private ModelRenderable startRenderable, endRenderable, arrowRenderable;
+    private ModelRenderable wheelRenderable;
     private int selected = ARROW;
 
     private com.ece1778.musego.Model.Node starter;
@@ -91,6 +93,7 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
     private Button renderable_arrow;
     private Button renderable_end;
     private AllAngleExpandableButton toggleBtn;
+    private Button end_tour;
 
     private ZXingView scanBox;
 
@@ -139,9 +142,14 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
         renderable_end.setOnClickListener(this);
         renderable_end.setVisibility(View.GONE);
 
+        end_tour = (Button) findViewById(R.id.endTour);
+        end_tour.setOnClickListener(this);
+        end_tour.setVisibility(View.GONE);
+
     }
 
     private void initToggleBtn() {
+
         toggleBtn = findViewById(R.id.button_expandable);
         final List<ButtonData> buttonDatas = new ArrayList<>();
         int[] drawable = {R.drawable.plus,R.drawable.pass, R.drawable.quite, R.drawable.light, R.drawable.humid,R.drawable.washroom,R.drawable.food};
@@ -160,6 +168,25 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
         toggleBtn.setButtonEventListener(new ButtonEventListener() {
             @Override
             public void onButtonClicked(int i) {
+                switch (i){
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        selected = WHERECHAIR;
+                        break;
+                    case 6:
+                        break;
+
+                        default:
+                            selected = ARROW;
+
+                }
 
             }
 
@@ -187,6 +214,8 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
             selected = ARROW;
         } else if (i == R.id.renderable_end) {
             selected = END_MARKER;
+        } else if(i == R.id.endTour){
+            endTour();
         }
 
     }
@@ -221,6 +250,18 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                 .setSource(this, R.raw.marker_yellow)
                 .build()
                 .thenAccept(renderable -> endRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, R.raw.tinker)
+                .build()
+                .thenAccept(renderable -> wheelRenderable = renderable)
                 .exceptionally(
                         throwable -> {
                             Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
@@ -293,11 +334,21 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                             object.setRenderable(endRenderable);
                             object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
                             end = new com.ece1778.musego.Model.Node(t, r, END_MARKER);
-                            endTour();
+                            renderable_arrow.setVisibility(View.GONE);
+                            renderable_end.setVisibility(View.GONE);
+                            toggleBtn.setVisibility(View.GONE);
+                            end_tour.setVisibility(View.VISIBLE);
+
                         } else {
                             Toast.makeText(ArCreateTourActivity.this, "End Node existed!", Toast.LENGTH_SHORT).show();
 
                         }
+                    }else if(selected == WHERECHAIR) {
+                        object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+                        object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
+                        object.setRenderable(wheelRenderable);
+                        nodes.add(new com.ece1778.musego.Model.Node(t, r, WHERECHAIR));
+
                     }
 
                     object.select();
@@ -306,8 +357,9 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
     }
 
     private void endTour() {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Wanna share the tour");
+        builder.setTitle("Wanna share the tour?");
         builder.setPositiveButton("Upload", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
@@ -330,6 +382,22 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
         dialog.show();
 
     }
+
+    private void deleteLastNode() {
+        end = null;
+        List<Node> nodeList = new ArrayList<>(arFragment.getArSceneView().getScene().getChildren());
+        for (Node childNode : nodeList) {
+            if (childNode instanceof AnchorNode) {
+                if(childNode.getRenderable() == endRenderable) {
+                    if (((AnchorNode) childNode).getAnchor() != null) {
+                        ((AnchorNode) childNode).getAnchor().detach();
+                        ((AnchorNode) childNode).setParent(null);
+                    }
+                }
+            }
+        }
+    }
+
 
 
     public void setupDatabase(Config config, Session session){
