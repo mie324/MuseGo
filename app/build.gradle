@@ -67,6 +67,10 @@ dependencies {
     //imagePicker
     implementation 'com.github.yaozs:ImageShowPicker:1.0.0'
 
+//    implementation project(':gooeymenu')
+
+
+
 }
 
 
@@ -90,8 +94,8 @@ sceneform.asset('sampledata/marker_yellow.obj',
         'sampledata/marker_yellow.sfa',
         'src/main/res/raw/marker_yellow')
 
-
 sceneform.asset('sampledata/tinker.obj',
         'default',
         'sampledata/tinker.sfa',
         'src/main/res/raw/tinker')
+

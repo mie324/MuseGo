@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -45,6 +46,7 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     private List<Path> pathList = new ArrayList<>();
     private List<Path> allPath = new ArrayList<>();
     public List<String> tagsList = new ArrayList<>();
+    private String instName;
 
     private FloatingActionButton createPathBtn, fab2;
     private SearchFabFragment dialogFrag;
@@ -79,48 +81,54 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
     private void fetchDataAndRenderView() {
 
-        firebaseManager.getRef()
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @SuppressLint("RestrictedApi")
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
+        instName = getIntent().getStringExtra("instName");
 
-                                    //loading.hideLoading();
+        firebaseManager.getInstRef()
+                .document(instName)
+                .collection("paths")
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @SuppressLint("RestrictedApi")
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
 
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        Path path = document.toObject(Path.class);
-                                        String pid = document.getId();
+                            //loading.hideLoading();
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Path path = document.toObject(Path.class);
+                                String pid = document.getId();
 
 
-                                        Path pathModel = new Path(
-                                                pid,
-                                                path.getUserId(),
-                                                path.getUsername(),
-                                                path.getUserAvatar(),
-                                                path.getUserBio(),
-                                                path.getTimestamp(),
-                                                path.getTitle(),
-                                                path.getDescription(),
-                                                path.getFloor(),
-                                                path.getEstimated_time(),
-                                                path.getTags(),
-                                                path.getPrivacy(),
-                                                path.getStart_node(),
-                                                path.getEnd_node(),
-                                                path.getNodes());
+                                Path pathModel = new Path(
+                                        pid,
+                                        path.getUserId(),
+                                        path.getUsername(),
+                                        path.getUserAvatar(),
+                                        path.getUserBio(),
+                                        path.getTimestamp(),
+                                        path.getTitle(),
+                                        path.getDescription(),
+                                        path.getFloor(),
+                                        path.getEstimated_time(),
+                                        path.getTags(),
+                                        path.getPrivacy(),
+                                        path.getStart_node(),
+                                        path.getEnd_node(),
+                                        path.getNodes());
 
-                                        pathList.add(path);
-                                        allPath.add(path);
-                                        adapter.notifyDataSetChanged();
-                                    }
-
-                                    createTourBtn.setVisibility(View.VISIBLE);
-                                    fab2.setVisibility(View.VISIBLE);
-                                }
+                                pathList.add(path);
+                                allPath.add(path);
+                                adapter.notifyDataSetChanged();
                             }
-                        });
+
+                            createTourBtn.setVisibility(View.VISIBLE);
+                            fab2.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+
 
         firebaseManager.getTagRef().document("tagList")
                 .get()
@@ -196,7 +204,7 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                 }
             }
             newPathList = tempList;
-            Log.d("!!newPathSizeafter", newPathList.size()+"");
+
 
         }
 
@@ -243,7 +251,11 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
         int i = v.getId();
         if (i == R.id.createTourBtn) {
 
-            startActivity(new Intent(TourListActivity.this, CreateInstructionActivity.class));
+            Intent intent = new Intent(TourListActivity.this, CreateInstructionActivity.class);
+            //intent.putExtra("path", path);
+            intent.putExtra("instName",instName);
+            startActivity(intent);
+
         }
 
     }

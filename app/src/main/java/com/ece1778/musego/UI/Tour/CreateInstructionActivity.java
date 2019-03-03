@@ -68,7 +68,10 @@ public class CreateInstructionActivity extends AhoyOnboarderActivity implements 
     @Override
     public void onFinishButtonPressed() {
         setContentView(R.layout.activity_create_instruction);
-        startActivity(new Intent(CreateInstructionActivity.this, ArCreateTourActivity.class));
+
+        Intent intent = new Intent(CreateInstructionActivity.this, ArCreateTourActivity.class);
+        intent.putExtra("instName", getIntent().getStringExtra("instName"));
+        startActivity(intent);
         finish();
     }
 

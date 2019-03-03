@@ -187,7 +187,6 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                             selected = ARROW;
 
                 }
-
             }
 
             @Override
@@ -247,7 +246,7 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                         });
 
         ModelRenderable.builder()
-                .setSource(this, R.raw.marker_yellow)
+                .setSource(this, R.raw.marker)
                 .build()
                 .thenAccept(renderable -> endRenderable = renderable)
                 .exceptionally(
@@ -366,6 +365,7 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                 NodeList nodeList = new NodeList(starter, end, nodes);
                 Intent intent = new Intent(ArCreateTourActivity.this, UploadTourActivity.class);
                 intent.putExtra("nodeList", new Gson().toJson(nodeList));
+                intent.putExtra("instName", getIntent().getStringExtra("instName"));
                 startActivity(intent);
                 finish();
             }
