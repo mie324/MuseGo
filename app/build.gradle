@@ -99,3 +99,6 @@ sceneform.asset('sampledata/marker_yellow.obj',
         'default',
         'sampledata/marker_yellow.sfa',
         'src/main/res/raw/marker_yellow')
+
+
+

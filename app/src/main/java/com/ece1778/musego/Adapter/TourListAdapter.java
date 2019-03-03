@@ -137,7 +137,7 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         if (position > lastAnimatedPosition) {//lastAnimatedPosition是int类型变量，一开始为-1，这两行代码确保了recycleview滚动式回收利用视图时不会出现不连续的效果
             lastAnimatedPosition = position;
-            view.setTranslationY(500);//相对于原始位置下方400
+            view.setTranslationY(100);//相对于原始位置下方400
             view.setAlpha(0.f);//完全透明
             //每个item项两个动画，从透明到不透明，从下方移动到原来的位置
             //并且根据item的位置设置延迟的时间，达到一个接着一个的效果
