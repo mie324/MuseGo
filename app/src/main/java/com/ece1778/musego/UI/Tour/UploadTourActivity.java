@@ -242,6 +242,7 @@ public class UploadTourActivity extends BaseActivity {
                                         estimatedTime,
                                         (List<String>) tags,
                                         privacy,
+                                        new ArrayList<String>(), //likeList
                                         startNode,
                                         endNode,
                                         nodes

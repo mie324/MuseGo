@@ -63,6 +63,8 @@ public class FirebaseManager extends BaseActivity {
     public static final String KEY_NODES_LIST = "nodes";
 
 
+
+
    public FirebaseManager(Context context) {
        this.context = context;
        app = FirebaseApp.initializeApp(context);

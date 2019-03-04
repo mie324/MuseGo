@@ -323,7 +323,7 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
 
     public void setupDatabase(Config config, Session session) {
 
-        Bitmap ramenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ramen);
+        Bitmap ramenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.elephant);
         AugmentedImageDatabase aid = new AugmentedImageDatabase(session);
         aid.addImage("ramen", ramenBitmap);
         config.setAugmentedImageDatabase(aid);

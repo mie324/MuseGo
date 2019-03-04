@@ -81,7 +81,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
     private void fetchDataAndRenderView() {
 
-        instName = getIntent().getStringExtra("instName");
 
         firebaseManager.getInstRef()
                 .document(instName)
@@ -100,6 +99,8 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                                 Path path = document.toObject(Path.class);
                                 String pid = document.getId();
 
+                                Log.d("!!!!!!pid", pid);
+
 
                                 Path pathModel = new Path(
                                         pid,
@@ -114,12 +115,13 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                                         path.getEstimated_time(),
                                         path.getTags(),
                                         path.getPrivacy(),
+                                        path.getLikeList(),
                                         path.getStart_node(),
                                         path.getEnd_node(),
                                         path.getNodes());
 
-                                pathList.add(path);
-                                allPath.add(path);
+                                pathList.add(pathModel);
+                                allPath.add(pathModel);
                                 adapter.notifyDataSetChanged();
                             }
 
@@ -167,16 +169,19 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                                 filteredList = getTagFilteredPath(entry.getValue(), filteredList);
                                 break;
 
+                            case "FLOOR":
+                                filteredList = getFloorFilteredPath(entry.getValue(), filteredList);
+
                         }
                     }
-                    Log.d("!!!!!!filterList",filteredList.size()+"");
+
                     pathList.clear();
                     pathList.addAll(filteredList);
                     adapter.notifyDataSetChanged();
 
                 } else {
 
-                    Log.d("!!!", "null");
+
                     pathList.clear();
                     pathList.addAll(allPath);
                     adapter.notifyDataSetChanged();
@@ -187,23 +192,49 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
     }
 
+    private List<Path> getFloorFilteredPath(List<String> floors, List<Path> filteredList) {
+
+        List<Path> tempList = new ArrayList<>();
+
+        for(String floor: floors){
+            tempList = new ArrayList<>();
+            for(Path path: filteredList){
+
+                if(path.getFloor().equals(floor)){
+                    if(!tempList.contains(path)){
+                        tempList.add(path);
+                    }
+                }
+            }
+            filteredList = tempList;
+
+
+        }
+
+        return tempList;
+
+
+
+
+    }
+
     private List<Path> getTagFilteredPath(List<String> tags, List<Path> newPathList){
         List<Path> tempList = new ArrayList<>();
 
 
 
         for(String tag: tags){
-            Log.d("!!newPathSizebefore", newPathList.size()+"");
-            tempList = new ArrayList<>();
-            for(Path path: newPathList){
+                Log.d("!!newPathSizebefore", newPathList.size()+"");
+                tempList = new ArrayList<>();
+                for(Path path: newPathList){
 
-                if(path.getTags().contains(tag)){
-                    if(!tempList.contains(path)){
-                        tempList.add(path);
+                    if(path.getTags().contains(tag)){
+                        if(!tempList.contains(path)){
+                            tempList.add(path);
+                        }
                     }
                 }
-            }
-            newPathList = tempList;
+                newPathList = tempList;
 
 
         }
@@ -217,11 +248,13 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     @SuppressLint("RestrictedApi")
     private void initView() {
 
+        instName = getIntent().getStringExtra("instName");
+
 
         recyclerView = (RecyclerView) findViewById(R.id.recycleViewId);
         layoutManager = new GridLayoutManager(TourListActivity.this,1);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new TourListAdapter(TourListActivity.this,pathList);
+        adapter = new TourListAdapter(TourListActivity.this, pathList, instName);
         recyclerView.setAdapter(adapter);
 //
 //        loading = (Loading) findViewById(R.id.loading);
