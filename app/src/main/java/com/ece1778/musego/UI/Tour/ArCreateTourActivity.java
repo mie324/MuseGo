@@ -5,7 +5,9 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,6 +37,9 @@ import com.ece1778.musego.Model.Rotation;
 import com.ece1778.musego.Model.Translation;
 import com.ece1778.musego.R;
 import com.ece1778.musego.Utils.CustomArFragment;
+import com.fangxu.allangleexpandablebutton.AllAngleExpandableButton;
+import com.fangxu.allangleexpandablebutton.ButtonData;
+import com.fangxu.allangleexpandablebutton.ButtonEventListener;
 import com.google.ar.core.Anchor;
 import com.google.ar.core.AugmentedImage;
 import com.google.ar.core.AugmentedImageDatabase;
@@ -71,23 +77,23 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
     private static final double MIN_OPENGL_VERSION = 3.0;
     private static final int START_MARKER = 1;
     private static final int ARROW = 2;
-    private static final int STAR = 3;
-    private static final int END_MARKER = 4;
+    private static final int END_MARKER = 3;
+    private static final int WHERECHAIR = 4;
+
 
     private CustomArFragment arFragment;
-    private ModelRenderable startRenderable, endRenderable, arrowRenderable, starRenderable;
+    private ModelRenderable startRenderable, endRenderable, arrowRenderable;
+    private ModelRenderable wheelRenderable;
     private int selected = ARROW;
 
     private com.ece1778.musego.Model.Node starter;
     private com.ece1778.musego.Model.Node end;
     private List<com.ece1778.musego.Model.Node> nodes = new ArrayList<>();
 
-    private Button finishArBtn;
-    private Button cancelArBtn;
-    private Button renderable_start;
     private Button renderable_arrow;
-    private Button renderable_flag;
     private Button renderable_end;
+    private AllAngleExpandableButton toggleBtn;
+    private Button end_tour;
 
     private ZXingView scanBox;
 
@@ -96,14 +102,11 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_ar_create_tour);
-
         if (!checkIsSupportedDeviceOrFinish(this)) {
             return;
         }
 
        initView();
-
-
 
     }
 
@@ -113,13 +116,11 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
         super.onStart();
         setRenderable();
 
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         createPath();
 
     }
@@ -129,76 +130,93 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
         arFragment = (CustomArFragment) getSupportFragmentManager().findFragmentById(R.id.ux_fragment_upload);
         arFragment.getArSceneView().getScene().addOnUpdateListener(this);
 
-
+        initToggleBtn();
 
         scanBox = (ZXingView) findViewById(R.id.scanbox);
 
-        finishArBtn = (Button) findViewById(R.id.finishArBtn);
-        finishArBtn.setOnClickListener(this);
-        finishArBtn.setVisibility(View.GONE);
-        cancelArBtn = (Button) findViewById(R.id.cancelArBtn);
-        cancelArBtn.setOnClickListener(this);
-        cancelArBtn.setVisibility(View.GONE);
-        renderable_start = (Button)findViewById(R.id.renderable_start);
-        renderable_start.setOnClickListener(this);
-        renderable_start.setVisibility(View.GONE);
         renderable_arrow = (Button) findViewById(R.id.renderable_arrow);
         renderable_arrow.setOnClickListener(this);
         renderable_arrow.setVisibility(View.GONE);
-        renderable_flag = (Button) findViewById(R.id.renderable_flag);
-        renderable_flag.setOnClickListener(this);
-        renderable_flag.setVisibility(View.GONE);
+
         renderable_end = (Button) findViewById(R.id.renderable_end);
         renderable_end.setOnClickListener(this);
         renderable_end.setVisibility(View.GONE);
 
+        end_tour = (Button) findViewById(R.id.endTour);
+        end_tour.setOnClickListener(this);
+        end_tour.setVisibility(View.GONE);
 
+    }
 
+    private void initToggleBtn() {
+
+        toggleBtn = findViewById(R.id.button_expandable);
+        final List<ButtonData> buttonDatas = new ArrayList<>();
+        int[] drawable = {R.drawable.plus,R.drawable.pass, R.drawable.quite, R.drawable.light, R.drawable.humid,R.drawable.washroom,R.drawable.food};
+        int[] color = {R.color.green, R.color.green, R.color.green, R.color.green, R.color.green, R.color.green, R.color.green};
+        for (int i = 0; i < drawable.length; i++) {
+            ButtonData buttonData;
+            if(i == 0){
+                buttonData = ButtonData.buildIconButton(this, drawable[i], 15);
+            }else{
+                buttonData = ButtonData.buildIconButton(this, drawable[i], 0);
+            }
+            buttonData.setBackgroundColorId(this, color[i]);
+            buttonDatas.add(buttonData);
+        }
+        toggleBtn.setButtonDatas(buttonDatas);
+        toggleBtn.setButtonEventListener(new ButtonEventListener() {
+            @Override
+            public void onButtonClicked(int i) {
+                switch (i){
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        selected = WHERECHAIR;
+                        break;
+                    case 6:
+                        break;
+
+                        default:
+                            selected = ARROW;
+
+                }
+            }
+
+            @Override
+            public void onExpand() {
+                renderable_arrow.setVisibility(View.GONE);
+                renderable_end.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCollapse() {
+                renderable_arrow.setVisibility(View.VISIBLE);
+                renderable_end.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        toggleBtn.setVisibility(View.GONE);
     }
 
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.finishArBtn) {
-            if (checkNodes()) {
-                NodeList nodeList = new NodeList(starter, end, nodes);
-                Intent intent = new Intent(ArCreateTourActivity.this, UploadTourActivity.class);
-                intent.putExtra("nodeList", new Gson().toJson(nodeList));
-                intent.putExtra("instName", getIntent().getStringExtra("instName"));
-                startActivity(intent);
-                finish();
-            }
-
-        } else if (i == R.id.cancelArBtn) {
-
-            //startActivity(new Intent(ArCreateTourActivity.this, TourListActivity.class));
-            finish();
-
-        } else if (i == R.id.renderable_start) {
-
-            selected = START_MARKER;
-        } else if (i == R.id.renderable_arrow) {
+        if (i == R.id.renderable_arrow) {
             selected = ARROW;
-        } else if (i == R.id.renderable_flag) {
-            selected = STAR;
         } else if (i == R.id.renderable_end) {
             selected = END_MARKER;
+        } else if(i == R.id.endTour){
+            endTour();
         }
 
-    }
-
-    private Boolean checkNodes() {
-        if (starter == null) {
-            Toast.makeText(ArCreateTourActivity.this, "Please enter start node", Toast.LENGTH_SHORT).show();
-            return false;
-
-        } else if (end == null) {
-            Toast.makeText(ArCreateTourActivity.this, "Please enter end node", Toast.LENGTH_SHORT).show();
-            return false;
-
-        }
-
-        return true;
     }
 
     private void setRenderable() {
@@ -216,6 +234,7 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                             return null;
                         });
 
+
         ModelRenderable.builder()
                 .setSource(this, R.raw.marker)
                 .build()
@@ -227,7 +246,6 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                             toast.show();
                             return null;
                         });
-
 
         ModelRenderable.builder()
                 .setSource(this, R.raw.model)
@@ -241,23 +259,22 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                             return null;
                         });
 
-
         ModelRenderable.builder()
-                .setSource(this, R.raw.star)
+                .setSource(this, R.raw.marker)
                 .build()
-                .thenAccept(renderable -> starRenderable = renderable)
+                .thenAccept(renderable -> endRenderable = renderable)
                 .exceptionally(
                         throwable -> {
-                            Toast toast = Toast.makeText(this, "Unable to load star renderable", Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.CENTER, 0, 0);
                             toast.show();
                             return null;
                         });
 
         ModelRenderable.builder()
-                .setSource(this, R.raw.marker_yellow)
+                .setSource(this, R.raw.tinker)
                 .build()
-                .thenAccept(renderable -> endRenderable = renderable)
+                .thenAccept(renderable -> wheelRenderable = renderable)
                 .exceptionally(
                         throwable -> {
                             Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
@@ -300,12 +317,11 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
     }
 
     private void createPath() {
-        removePreviousAnchors();
 
         arFragment.setOnTapArPlaneListener(
 
                 (HitResult hitResult, Plane plane, MotionEvent motionEvent) -> {
-                    if (startRenderable == null || endRenderable == null || starRenderable == null || arrowRenderable == null) {
+                    if (endRenderable == null || arrowRenderable == null) {
                         Log.d(TAG, "Renderable unprovided!");
                         return;
                     }
@@ -320,128 +336,83 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                     TransformableNode object = new TransformableNode(arFragment.getTransformationSystem());
                     object.setParent(anchorNode);
 
-                    if (selected == START_MARKER) {
-
-                        if (starter == null) {
-                            object.setRenderable(startRenderable);
-                            object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
-//                            starter = new com.ece1778.musego.Model.Node(t, r, START_MARKER);
-                        } else {
-                            Toast.makeText(ArCreateTourActivity.this, "Start Node existed!", Toast.LENGTH_SHORT).show();
-                        }
-
-                    } else if (selected == ARROW) {
+                    if (selected == ARROW) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 225f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(arrowRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, ARROW));
-
-
-                    } else if (selected == STAR) {
-                        object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 180f));
-                        object.setRenderable(starRenderable);
-//                        addInfoCard(object);
-                        nodes.add(new com.ece1778.musego.Model.Node(t, r, STAR, "Comments"));
 
                     } else if (selected == END_MARKER) {
                         if (end == null) {
                             object.setRenderable(endRenderable);
                             object.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
                             end = new com.ece1778.musego.Model.Node(t, r, END_MARKER);
+                            renderable_arrow.setVisibility(View.GONE);
+                            renderable_end.setVisibility(View.GONE);
+                            toggleBtn.setVisibility(View.GONE);
+                            end_tour.setVisibility(View.VISIBLE);
+
                         } else {
                             Toast.makeText(ArCreateTourActivity.this, "End Node existed!", Toast.LENGTH_SHORT).show();
 
                         }
+                    }else if(selected == WHERECHAIR) {
+                        object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+                        object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
+                        object.setRenderable(wheelRenderable);
+                        nodes.add(new com.ece1778.musego.Model.Node(t, r, WHERECHAIR));
+
                     }
 
                     object.select();
 
                 });
-
-        removeRenderableByClick();
     }
 
+    private void endTour() {
 
-    private void removePreviousAnchors() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Wanna share the tour?");
+        builder.setPositiveButton("Upload", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+                NodeList nodeList = new NodeList(starter, end, nodes);
+                Intent intent = new Intent(ArCreateTourActivity.this, UploadTourActivity.class);
+                intent.putExtra("nodeList", new Gson().toJson(nodeList));
+                intent.putExtra("instName", getIntent().getStringExtra("instName"));
+                startActivity(intent);
+                finish();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
-        starter = null;
+            public void onClick(DialogInterface dialog, int id) {
+                startActivity(new Intent(ArCreateTourActivity.this, TourListActivity.class));
+                finish();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    private void deleteLastNode() {
         end = null;
-        nodes.clear();
-
         List<Node> nodeList = new ArrayList<>(arFragment.getArSceneView().getScene().getChildren());
         for (Node childNode : nodeList) {
             if (childNode instanceof AnchorNode) {
-                if (((AnchorNode) childNode).getAnchor() != null) {
-                    ((AnchorNode) childNode).getAnchor().detach();
-                    ((AnchorNode) childNode).setParent(null);
-                }
-            }
-        }
-    }
-
-    private void removeRenderableByClick() {
-
-        Scene scene = arFragment.getArSceneView().getScene();
-        scene.addOnPeekTouchListener(new Scene.OnPeekTouchListener() {
-            @Override
-            public void onPeekTouch(HitTestResult hitTestResult, MotionEvent motionEvent) {
-                Log.d(TAG, "handleOnTouch");
-
-                // First call ArFragment's listener to handle TransformableNodes.
-                arFragment.onPeekTouch(hitTestResult, motionEvent);
-
-                //We are only interested in the ACTION_UP events - anything else just return
-                if (motionEvent.getAction() != MotionEvent.ACTION_UP) {
-                    return;
-                }
-
-                // Check for touching a Sceneform node
-                if (hitTestResult.getNode() != null) {
-                    Log.d(TAG, "handleOnTouch hitTestResult.getNode() != null");
-                    Node hitNode = hitTestResult.getNode();
-
-                    if (hitNode.getRenderable() == startRenderable) {
-                        arFragment.getArSceneView().getScene().removeChild(hitNode);
-                        hitNode.setParent(null);
-                        hitNode = null;
-                        starter = null;
-                        Toast.makeText(ArCreateTourActivity.this, "Node Deleted", Toast.LENGTH_SHORT).show();
-
-                    } else if (hitNode.getRenderable() == endRenderable) {
-                        arFragment.getArSceneView().getScene().removeChild(hitNode);
-                        hitNode.setParent(null);
-                        hitNode = null;
-                        end = null;
-                        Toast.makeText(ArCreateTourActivity.this, "Node Deleted", Toast.LENGTH_SHORT).show();
-
+                if(childNode.getRenderable() == endRenderable) {
+                    if (((AnchorNode) childNode).getAnchor() != null) {
+                        ((AnchorNode) childNode).getAnchor().detach();
+                        ((AnchorNode) childNode).setParent(null);
                     }
                 }
             }
-        });
+        }
     }
 
-    public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) {
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            Log.e(TAG, "Sceneform requires Android N or later");
-            Toast.makeText(activity, "Sceneform requires Android N or later", Toast.LENGTH_LONG).show();
-            activity.finish();
-            return false;
-        }
-        String openGlVersionString =
-                ((ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE))
-                        .getDeviceConfigurationInfo()
-                        .getGlEsVersion();
-        if (Double.parseDouble(openGlVersionString) < MIN_OPENGL_VERSION) {
-            Log.e(TAG, "Sceneform requires OpenGL ES 3.0 later");
-            Toast.makeText(activity, "Sceneform requires OpenGL ES 3.0 or later", Toast.LENGTH_LONG)
-                    .show();
-            activity.finish();
-            return false;
-        }
-
-        return true;
-    }
 
     public void setupDatabase(Config config, Session session){
 
@@ -493,12 +464,9 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
 
         scanBox.setVisibility(View.GONE);
 
-        finishArBtn.setVisibility(View.VISIBLE);
-        cancelArBtn.setVisibility(View.VISIBLE);
-        renderable_start.setVisibility(View.VISIBLE);
         renderable_arrow.setVisibility(View.VISIBLE);
-        renderable_flag.setVisibility(View.VISIBLE);
         renderable_end.setVisibility(View.VISIBLE);
+        toggleBtn.setVisibility(View.VISIBLE);
 
     }
 
@@ -529,15 +497,36 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
             }
         }
         return false;
-
-
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
         startActivity(new Intent(this, TourListActivity.class));
+    }
+
+
+    public static boolean checkIsSupportedDeviceOrFinish(final Activity activity) {
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            Log.e(TAG, "Sceneform requires Android N or later");
+            Toast.makeText(activity, "Sceneform requires Android N or later", Toast.LENGTH_LONG).show();
+            activity.finish();
+            return false;
+        }
+        String openGlVersionString =
+                ((ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE))
+                        .getDeviceConfigurationInfo()
+                        .getGlEsVersion();
+        if (Double.parseDouble(openGlVersionString) < MIN_OPENGL_VERSION) {
+            Log.e(TAG, "Sceneform requires OpenGL ES 3.0 later");
+            Toast.makeText(activity, "Sceneform requires OpenGL ES 3.0 or later", Toast.LENGTH_LONG)
+                    .show();
+            activity.finish();
+            return false;
+        }
+
+        return true;
     }
 }
 

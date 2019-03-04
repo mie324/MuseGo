@@ -5,10 +5,13 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +35,7 @@ import com.daimajia.slider.library.Tricks.ViewPagerEx;
 
 import java.util.HashMap;
 
-public class TourDetailActivity extends BaseActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener, View.OnClickListener{
+public class TourDetailActivity extends BaseActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener, View.OnClickListener {
 
     private static final String TAG = "TOURDETAIL";
 
@@ -111,6 +114,7 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
 
         for(String name : file_maps.keySet()) {
             TextSliderView textSliderView = new TextSliderView(this);
+
             // initialize a SliderLayout
             textSliderView
                     .description(name)
@@ -128,7 +132,7 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
         img.setPresetTransformer(SliderLayout.Transformer.Default);
         img.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         img.setCustomAnimation(new DescriptionAnimation());
-        img.setDuration(4000);
+        img.stopAutoCycle();
         img.addOnPageChangeListener(this);
 
     }
@@ -175,4 +179,5 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
     public void onPageScrollStateChanged(int state) {
 
     }
+
 }

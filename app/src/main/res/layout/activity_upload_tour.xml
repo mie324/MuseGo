@@ -21,7 +21,7 @@
                 android:layout_marginTop="50dp"
                 android:text="Finish Creating Your Tour"
                 android:textSize="20dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/uploadTour_title"
@@ -115,7 +115,7 @@
                 android:layout_gravity="right"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:text="word count" />
+                android:text="0/200" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -131,14 +131,22 @@
                     android:text="Estimated Time"
                     android:textSize="16dp" />
 
-                <EditText
-                    android:id="@+id/uploadTour_time"
+                <Spinner
+                    android:id="@+id/uploadTour_hour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.5"
+                    android:textColor="@android:color/black"
+                    android:entries="@array/hour" />
 
-                    android:hint="hh/mm" />
-
+                <Spinner
+                    android:id="@+id/uploadTour_minute"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.5"
+                    android:entries="@array/minute" />
 
             </LinearLayout>
 
@@ -171,6 +179,22 @@
                     android:layout_height="30dp"
                     android:background="@drawable/ic_add_circle_black_24dp"
                     android:gravity="center|right" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp">
+
+                <com.yzs.imageshowpickerview.ImageShowPickerView
+                    android:id="@+id/uploadTour_imgPicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </com.yzs.imageshowpickerview.ImageShowPickerView>
 
             </LinearLayout>
 
@@ -234,5 +258,7 @@
             android:layout_height="match_parent" />
 
     </RelativeLayout>
+
+
 
 </ScrollView>

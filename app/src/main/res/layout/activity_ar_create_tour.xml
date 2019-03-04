@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ArCreateTour"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,54 +14,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-
     <cn.bingoogolapple.qrcode.zxing.ZXingView
         android:id="@+id/scanbox"
         style="@style/MatchMatch"
         app:qrcv_animTime="1000"
+        app:qrcv_barcodeRectHeight="400dp"
         app:qrcv_borderColor="@android:color/white"
         app:qrcv_borderSize="1dp"
         app:qrcv_cornerColor="@color/colorPrimaryDark"
         app:qrcv_cornerLength="20dp"
         app:qrcv_cornerSize="3dp"
+        app:qrcv_isTipTextBelowRect="true"
         app:qrcv_maskColor="#33FFFFFF"
+        app:qrcv_qrCodeTipText="Please scan the starter image"
         app:qrcv_rectWidth="300dp"
-        app:qrcv_barcodeRectHeight="400dp"
         app:qrcv_scanLineSize="0dp"
         app:qrcv_topOffset="200dp"
-        app:qrcv_qrCodeTipText="Please scan the starter image"
-        app:qrcv_isTipTextBelowRect="true"
-        app:qrcv_verticalBias="0.5"/>
+        app:qrcv_verticalBias="0.5" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
+        android:layout_height="94dp"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:layout_marginBottom="50dp">
 
         <Button
-            android:id="@+id/renderable_start"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="start"/>
-
-        <Button
-            android:id="@+id/renderable_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="end" />
-
-        <Button
-            android:id="@+id/renderable_arrow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="arrow" />
-
-        <Button
-            android:id="@+id/renderable_flag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="flag" />
-
+            android:id="@+id/endTour"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_check" />
 
     </LinearLayout>
 
@@ -69,23 +52,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-        android:orientation="horizontal">
+
+        android:layout_marginBottom="50dp">
 
         <Button
-            android:id="@+id/cancelArBtn"
+            android:id="@+id/renderable_end"
+            android:layout_width="55dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/location" />
+
+        <com.fangxu.allangleexpandablebutton.AllAngleExpandableButton
+            android:id="@+id/button_expandable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel" />
+            app:aebAnimDurationMillis="175"
+            app:aebButtonElevation="4dp"
+            app:aebButtonGapDp="60dp"
+            app:aebEndAngleDegree="180"
+            app:aebIsSelectionMode="false"
+            app:aebMainButtonRotateAnimDurationMillis="300"
+            app:aebMainButtonRotateDegree="-135"
+            app:aebMainButtonSizeDp="80dp"
+            app:aebRippleEffect="true"
+            app:aebStartAngleDegree="0"
+            app:aebSubButtonSizeDp="45dp" />
 
         <Button
-            android:id="@+id/finishArBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Upload" />
-
-
+            android:id="@+id/renderable_arrow"
+            android:layout_width="55dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/arrow" />
 
     </LinearLayout>
-
 
 </FrameLayout>
