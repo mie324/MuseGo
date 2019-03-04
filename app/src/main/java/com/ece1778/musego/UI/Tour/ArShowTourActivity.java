@@ -234,15 +234,18 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
 
             andy.setRenderable(startRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
+
         } else if (node.getTag() == ARROW) {
 
             andy.setRenderable(arrowRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 225f));
             andy.setLocalPosition(new Vector3(0f, 0.2f, 0f));
+
         } else if (node.getTag() == WHEEL) {
 
             andy.setRenderable(wheelRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 180f));
+
         } else {
 
             andy.setRenderable(endRenderable);
