@@ -239,6 +239,7 @@ public class UploadTourActivity extends BaseActivity {
                                         time.getText().toString(),
                                         (List<String>) tags,
                                         privacy,
+                                        new ArrayList<String>(), //likeList
                                         startNode,
                                         endNode,
                                         nodes

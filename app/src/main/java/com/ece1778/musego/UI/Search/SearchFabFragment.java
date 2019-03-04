@@ -27,10 +27,14 @@ import com.google.android.flexbox.FlexboxLayout;
 import com.ece1778.musego.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
 public class SearchFabFragment extends AAH_FabulousFragment {
+
+    List<String> floorList = new ArrayList<>(Arrays.asList("G","1","2"));
+    List<String> timeList = new ArrayList<>(Arrays.asList("0h ~ 1h","1h ~ 2h","2h ~ 3h","3h ~ 4h","4h ~ 5h"));
 
     ImageButton imgbtn_refresh, imgbtn_apply;
     TabLayout tabs_types;
@@ -120,6 +124,16 @@ public class SearchFabFragment extends AAH_FabulousFragment {
                     inflateLayoutWithFilters("TAG", fbl);
                     break;
 
+                case 1:
+                    inflateLayoutWithFilters("FLOOR", fbl);
+                    break;
+
+                case 2:
+                    inflateLayoutWithFilters("TIME", fbl);
+                    break;
+
+
+
             }
             collection.addView(layout);
             return layout;
@@ -133,7 +147,7 @@ public class SearchFabFragment extends AAH_FabulousFragment {
 
         @Override
         public int getCount() {
-            return 1;
+            return 3;
         }
 
         @Override
@@ -141,6 +155,10 @@ public class SearchFabFragment extends AAH_FabulousFragment {
             switch (position) {
                 case 0:
                     return "TAG";
+                case 1:
+                    return "FLOOR";
+                case 2:
+                    return "TIME";
 
 
             }
@@ -159,6 +177,14 @@ public class SearchFabFragment extends AAH_FabulousFragment {
         switch (filter_category) {
             case "TAG":
                 keys = ((TourListActivity) getActivity()).tagsList;
+                break;
+
+            case "FLOOR":
+                keys = floorList;
+                break;
+
+            case "TIME":
+                keys = timeList;
                 break;
 
         }

@@ -205,9 +205,9 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
 
 
         ModelRenderable.builder()
-                .setSource(this, R.raw.tinker1)
+                .setSource(this, R.raw.marker)
                 .build()
-                .thenAccept(renderable -> tinkerRenderable = renderable)
+                .thenAccept(renderable -> startRenderable = renderable)
                 .exceptionally(
                         throwable -> {
                             Toast toast = Toast.makeText(this, "Unable to load start marker renderable", Toast.LENGTH_LONG);

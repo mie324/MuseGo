@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.ece1778.musego.Manager.FirebaseManager;
 import com.ece1778.musego.Model.Node;
 import com.ece1778.musego.Model.Path;
 import com.ece1778.musego.Model.Rotation;
@@ -29,6 +30,8 @@ import com.ece1778.musego.R;
 import com.ece1778.musego.UI.Tour.TourDetailActivity;
 import com.ece1778.musego.UI.Tour.TourListActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
@@ -48,13 +51,19 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     //private Path path;
     private List<Path> pathList;
-    private FirebaseFirestore db;
+    private String instName;
+    private FirebaseUser currentUser;
+    private FirebaseManager firebaseManager;
 
-    public TourListAdapter(Context context, List<Path> pathList){
+    public TourListAdapter(Context context, List<Path> pathList, String instName){
         this.mContext = context;
         this.pathList = pathList;
+        this.instName = instName;
 
-        db = FirebaseFirestore.getInstance();
+        firebaseManager = new FirebaseManager(context);
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
 
     }
 
@@ -74,21 +83,22 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
-        runEnterAnimation(viewHolder.itemView,i);
+        runEnterAnimation(viewHolder.itemView, i);
 
         Path path = pathList.get(i);
 
 
         ((ViewHolder_Path) viewHolder).title.setText(path.getTitle());
 
-        if(path.getDescription().length() > 0) {
+        if (path.getDescription().length() > 0) {
             ((ViewHolder_Path) viewHolder).description.setText(path.getDescription());
-        }else{
+        } else {
             ((ViewHolder_Path) viewHolder).description.setVisibility(View.GONE);
 
         }
 
         ((ViewHolder_Path) viewHolder).username.setText(path.getUsername());
+        ((ViewHolder_Path) viewHolder).likeCount.setText("" + path.getLikeList().size());
 
         //avatar
         RequestOptions options = new RequestOptions();
@@ -112,19 +122,64 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
         });
 
+        if(path.getLikeList().contains(currentUser.getUid())){
+            ((ViewHolder_Path) viewHolder).like.setLiked(true);
+        }
+
         ((ViewHolder_Path) viewHolder).like.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
 
 
 
-            }
+                if (!path.getLikeList().contains(currentUser.getUid())) {
+
+
+                    path.getLikeList().add(currentUser.getUid());
+
+                    ((ViewHolder_Path) viewHolder).likeCount.setText("" + path.getLikeList().size());
+
+                    firebaseManager.getInstRef()
+                            .document(instName)
+                            .collection("paths")
+                            .document(path.getpId())
+                            .update("likeList", path.getLikeList())
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+
+
+
+
+                                }
+                            });
+                }
+        }
+
 
             @Override
             public void unLiked(LikeButton likeButton) {
 
+                if(path.getLikeList().contains(currentUser.getUid())) {
 
+                    path.getLikeList().remove(currentUser.getUid());
 
+                    ((ViewHolder_Path) viewHolder).likeCount.setText(""+path.getLikeList().size());
+
+                    firebaseManager.getInstRef()
+                            .document(instName)
+                            .collection("paths")
+                            .document(path.getpId())
+                            .update("likeList", path.getLikeList())
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+
+                                   // ((ViewHolder_Path) viewHolder).likeCount.setText(""+path.getLikeList().size());
+
+                                }
+                            });
+                }
             }
         });
 
@@ -190,6 +245,7 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public TextView username;
         public ImageView avatar;
         public LikeButton like;
+        public TextView likeCount;
 
 
         public ViewHolder_Path(View view){
@@ -200,6 +256,7 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             username = (TextView) view.findViewById(R.id.username);
             avatar = (ImageView) view.findViewById(R.id.userAvatar);
             like = (LikeButton) view.findViewById(R.id.like);
+            likeCount = (TextView) view.findViewById(R.id.likeCount);
             cardView = (CardView) view.findViewById(R.id.cardview_id);
 
 
