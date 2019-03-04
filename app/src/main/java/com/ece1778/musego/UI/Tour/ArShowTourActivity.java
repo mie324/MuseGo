@@ -159,7 +159,7 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
                         });
 
         ModelRenderable.builder()
-                .setSource(this, R.raw.marker_yellow)
+                .setSource(this, R.raw.marker)
                 .build()
                 .thenAccept(renderable -> endRenderable = renderable)
                 .exceptionally(
@@ -244,13 +244,12 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
         } else if (node.getTag() == WHEEL) {
 
             andy.setRenderable(wheelRenderable);
-            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 180f));
+            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
 
         } else {
 
             andy.setRenderable(endRenderable);
-            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
-        }
+            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));        }
 
         andy.select();
 
