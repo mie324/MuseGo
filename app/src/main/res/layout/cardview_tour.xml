@@ -1,19 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardview_id"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
+    android:layout_marginLeft="20px"
+    android:layout_marginRight="20px"
+    android:layout_marginTop="10dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackgroundBorderless"
+    app:cardPreventCornerOverlap="false"
     >
 
-    <TextView
-        android:id="@+id/tourTitle"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="5dp"
-        android:background="#FFDE03"
-        />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10px"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/tourTitle"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="5dp"
+            android:text="Title"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:layout_marginLeft="20px"
+            android:layout_marginRight="20px"
+            android:layout_marginTop="20px"
+            />
+
+        <TextView
+            android:id="@+id/tourDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20px"
+            android:layout_marginBottom="5dp"
+            android:maxLines="2"
+            android:maxEms="20"
+            android:ellipsize="end"
+            />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20px"
+            android:layout_marginTop="20px"
+            android:layout_marginBottom="10px"
+            android:layout_marginRight="30px"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/userAvatar"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="20px"
+                android:src="@color/black" />
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="keren" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="20px"
+                android:src="@drawable/clock"/>
+
+            <TextView
+                android:id="@+id/tourTime"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginRight="30px"
+                android:text="2hrs"/>
+
+            <com.like.LikeButton
+                android:id="@+id/like"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="20px"
+                app:icon_size="20dp"
+                app:icon_type="heart" />
+
+            <TextView
+                android:id="@+id/likeCount"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="0"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 
 
