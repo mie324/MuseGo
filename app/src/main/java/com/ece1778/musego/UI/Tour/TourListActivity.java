@@ -51,14 +51,10 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     private FloatingActionButton createPathBtn, fab2;
     private SearchFabFragment dialogFrag;
 
-
     private FirebaseManager firebaseManager;
 
     private Loading loading;
     private FloatingActionButton createTourBtn;
-
-
-
 
 
     @Override
@@ -116,6 +112,7 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                                         path.getTags(),
                                         path.getPrivacy(),
                                         path.getLikeList(),
+                                        path.getImgList(),
                                         path.getStart_node(),
                                         path.getEnd_node(),
                                         path.getNodes());
