@@ -64,10 +64,7 @@ dependencies {
     //Circle Menu
     implementation 'com.github.uin3566:AllAngleExpandableButton:v1.2.0'
 
-    //imagePicker
-    implementation 'com.github.yaozs:ImageShowPicker:1.0.0'
 
-//    implementation project(':gooeymenu')
 
 
 
