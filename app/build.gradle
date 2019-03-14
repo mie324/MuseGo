@@ -67,7 +67,8 @@ dependencies {
     //imagePicker
     implementation 'com.github.yaozs:ImageShowPicker:1.0.0'
 
-//    implementation project(':gooeymenu')
+    // navigation drawer
+    implementation 'nl.psdcompany:duo-navigation-drawer:2.0.8'
 
 
 
