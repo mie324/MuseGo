@@ -40,7 +40,7 @@
                 android:id="@+id/recycleViewId"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#26A69A"
+                android:background="@color/white"
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="0dp" />
 

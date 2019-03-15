@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.ece1778.musego.R;
 import com.ece1778.musego.UI.Museum.MuseumListActivity;
 import com.ece1778.musego.UI.Tour.TourDetailActivity;
@@ -76,18 +77,21 @@ public class MuseumListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         String inst = instList.get(i);
 
-        ((ViewHolder_Inst) viewHolder).title.setText(instMap.get(inst));
-
+//        ((ViewHolder_Inst) viewHolder).title.setText(instMap.get(inst));
+        RequestOptions options = new RequestOptions();
+        options.centerCrop();
 
         if(inst.equals("osc")){
             Glide.with(context)
                     .load(R.drawable.osc)
+                    .apply(options)
                     .into(((ViewHolder_Inst) viewHolder).image);
 
         }
         else if(inst.equals("rom")){
             Glide.with(context)
                     .load(R.drawable.rom)
+                    .apply(options)
                     .into(((ViewHolder_Inst) viewHolder).image);
         }
 
@@ -152,7 +156,7 @@ public class MuseumListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             super(view);
 
             image = (ImageView) view.findViewById(R.id.instImage);
-            title = (TextView) view.findViewById(R.id.instName);
+//            title = (TextView) view.findViewById(R.id.instName);
             cardView = (CardView) view.findViewById(R.id.cardview_id);
 
 

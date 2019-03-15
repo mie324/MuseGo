@@ -48,7 +48,6 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_museum_list);
 
-
         initView();
 
 
