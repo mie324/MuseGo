@@ -63,8 +63,7 @@ dependencies {
     implementation 'com.google.android:flexbox:1.0.0'
     //Circle Menu
     implementation 'com.github.uin3566:AllAngleExpandableButton:v1.2.0'
-
-
+    
     // navigation drawer
     implementation 'nl.psdcompany:duo-navigation-drawer:2.0.8'
 
