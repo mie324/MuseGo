@@ -36,7 +36,7 @@
     file: 'sampledata/wash.obj',
     name: 'wash',
     recenter: 'root',
-    scale: 0.10000000000000001,
+    scale: 0.002,
   },
   version: '0.54:2',
 }
