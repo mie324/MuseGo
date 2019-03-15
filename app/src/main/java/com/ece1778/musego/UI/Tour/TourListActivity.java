@@ -1,6 +1,8 @@
 package com.ece1778.musego.UI.Tour;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,10 +19,15 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.ece1778.musego.Adapter.MenuAdapter;
+import com.ece1778.musego.Adapter.MuseumListAdapter;
 import com.ece1778.musego.Adapter.TourListAdapter;
 import com.ece1778.musego.BaseActivity;
 import com.ece1778.musego.Manager.FirebaseManager;
@@ -30,15 +37,18 @@ import com.ece1778.musego.R;
 import com.ece1778.musego.UI.Auth.SigninActivity;
 import com.ece1778.musego.UI.Museum.MuseumListActivity;
 import com.ece1778.musego.UI.Search.SearchFabFragment;
+import com.ece1778.musego.UI.User.UserProfileActivity;
 import com.ece1778.musego.Utils.Loading;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,6 +75,8 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
     private FirebaseManager firebaseManager;
     private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+
 
     private User user;
     private static final int VISITOR = 0;
@@ -79,6 +91,10 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
     private ViewHolder mViewHolder;
     private MenuAdapter mMenuAdapter;
+
+
+
+
 
 
     @Override
@@ -96,6 +112,8 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     private void initFirebase() {
         firebaseManager = new FirebaseManager(TourListActivity.this);
         mAuth = FirebaseAuth.getInstance();
+
+
 
     }
 
@@ -144,8 +162,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Path path = document.toObject(Path.class);
                                 String pid = document.getId();
-
-                                Log.d("!!!!!!pid", pid);
 
 
                                 Path pathModel = new Path(
@@ -202,13 +218,13 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                 ArrayMap<String, List<String>> applied_filters = (ArrayMap<String, List<String>>) result;
                 if (applied_filters.size() != 0) {
                     List<Path> filteredList = allPath;
-                    Log.d("!!!!!!!again!!!!","hhh");
+
 
                     for (Map.Entry<String, List<String>> entry : applied_filters.entrySet()) {
 
                         switch (entry.getKey()) {
                             case "TAG":
-                                Log.d("!!!!!!!", "tag");
+
                                 filteredList = getTagFilteredPath(entry.getValue(), filteredList);
                                 break;
 
@@ -267,7 +283,7 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
 
         for(String tag: tags){
-                Log.d("!!newPathSizebefore", newPathList.size()+"");
+
                 tempList = new ArrayList<>();
                 for(Path path: newPathList){
 
@@ -325,6 +341,8 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
         // Handle toolbar actions
         handleToolbar();
 
+        handleUserInfo();
+
         // Handle menu actions
         handleMenu();
 
@@ -364,6 +382,29 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
         setSupportActionBar(mViewHolder.mToolbar);
     }
 
+    private void handleUserInfo(){
+
+        String userJson = getIntent().getStringExtra("currentUser");
+
+        user = new Gson().fromJson(userJson,User.class);
+
+        RequestOptions options = new RequestOptions();
+        options.centerCrop();
+        options.circleCrop();
+
+
+        Glide.with(TourListActivity.this)
+                .load(user.getAvatar())
+                .apply(options)
+                .into(mViewHolder.avatar);
+
+        mViewHolder.username.setText(user.getUsername());
+        mViewHolder.bio.setText(user.getBio());
+
+
+
+    }
+
     private void handleDrawer() {
         DuoDrawerToggle duoDrawerToggle = new DuoDrawerToggle(this,
                 mViewHolder.mDuoDrawerLayout,
@@ -388,10 +429,40 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onFooterClicked() {
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Log out of MuseGo?");
+        builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+
+                if(currentUser != null){
+
+                    mAuth.signOut();
+                    Intent intent = new Intent(TourListActivity.this, SigninActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+
+                }
+
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+            }
+
+
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
     }
 
     @Override
     public void onHeaderClicked() {
+
 
     }
 
@@ -406,6 +477,9 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
         // Navigate to the right fragment
         switch (position) {
+            case 0:
+                startActivity(new Intent(this, UserProfileActivity.class));
+                break;
 
             case 1:
                 startActivity(new Intent(this, MuseumListActivity.class));
@@ -427,11 +501,18 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
         private DuoDrawerLayout mDuoDrawerLayout;
         private DuoMenuView mDuoMenuView;
         private Toolbar mToolbar;
+        private ImageView avatar;
+        private TextView username;
+        private TextView bio;
+
 
         ViewHolder() {
             mDuoDrawerLayout = (DuoDrawerLayout) findViewById(R.id.drawer);
             mDuoMenuView = (DuoMenuView) mDuoDrawerLayout.getMenuView();
             mToolbar = (Toolbar) findViewById(R.id.toolbar);
+            avatar = (ImageView)mDuoMenuView.findViewById(R.id.userAvatar);
+            username = (TextView)mDuoMenuView.findViewById(R.id.username);
+            bio = (TextView)mDuoMenuView.findViewById(R.id.userbio);
         }
     }
 

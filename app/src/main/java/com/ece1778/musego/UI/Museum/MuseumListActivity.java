@@ -1,5 +1,7 @@
 package com.ece1778.musego.UI.Museum;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,15 +11,33 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.ece1778.musego.Adapter.MenuAdapter;
 import com.ece1778.musego.Adapter.MuseumListAdapter;
+import com.ece1778.musego.Adapter.TourListAdapter;
 import com.ece1778.musego.BaseActivity;
 import com.ece1778.musego.Manager.FirebaseManager;
+import com.ece1778.musego.Model.NodeList;
+import com.ece1778.musego.Model.User;
 import com.ece1778.musego.R;
+import com.ece1778.musego.UI.Auth.SigninActivity;
 import com.ece1778.musego.UI.Auth.SignupActivity;
+import com.ece1778.musego.UI.Tour.ArCreateTourActivity;
 import com.ece1778.musego.UI.Tour.TourListActivity;
+import com.ece1778.musego.UI.Tour.UploadTourActivity;
+import com.ece1778.musego.UI.User.UserProfileActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.gson.Gson;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,16 +62,30 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
     private ViewHolder mViewHolder;
     private MenuAdapter mMenuAdapter;
 
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private FirebaseManager firebasemanager;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_museum_list);
 
+        initFirebase();
 
         initView();
 
 
+    }
+
+    private void initFirebase() {
+
+        mAuth = FirebaseAuth.getInstance();
+
+        currentUser = mAuth.getCurrentUser();
+
+        firebasemanager = new FirebaseManager(this);
     }
 
 
@@ -61,27 +95,67 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
         recyclerView = (RecyclerView) findViewById(R.id.recycleViewId);
         layoutManager = new GridLayoutManager(MuseumListActivity.this, 1);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new MuseumListAdapter(MuseumListActivity.this, museumList);
-        recyclerView.setAdapter(adapter);
+
 
 
            // Initialize the views
-    mTitles = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.menuOptions)));
-    mViewHolder = new ViewHolder();
+        mTitles = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.menuOptions)));
+        mViewHolder = new ViewHolder();
 
     // Handle toolbar actions
-    handleToolbar();
+        handleToolbar();
+
+    // Handle user info
+        handleUserInfo();
+
 
     // Handle menu actions
-    handleMenu();
+        handleMenu();
 
     // Handle drawer actions
-    handleDrawer();
+        handleDrawer();
 
 }
 
     private void handleToolbar() {
         setSupportActionBar(mViewHolder.mToolbar);
+    }
+
+    private void handleUserInfo(){
+
+
+        firebasemanager.getUserRef()
+                .document(currentUser.getUid())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        User user = documentSnapshot.toObject(User.class);
+
+                        RequestOptions options = new RequestOptions();
+                        options.centerCrop();
+                        options.circleCrop();
+
+
+                        Glide.with(MuseumListActivity.this)
+                                .load(user.getAvatar())
+                                .apply(options)
+                                .into(mViewHolder.avatar);
+
+                        mViewHolder.username.setText(user.getUsername());
+                        mViewHolder.bio.setText(user.getBio());
+
+                        // set adapter
+                        adapter = new MuseumListAdapter(MuseumListActivity.this, museumList, user);
+                        recyclerView.setAdapter(adapter);
+
+
+
+
+                    }
+                });
+
+
     }
 
     private void handleDrawer() {
@@ -97,6 +171,8 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
     }
 
     private void handleMenu() {
+
+
         mMenuAdapter = new MenuAdapter(mTitles);
 
         mViewHolder.mDuoMenuView.setOnMenuClickListener(this);
@@ -112,7 +188,40 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onFooterClicked() {
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Log out of MuseGo?");
+        builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+
+                if(currentUser != null){
+
+                    mAuth.signOut();
+                    Intent intent = new Intent(MuseumListActivity.this, SigninActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+
+                }
+
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+            }
+
+
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
+
+
+
+
+
 
     @Override
     public void onHeaderClicked() {
@@ -130,6 +239,10 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
 
         // Navigate to the right fragment
         switch (position) {
+
+            case 0:
+                startActivity(new Intent(this, UserProfileActivity.class));
+                break;
 
             case 1:
                 startActivity(new Intent(this, MuseumListActivity.class));
@@ -151,11 +264,18 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
         private DuoDrawerLayout mDuoDrawerLayout;
         private DuoMenuView mDuoMenuView;
         private Toolbar mToolbar;
+        private ImageView avatar;
+        private TextView username;
+        private TextView bio;
+
 
         ViewHolder() {
             mDuoDrawerLayout = (DuoDrawerLayout) findViewById(R.id.drawer);
             mDuoMenuView = (DuoMenuView) mDuoDrawerLayout.getMenuView();
             mToolbar = (Toolbar) findViewById(R.id.toolbar);
+            avatar = (ImageView)mDuoMenuView.findViewById(R.id.userAvatar);
+            username = (TextView)mDuoMenuView.findViewById(R.id.username);
+            bio = (TextView)mDuoMenuView.findViewById(R.id.userbio);
         }
     }
 }

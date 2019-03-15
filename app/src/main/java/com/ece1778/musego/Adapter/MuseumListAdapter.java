@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.ece1778.musego.Model.User;
 import com.ece1778.musego.R;
 import com.ece1778.musego.UI.Museum.MuseumListActivity;
 import com.ece1778.musego.UI.Tour.TourDetailActivity;
@@ -41,10 +42,12 @@ public class MuseumListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private Context context;
     private List<String> instList;
+    private User currentUser;
 
-    public MuseumListAdapter(Context context, List<String> instList){
+    public MuseumListAdapter(Context context, List<String> instList, User currentUser){
         this.context = context;
         this.instList = instList;
+        this.currentUser = currentUser;
 
 
         instMap.put("osc","Ontario Science Center");
@@ -97,7 +100,7 @@ public class MuseumListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 Intent intent = new Intent(context, TourListActivity.class);
                 //intent.putExtra("path", path);
                 intent.putExtra("instName",inst);
-
+                intent.putExtra("currentUser", new Gson().toJson(currentUser));
                 context.startActivity(intent);
             }
         });
