@@ -63,8 +63,6 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         firebaseManager = new FirebaseManager(context);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-
-
     }
 
 
