@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -18,12 +19,14 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
+import com.ece1778.musego.Adapter.MenuAdapter;
 import com.ece1778.musego.Adapter.TourListAdapter;
 import com.ece1778.musego.BaseActivity;
 import com.ece1778.musego.Manager.FirebaseManager;
 import com.ece1778.musego.Model.Path;
 import com.ece1778.musego.Model.User;
 import com.ece1778.musego.R;
+import com.ece1778.musego.UI.Museum.MuseumListActivity;
 import com.ece1778.musego.UI.Search.SearchFabFragment;
 import com.ece1778.musego.Utils.Loading;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,10 +38,15 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class TourListActivity extends BaseActivity implements View.OnClickListener, AAH_FabulousFragment.Callbacks, AAH_FabulousFragment.AnimationListener {
+import nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout;
+import nl.psdcompany.duonavigationdrawer.views.DuoMenuView;
+import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle;
+
+public class TourListActivity extends BaseActivity implements View.OnClickListener, AAH_FabulousFragment.Callbacks, AAH_FabulousFragment.AnimationListener, DuoMenuView.OnMenuClickListener {
 
     private RecyclerView recyclerView;
     private GridLayoutManager layoutManager;
@@ -55,6 +63,11 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
     private Loading loading;
     private FloatingActionButton createTourBtn;
+
+    private ArrayList<String> mTitles = new ArrayList<>();
+
+    private ViewHolder mViewHolder;
+    private MenuAdapter mMenuAdapter;
 
 
     @Override
@@ -270,6 +283,21 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
+
+
+        mTitles = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.menuOptions)));
+        mViewHolder = new ViewHolder();
+
+        // Handle toolbar actions
+        handleToolbar();
+
+        // Handle menu actions
+        handleMenu();
+
+        // Handle drawer actions
+        handleDrawer();
+
+
     }
 
 
@@ -287,6 +315,82 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
         }
 
     }
+
+    private void handleToolbar() {
+        setSupportActionBar(mViewHolder.mToolbar);
+    }
+
+    private void handleDrawer() {
+        DuoDrawerToggle duoDrawerToggle = new DuoDrawerToggle(this,
+                mViewHolder.mDuoDrawerLayout,
+                mViewHolder.mToolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+
+        mViewHolder.mDuoDrawerLayout.setDrawerListener(duoDrawerToggle);
+        duoDrawerToggle.syncState();
+
+    }
+
+    private void handleMenu() {
+        mMenuAdapter = new MenuAdapter(mTitles);
+
+        mViewHolder.mDuoMenuView.setOnMenuClickListener(this);
+        mViewHolder.mDuoMenuView.setAdapter(mMenuAdapter);
+    }
+
+
+
+    @Override
+    public void onFooterClicked() {
+
+    }
+
+    @Override
+    public void onHeaderClicked() {
+
+    }
+
+    @Override
+    public void onOptionClicked(int position, Object objectClicked) {
+
+
+        setTitle(mTitles.get(position));
+
+        // Set the right options selected
+        mMenuAdapter.setViewSelected(position, true);
+
+        // Navigate to the right fragment
+        switch (position) {
+
+            case 1:
+                startActivity(new Intent(this, MuseumListActivity.class));
+            default:
+                //goToFragment(new MainFragment(), false);
+
+                Log.d("!!!!!!!aaa",position+"");
+
+                break;
+        }
+
+        // Close the drawer
+        mViewHolder.mDuoDrawerLayout.closeDrawer();
+
+
+    }
+
+    private class ViewHolder {
+        private DuoDrawerLayout mDuoDrawerLayout;
+        private DuoMenuView mDuoMenuView;
+        private Toolbar mToolbar;
+
+        ViewHolder() {
+            mDuoDrawerLayout = (DuoDrawerLayout) findViewById(R.id.drawer);
+            mDuoMenuView = (DuoMenuView) mDuoDrawerLayout.getMenuView();
+            mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        }
+    }
+
 
     @Override
     public void onOpenAnimationStart() {
