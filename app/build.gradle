@@ -95,3 +95,36 @@ sceneform.asset('sampledata/tinker.obj',
         'default',
         'sampledata/tinker.sfa',
         'src/main/res/raw/tinker')
+
+
+
+sceneform.asset('sampledata/crowd.obj',
+        'default',
+        'sampledata/crowd.sfa',
+        'src/main/res/raw/crowd')
+
+sceneform.asset('sampledata/food.obj',
+        'default',
+        'sampledata/food.sfa',
+        'src/main/res/raw/food')
+
+sceneform.asset('sampledata/light.obj',
+        'default',
+        'sampledata/light.sfa',
+        'src/main/res/raw/light')
+
+sceneform.asset('sampledata/noise.obj',
+        'default',
+        'sampledata/noise.sfa',
+        'src/main/res/raw/noise')
+
+sceneform.asset('sampledata/temp.obj',
+        'default',
+        'sampledata/temp.sfa',
+        'src/main/res/raw/temp')
+
+sceneform.asset('sampledata/wash.obj',
+        'default',
+        'sampledata/wash.sfa',
+        'src/main/res/raw/wash')
+

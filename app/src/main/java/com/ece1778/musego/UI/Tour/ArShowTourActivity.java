@@ -63,10 +63,16 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
     private static final int ARROW = 2;
     private static final int END_MARKER = 3;
     private static final int WHEEL = 4;
+    private static final int CROWD = 5;
+    private static final int FOOD = 6;
+    private static final int LIGHT = 7;
+    private static final int NOISE = 8;
+    private static final int TEMP = 9;
+    private static final int WASH = 10;
 
     private CustomArFragmentShow arFragment;
     private ModelRenderable startRenderable, endRenderable, arrowRenderable;
-    private ModelRenderable wheelRenderable;
+    private ModelRenderable wheelRenderable, crowdRenderable, foodRenderable, lightRenderable, noiseRenderable, tempRenderable, washRenderable;
 
 
     private CollectionReference pathRef;
@@ -182,12 +188,83 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
                             return null;
                         });
 
+        ModelRenderable.builder()
+                .setSource(this, R.raw.crowd)
+                .build()
+                .thenAccept(renderable -> crowdRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load crow renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, R.raw.food)
+                .build()
+                .thenAccept(renderable -> foodRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, R.raw.light)
+                .build()
+                .thenAccept(renderable -> lightRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, R.raw.noise)
+                .build()
+                .thenAccept(renderable -> noiseRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, R.raw.temp)
+                .build()
+                .thenAccept(renderable -> tempRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, R.raw.wash)
+                .build()
+                .thenAccept(renderable -> washRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
     }
 
     private void downloadPath(Pose starterPose) {
 
         //removePreviousAnchors();
-
 
         if (startRenderable == null || endRenderable == null || arrowRenderable == null || wheelRenderable == null) {
             Log.d(TAG, "!!!!!!!Renderable unprovided!");
@@ -246,10 +323,41 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
             andy.setRenderable(wheelRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
 
+        } else if (node.getTag() == CROWD) {
+
+            andy.setRenderable(crowdRenderable);
+            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+
+        }else if (node.getTag() == FOOD) {
+
+            andy.setRenderable(foodRenderable);
+            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+
+        }else if (node.getTag() == LIGHT) {
+
+            andy.setRenderable(lightRenderable);
+            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+
+        }else if (node.getTag() == NOISE) {
+
+            andy.setRenderable(noiseRenderable);
+            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+
+        }else if (node.getTag() == TEMP) {
+
+            andy.setRenderable(tempRenderable);
+            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+
+        }else if (node.getTag() == WASH) {
+
+            andy.setRenderable(washRenderable);
+            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+
         } else {
 
             andy.setRenderable(endRenderable);
-            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));        }
+            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
+        }
 
         andy.select();
 
