@@ -28,4 +28,10 @@
         <item>55 min</item>
     </string-array>
 
+    <array name="menuOptions">
+        <item>Profile</item>
+        <item>Institutions</item>
+        <item>About</item>
+    </array>
+
 </resources>
