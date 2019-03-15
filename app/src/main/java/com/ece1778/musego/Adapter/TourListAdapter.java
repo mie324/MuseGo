@@ -87,6 +87,8 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         Path path = pathList.get(i);
 
+        List<String> imageList = path.getImgList();
+
 
         ((ViewHolder_Path) viewHolder).title.setText(path.getTitle());
 
@@ -109,6 +111,20 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 .load(path.getUserAvatar())
                 .apply(options)
                 .into(((ViewHolder_Path) viewHolder).avatar);
+
+       if(imageList == null || imageList.size() == 0){
+           Glide.with(mContext)
+                   .load(R.drawable.scanme)
+                   .into(((ViewHolder_Path) viewHolder).firstImage);
+
+       }
+       else{
+
+           Glide.with(mContext)
+                   .load(imageList.get(0))
+                   .into(((ViewHolder_Path) viewHolder).firstImage);
+
+       }
 
 
         ((ViewHolder_Path) viewHolder).cardView.setOnClickListener(new View.OnClickListener() {
@@ -246,6 +262,7 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public ImageView avatar;
         public LikeButton like;
         public TextView likeCount;
+        public ImageView firstImage;
 
 
         public ViewHolder_Path(View view){
@@ -258,6 +275,7 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             like = (LikeButton) view.findViewById(R.id.like);
             likeCount = (TextView) view.findViewById(R.id.likeCount);
             cardView = (CardView) view.findViewById(R.id.cardview_id);
+            firstImage = (ImageView) view.findViewById(R.id.firstImage);
 
 
         }
