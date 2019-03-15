@@ -7,33 +7,28 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cunoraz.tagview.Tag;
 import com.cunoraz.tagview.TagView;
 import com.ece1778.musego.BaseActivity;
-import com.ece1778.musego.MainActivity;
 import com.ece1778.musego.Model.NodeList;
 import com.ece1778.musego.Model.Path;
 import com.ece1778.musego.R;
 import com.google.gson.Gson;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
-import com.daimajia.slider.library.Indicators.PagerIndicator;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TourDetailActivity extends BaseActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener, View.OnClickListener {
 
@@ -46,6 +41,7 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
     private TextView username;
     private TextView timestamp;
     private TextView desc;
+    private List<String> imageList = new ArrayList<>();
 
     private Path path;
     private NodeList nodeList;
@@ -55,8 +51,10 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tour_detail);
 
+
         initView();
         initData();
+
     }
 
     private void initData() {
@@ -64,6 +62,7 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
         String pathJson = getIntent().getStringExtra("path");
 
         path = new Gson().fromJson(pathJson,Path.class);
+        imageList = path.getImgList();
         title.setText(path.getTitle());
         username.setText("By ".concat(path.getUsername()));
         timestamp.setText("Last Updated "+timeFormat(path.getTimestamp()));
@@ -86,6 +85,8 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
                 .into(avatar);
 
         nodeList = new NodeList(path.getStart_node(),path.getEnd_node(),path.getNodes());
+
+        initImgView();
     }
 
     private void initView() {
@@ -100,34 +101,52 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
         findViewById(R.id.startArBtn).setOnClickListener(this);
 
         img = (SliderLayout)findViewById(R.id.detail_img);
-        initImgView();
+
 
     }
 
     private void initImgView() {
 
-        HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
-        file_maps.put("Indicator",R.drawable.ramen);
-        file_maps.put("Indoor View",R.drawable.museum1);
-        file_maps.put("Indoor View2",R.drawable.museum2);
-        file_maps.put("Floor map", R.drawable.map_sample);
 
-        for(String name : file_maps.keySet()) {
+
+        if(imageList == null || imageList.size() == 0) {
             TextSliderView textSliderView = new TextSliderView(this);
 
             // initialize a SliderLayout
             textSliderView
-                    .description(name)
-                    .image(file_maps.get(name))
-                    .setScaleType(BaseSliderView.ScaleType.Fit)
+                    .description("Indicator")
+                    .image(R.drawable.scanme)
+                    .setScaleType(BaseSliderView.ScaleType.CenterCrop)
                     .setOnSliderClickListener(this);
+
 
             //add your extra information
             textSliderView.bundle(new Bundle());
             textSliderView.getBundle()
-                    .putString("extra", name);
+                    .putString("extra", "Indicator");
             img.addSlider(textSliderView);
         }
+        else{
+            for(int i = 0; i < imageList.size(); i++){
+                TextSliderView textSliderView = new TextSliderView(this);
+
+                // initialize a SliderLayout
+                textSliderView
+                        .description("Image "+i)
+                        .image(imageList.get(i))
+                        .setScaleType(BaseSliderView.ScaleType.CenterCrop)
+                        .setOnSliderClickListener(this);
+
+
+                //add your extra information
+                textSliderView.bundle(new Bundle());
+                textSliderView.getBundle()
+                        .putString("extra", "Image "+i);
+                img.addSlider(textSliderView);
+
+            }
+        }
+
 
         img.setPresetTransformer(SliderLayout.Transformer.Default);
         img.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
