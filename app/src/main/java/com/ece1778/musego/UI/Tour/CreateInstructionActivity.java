@@ -55,10 +55,6 @@ public class CreateInstructionActivity extends AhoyOnboarderActivity implements 
         setFinishButtonTitle("Let's begin");
 
         showNavigationControls(true);
-//        List<Integer> bgList = new ArrayList<>();
-//        bgList.add(R.drawable.bg1);
-//        bgList.add(R.drawable.bg2);
-//        bgList.add(R.drawable.bg3);
         setImageBackground(R.drawable.bg2);
 
         setOnboardPages(pages);
