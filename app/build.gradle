@@ -64,7 +64,6 @@ dependencies {
     //Circle Menu
     implementation 'com.github.uin3566:AllAngleExpandableButton:v1.2.0'
 
-
     // navigation drawer
     implementation 'nl.psdcompany:duo-navigation-drawer:2.0.8'
 
@@ -96,4 +95,3 @@ sceneform.asset('sampledata/tinker.obj',
         'default',
         'sampledata/tinker.sfa',
         'src/main/res/raw/tinker')
-

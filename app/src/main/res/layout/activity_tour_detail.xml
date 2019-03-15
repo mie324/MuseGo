@@ -113,6 +113,8 @@
         android:layout_alignParentBottom ="true"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"
+        android:src="@drawable/vector"
+        android:backgroundTint="@color/colorPrimary"
         />
 
 

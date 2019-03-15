@@ -59,7 +59,9 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="76dp" />
+                android:layout_marginBottom="76dp"
+                android:src="@drawable/vector"
+                android:backgroundTint="@color/colorPrimary"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:tint="@color/filters_chips"

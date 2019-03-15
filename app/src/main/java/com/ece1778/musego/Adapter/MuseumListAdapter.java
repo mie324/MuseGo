@@ -68,7 +68,6 @@ public class MuseumListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
-        Log.d("!!!!!!",i+" "+instList.get(i));
 
         runEnterAnimation(viewHolder.itemView, i);
 
@@ -76,7 +75,6 @@ public class MuseumListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         String inst = instList.get(i);
 
-        ((ViewHolder_Inst) viewHolder).title.setText(instMap.get(inst));
 
 
         if(inst.equals("osc")){
@@ -145,14 +143,13 @@ public class MuseumListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         public CardView cardView;
 
         public ImageView image;
-        public TextView title;
+
 
 
         public ViewHolder_Inst(View view){
             super(view);
 
             image = (ImageView) view.findViewById(R.id.instImage);
-            title = (TextView) view.findViewById(R.id.instName);
             cardView = (CardView) view.findViewById(R.id.cardview_id);
 
 
