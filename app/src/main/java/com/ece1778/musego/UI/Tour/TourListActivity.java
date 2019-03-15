@@ -68,7 +68,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
     }
 
-
     private void initFirebase() {
 
         firebaseManager = new FirebaseManager(TourListActivity.this);
@@ -76,7 +75,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void fetchDataAndRenderView() {
-
 
         firebaseManager.getInstRef()
                 .document(instName)

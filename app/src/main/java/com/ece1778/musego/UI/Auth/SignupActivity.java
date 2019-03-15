@@ -13,8 +13,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -51,6 +54,10 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
     private static final String TAG = "SIGNUP";
     private static final int REQUEST_CAMERA = 1;
     private static final int REQUEST_GALLERY = 2;
+    private static final int PUBLIC_USER = 1;
+    private static final int PROFESSION_USER = 2;
+
+    private int role = PUBLIC_USER;
 
     private ImageView mAvatarField;
     private EditText mEmailField;
@@ -58,6 +65,8 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
     private EditText mPasswordField;
     private EditText mConfirmField;
     private EditText mBioField;
+    private Switch profession;
+    private EditText inviteCode;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mDatabase;
@@ -85,11 +94,28 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
         mPasswordField = findViewById(R.id.signup_password);
         mConfirmField = findViewById(R.id.signup_confirm);
         mBioField = findViewById(R.id.signup_bio);
+        profession = findViewById(R.id.signup_profession);
+        inviteCode = findViewById(R.id.signup_inviteCode);
 
+        inviteCode.setVisibility(View.INVISIBLE);
         findViewById(R.id.signup_camera).setOnClickListener(this);
         findViewById(R.id.signup_photo).setOnClickListener(this);
         findViewById(R.id.signupBtn).setOnClickListener(this);
         findViewById(R.id.signupCancelBtn).setOnClickListener(this);
+
+        profession.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    inviteCode.setVisibility(View.VISIBLE);
+                    role = PROFESSION_USER;
+                }else{
+                    inviteCode.setVisibility(View.INVISIBLE);
+                    role = PUBLIC_USER;
+                }
+            }
+        });
+
 
     }
 
@@ -176,6 +202,7 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
         user.put("username", mUsernameField.getText().toString());
         user.put("bio", mBioField.getText().toString());
         user.put("avatar", downloadUrl);
+        user.put("role", role);
 
         mDatabase.collection("users")
                 .document(uID)
@@ -195,8 +222,6 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
                         Log.w(TAG, "Error writing document", e);
                     }
                 });
-
-
     }
 
     private boolean validateForm() {
@@ -243,6 +268,11 @@ public class SignupActivity extends BaseActivity implements View.OnClickListener
             return false;
         } else {
             mBioField.setError(null);
+        }
+
+        if(role == PROFESSION_USER && !inviteCode.getText().toString().equals("musego")){
+            Toast.makeText(this, "Invalid Invitation Code.",LENGTH_SHORT).show();
+            return false;
         }
 
         return true;
