@@ -10,6 +10,8 @@
     <color name="lightGreen">#D2C92C</color>
     <color name="darkGreen">#73AD01</color>
     <color name="yellow">#FECB50</color>
+    <color name="purewhite">#ffffff</color>
+
 
     <color name="filtersfab">#3f51b5</color>
     <color name="filters_header">#303f9f</color>
