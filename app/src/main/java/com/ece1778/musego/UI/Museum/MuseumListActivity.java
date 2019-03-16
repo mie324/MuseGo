@@ -66,6 +66,8 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
     private FirebaseUser currentUser;
     private FirebaseManager firebasemanager;
 
+    private User user;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -130,7 +132,7 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        User user = documentSnapshot.toObject(User.class);
+                        user = documentSnapshot.toObject(User.class);
 
                         RequestOptions options = new RequestOptions();
                         options.centerCrop();
@@ -241,7 +243,9 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
         switch (position) {
 
             case 0:
-                startActivity(new Intent(this, UserProfileActivity.class));
+                Intent intent = new Intent(this, UserProfileActivity.class);
+                intent.putExtra("user", new Gson().toJson(user));
+                startActivity(intent);
                 break;
 
             case 1:

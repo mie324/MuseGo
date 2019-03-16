@@ -341,7 +341,7 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
         // Handle toolbar actions
         handleToolbar();
 
-        handleUserInfo();
+        //handleUserInfo();
 
         // Handle menu actions
         handleMenu();
@@ -361,7 +361,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
             if(role == PROFESSION_USER){
                 Intent intent = new Intent(TourListActivity.this, CreateInstructionActivity.class);
-                //intent.putExtra("path", path);
                 intent.putExtra("instName", instName);
                 startActivity(intent);
 
@@ -472,13 +471,18 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
         setTitle(mTitles.get(position));
 
+        handleUserInfo();
+
         // Set the right options selected
         mMenuAdapter.setViewSelected(position, true);
 
         // Navigate to the right fragment
         switch (position) {
             case 0:
-                startActivity(new Intent(this, UserProfileActivity.class));
+
+                Intent intent = new Intent(this, UserProfileActivity.class);
+                intent.putExtra("user", new Gson().toJson(user));
+                startActivity(intent);
                 break;
 
             case 1:
@@ -486,7 +490,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
             default:
                 //goToFragment(new MainFragment(), false);
 
-                Log.d("!!!!!!!aaa",position+"");
 
                 break;
         }
