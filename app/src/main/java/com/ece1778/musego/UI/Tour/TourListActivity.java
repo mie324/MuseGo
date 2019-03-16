@@ -307,6 +307,8 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     private void initView() {
 
         instName = getIntent().getStringExtra("instName");
+        String userJson = getIntent().getStringExtra("currentUser");
+        user = new Gson().fromJson(userJson,User.class);
 
 
         recyclerView = (RecyclerView) findViewById(R.id.recycleViewId);
@@ -340,7 +342,7 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
         // Handle toolbar actions
         handleToolbar();
 
-        //handleUserInfo();
+        handleUserInfo();
 
         // Handle menu actions
         handleMenu();
@@ -382,9 +384,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
     private void handleUserInfo(){
 
-        String userJson = getIntent().getStringExtra("currentUser");
-
-        user = new Gson().fromJson(userJson,User.class);
 
         RequestOptions options = new RequestOptions();
         options.centerCrop();
@@ -467,10 +466,12 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onOptionClicked(int position, Object objectClicked) {
 
+        String userJson = getIntent().getStringExtra("currentUser");
+        user = new Gson().fromJson(userJson,User.class);
+
 
         setTitle(mTitles.get(position));
 
-        handleUserInfo();
 
         // Set the right options selected
         mMenuAdapter.setViewSelected(position, true);
@@ -486,6 +487,7 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
             case 1:
                 startActivity(new Intent(this, MuseumListActivity.class));
+                break;
             default:
                 //goToFragment(new MainFragment(), false);
 

@@ -148,7 +148,8 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
                         mViewHolder.bio.setText(user.getBio());
 
                         // set adapter
-                        adapter = new MuseumListAdapter(MuseumListActivity.this, museumList, user);
+
+                        adapter = new MuseumListAdapter(MuseumListActivity.this, museumList, new User(user.getUsername(),user.getAvatar(),user.getBio(),user.getRole()));
                         recyclerView.setAdapter(adapter);
 
 

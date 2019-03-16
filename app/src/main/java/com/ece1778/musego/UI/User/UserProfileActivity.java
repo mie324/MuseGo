@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -94,6 +95,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
         user = new Gson().fromJson(userJson,User.class);
 
+
+
         //avatar
         RequestOptions options = new RequestOptions();
         options.centerCrop();
@@ -126,9 +129,37 @@ public class UserProfileActivity extends AppCompatActivity {
                                 children.add(path);
                             }
 
-                            expandableGroups.add(new ExpandableGroupEntity("Created By You", true, children));
+                            expandableGroups.add(new ExpandableGroupEntity("Created By You", false, children));
 
-                            setAdapter(expandableGroups);
+
+                            firebaseManager.getInstRef()
+                                    .document("osc")
+                                    .collection("paths")
+                                    .whereArrayContains("likeList",uid)
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                               @Override
+                                                               public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                   if (task.isSuccessful()) {
+
+                                                                       ArrayList<Path> children = new ArrayList<>();
+
+                                                                       for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                           Path path = document.toObject(Path.class);
+
+                                                                           children.add(path);
+                                                                       }
+
+                                                                       expandableGroups.add(new ExpandableGroupEntity("Liked By You", false, children));
+
+                                                                       setAdapter(expandableGroups);
+
+                                                                   }
+                                                               }
+                                                           });
+
+
+
 
                         }
                     }
