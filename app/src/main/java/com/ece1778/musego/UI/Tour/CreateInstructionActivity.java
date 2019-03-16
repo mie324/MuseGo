@@ -27,13 +27,13 @@ public class CreateInstructionActivity extends AhoyOnboarderActivity implements 
 
     private void initView() {
 
-        AhoyOnboarderCard ahoyOnboarderCard1 = new AhoyOnboarderCard("Step One", "Stand in front of the image and click the button towards the image.", R.drawable.instruction1);
-        AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Step Two", "Adjust camera until detect successfully.", R.drawable.introduction2);
-        AhoyOnboarderCard ahoyOnboarderCard3 = new AhoyOnboarderCard("Step Three", "Place indicator by clicking on screen and place End Node at the end of tour.", R.drawable.introduction3);
+        AhoyOnboarderCard ahoyOnboarderCard1 = new AhoyOnboarderCard("Scan Starter Image", "Find a starter image, adjust your camera to scan the starter image.", R.drawable.instruction1);
+        AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Place Indicators", "As you walk around, click the screen to place directional arrows or accessibility icons.", R.drawable.instruction2);
+        AhoyOnboarderCard ahoyOnboarderCard3 = new AhoyOnboarderCard("Place EndNode to Finish", "To complete your tour, click Finish to place the EndNode.", R.drawable.instruction3);
 
-        ahoyOnboarderCard1.setBackgroundColor(R.color.white);
-        ahoyOnboarderCard2.setBackgroundColor(R.color.white);
-        ahoyOnboarderCard3.setBackgroundColor(R.color.white);
+        ahoyOnboarderCard1.setBackgroundColor(R.color.purewhite);
+        ahoyOnboarderCard2.setBackgroundColor(R.color.purewhite);
+        ahoyOnboarderCard3.setBackgroundColor(R.color.purewhite);
 
         List<AhoyOnboarderCard> pages = new ArrayList<>();
 
@@ -41,25 +41,21 @@ public class CreateInstructionActivity extends AhoyOnboarderActivity implements 
         pages.add(ahoyOnboarderCard2);
         pages.add(ahoyOnboarderCard3);
 
-        pages.get(0).setIconLayoutParams(950, 800, 300, 0, 0, 20);
-        pages.get(1).setIconLayoutParams(1200, 1000, 200, 0, 0, 20);
-        pages.get(2).setIconLayoutParams(1200, 1000, 200, 0, 0, 20);
+        pages.get(0).setIconLayoutParams(800, 800, 200, 0, 0, 0);
+        pages.get(1).setIconLayoutParams(800, 750, 250, 0, 0, 0);
+        pages.get(2).setIconLayoutParams(800, 750, 250, 0, 0, 0);
 
         for (AhoyOnboarderCard page : pages) {
-            page.setTitleColor(R.color.black);
-            page.setDescriptionColor(R.color.grey_600);
+            page.setTitleColor(R.color.darkGreen);
+            page.setDescriptionColor(R.color.black);
             //page.setTitleTextSize(dpToPixels(12, this));
-            //page.setDescriptionTextSize(dpToPixels(8, this));
+            page.setDescriptionTextSize(dpToPixels(4, this));
         }
 
         setFinishButtonTitle("Let's begin");
 
         showNavigationControls(true);
-        List<Integer> colorList = new ArrayList<>();
-        colorList.add(R.color.green);
-        colorList.add(R.color.blue);
-        colorList.add(R.color.grey_600);
-        setColorBackground(colorList);
+        setImageBackground(R.drawable.bg2);
 
         setOnboardPages(pages);
     }

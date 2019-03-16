@@ -36,29 +36,29 @@ public class ShowInstructionActivity extends AhoyOnboarderActivity implements Vi
 
     private void initView() {
 
-        AhoyOnboarderCard ahoyOnboarderCard1 = new AhoyOnboarderCard("Step One", "Stand in front of the image and click the button.", R.drawable.instruction1);
-        AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Step Two", "Adjust camera until detect the image successfully.", R.drawable.instruction4);
-        ahoyOnboarderCard1.setBackgroundColor(R.color.white);
-        ahoyOnboarderCard2.setBackgroundColor(R.color.white);
+        AhoyOnboarderCard ahoyOnboarderCard1 = new AhoyOnboarderCard("Scan Starter Image", "Find a starter image, adjust your camera to scan the starter image.", R.drawable.instruction1);
+        AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Follow Indicators", "Follow the arrow indicators when walking around.", R.drawable.instruction2);
+        ahoyOnboarderCard1.setBackgroundColor(R.color.purewhite);
+        ahoyOnboarderCard2.setBackgroundColor(R.color.purewhite);
 
         List<AhoyOnboarderCard> pages = new ArrayList<>();
         pages.add(ahoyOnboarderCard1);
         pages.add(ahoyOnboarderCard2);
 
-        pages.get(0).setIconLayoutParams(950, 800, 300, 0, 0, 20);
-        pages.get(1).setIconLayoutParams(1200, 1000, 200, 0, 0, 20);
+        pages.get(0).setIconLayoutParams(800, 800, 200, 0, 0, 0);
+        pages.get(1).setIconLayoutParams(800, 750, 250, 0, 0, 0);
 
 
         for (AhoyOnboarderCard page : pages) {
-            page.setTitleColor(R.color.black);
-            page.setDescriptionColor(R.color.grey_600);
+            page.setTitleColor(R.color.darkGreen);
+            page.setDescriptionColor(R.color.black);
             //page.setTitleTextSize(dpToPixels(12, this));
-            //page.setDescriptionTextSize(dpToPixels(8, this));
+            page.setDescriptionTextSize(dpToPixels(4, this));
         }
 
         setFinishButtonTitle("Let's begin");
         showNavigationControls(true);
-        setColorBackground(R.color.green);
+        setImageBackground(R.drawable.bg2);
 
         setOnboardPages(pages);
     }

@@ -92,7 +92,7 @@ public class SigninActivity extends BaseActivity {
             }
             @Override
             public void updateDrawState(TextPaint textPaint) {
-                textPaint.setColor(textPaint.linkColor);    // you can use custom color
+                textPaint.setColor(getColor(R.color.darkGreen));    // you can use custom color
                 textPaint.setUnderlineText(false);    // this remove the underline
             }
         },23,30,0 );
@@ -105,7 +105,7 @@ public class SigninActivity extends BaseActivity {
             }
             @Override
             public void updateDrawState(TextPaint textPaint) {
-                textPaint.setColor(textPaint.linkColor);    // you can use custom color
+                textPaint.setColor(getColor(R.color.darkGreen));    // you can use custom color
                 textPaint.setUnderlineText(false);    // this remove the underline
             }
         },34,38,0 );

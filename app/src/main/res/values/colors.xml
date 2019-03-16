@@ -2,10 +2,15 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#050505</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#73AD01</color>
     <color name="blue">#2B388F</color>
     <color name="green">#009588</color>
-    <color name="white">#fff</color>
+
+    <color name="white">#EFF3F6</color>
+    <color name="lightGreen">#D2C92C</color>
+    <color name="darkGreen">#73AD01</color>
+    <color name="yellow">#FECB50</color>
+    <color name="purewhite">#ffffff</color>
 
 
     <color name="filtersfab">#3f51b5</color>
@@ -13,4 +18,6 @@
     <color name="filters_buttons">#ff4081</color>
     <color name="filters_buttons_selected">#c2185b</color>
     <color name="filters_chips">#b3e5fc</color>
+
+
 </resources>

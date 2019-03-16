@@ -221,10 +221,6 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
     }
 
 
-
-
-
-
     @Override
     public void onHeaderClicked() {
 
