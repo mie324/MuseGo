@@ -19,6 +19,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -151,6 +152,7 @@ public class UploadTourActivity extends BaseActivity {
         hour = findViewById(R.id.uploadTour_hour);
         minute = findViewById(R.id.uploadTour_minute);
 
+
         desc.addTextChangedListener(new TextWatcher() {
 
             int MAX_WORDS = 120;
@@ -200,7 +202,7 @@ public class UploadTourActivity extends BaseActivity {
         addTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String content = tagContent.getText().toString();
+                String content = "#".concat(tagContent.getText().toString());
                 if(tags.contains(content)){
                     Toast.makeText(UploadTourActivity.this, "TAG already existed!", Toast.LENGTH_SHORT);
 
@@ -208,7 +210,7 @@ public class UploadTourActivity extends BaseActivity {
                     Tag tag = new Tag(content);
                     tag.isDeletable = true;
                     tag.tagTextColor = Color.parseColor("#000000");
-                    tag.layoutColor = Color.parseColor("#C4C4C4");
+                    tag.layoutColor = Color.parseColor("#D2C92C");
                     tag.deleteIndicatorColor = Color.parseColor("#000000");
                     tagGroup.addTag(tag);
                     tags.add(content);
