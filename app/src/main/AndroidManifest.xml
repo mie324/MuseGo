@@ -25,8 +25,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UI.User.UserProfileActivity"></activity>
-        <activity android:name=".UI.Tour.CreateInstructionActivity"></activity>
+        <activity android:name=".UI.Tour.CommentDetailActivity"></activity>
+        <activity android:name=".UI.User.UserProfileActivity" />
+        <activity android:name=".UI.Tour.CreateInstructionActivity" />
 
         <meta-data
             android:name="com.google.ar.core"
@@ -34,10 +35,10 @@
 
         <activity android:name=".UI.Tour.ShowInstructionActivity" />
         <activity android:name=".UI.Tour.TourDetailActivity" />
-        <activity android:name=".UI.Tour.UploadTourActivity"></activity>
-        <activity android:name=".UI.Tour.ArCreateTourActivity"></activity>
+        <activity android:name=".UI.Tour.UploadTourActivity" />
+        <activity android:name=".UI.Tour.ArCreateTourActivity" />
         <activity android:name=".UI.Tour.ArShowTourActivity" />
-        <activity android:name=".UI.Tour.TourListActivity"></activity>
+        <activity android:name=".UI.Tour.TourListActivity" />
         <activity android:name=".UI.Museum.MuseumListActivity" />
         <activity android:name=".UI.Auth.SigninActivity">
             <intent-filter>
@@ -47,7 +48,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".UI.Auth.SignupActivity" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

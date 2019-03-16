@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardview_id"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:ignore="InvalidId">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/comment_item_avatar"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/avatar"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="6dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="6dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/comment_item_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#5B595A"
+                        android:textSize="14sp"
+                        android:text="Keren" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/timestamp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="14dp"
+                        android:text="time"/>
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/comment_item_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="6dp"
+            android:textColor="#484848"
+            android:textSize="14sp"
+            android:layout_marginLeft="52dp"
+            android:layout_marginRight="24dp"
+            android:text="从前有座山，山里有座庙，庙里有个老和尚"/>
+
+    </LinearLayout>
+
+
+
+</android.support.v7.widget.CardView>

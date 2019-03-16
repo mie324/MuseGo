@@ -129,4 +129,3 @@ sceneform.asset('sampledata/wash.obj',
         'default',
         'sampledata/wash.sfa',
         'src/main/res/raw/wash')
-

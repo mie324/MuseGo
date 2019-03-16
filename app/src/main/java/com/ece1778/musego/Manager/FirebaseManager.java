@@ -37,6 +37,7 @@ public class FirebaseManager extends BaseActivity {
     private final CollectionReference tagsRef;
     private final CollectionReference userRef;
     private final CollectionReference instRef;
+    private final CollectionReference commentRef;
 
 //    private final CollectionReference tagsTestRef;
 
@@ -46,6 +47,7 @@ public class FirebaseManager extends BaseActivity {
     public static final String COLLECTION_TAGS = "tags";
     public static final String COLLECTION_USERS = "users";
     public static final String COLLECTION_INST = "institutions";
+    public static final String COLLECTION_COMMENT = "comments";
 //    public static final String COLLECTION_TAGSTEST = "testsearchtags";
 
 
@@ -74,6 +76,7 @@ public class FirebaseManager extends BaseActivity {
            userRef = db.collection(COLLECTION_USERS);
            tagsRef = db.collection(COLLECTION_TAGS);
            instRef = db.collection(COLLECTION_INST);
+           commentRef = db.collection(COLLECTION_COMMENT);
 
        } else {
            Log.d(TAG, "Could not connect to Firebase Firestore!");
@@ -81,6 +84,7 @@ public class FirebaseManager extends BaseActivity {
            userRef = null;
            tagsRef = null;
            instRef = null;
+           commentRef = null;
 //           tagsTestRef = null;
        }
    }
@@ -95,6 +99,8 @@ public class FirebaseManager extends BaseActivity {
    public CollectionReference getUserRef(){ return userRef; }
 
    public CollectionReference getTagRef() { return tagsRef; }
+
+   public CollectionReference getCommentRef() { return commentRef; }
 
 
     // Add the Path object to collection
