@@ -217,37 +217,12 @@
 
             </GridLayout>
 
-            <RadioGroup
-                android:id="@+id/uploadTour_privacyGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="16dp"
-                android:orientation="vertical">
-
-                <RadioButton
-                    android:id="@+id/uploadTour_public"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Private"
-                    android:textSize="16dp" />
-
-                <RadioButton
-                    android:id="@+id/ruploadTour_private"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Public"
-                    android:textSize="16dp" />
-
-            </RadioGroup>
-
-
             <Button
                 android:id="@+id/uploadTourBtn"
                 android:layout_width="120dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="30dp"
                 android:layout_marginBottom="40dp"
                 android:background="@color/darkGreen"
                 android:text="Create"

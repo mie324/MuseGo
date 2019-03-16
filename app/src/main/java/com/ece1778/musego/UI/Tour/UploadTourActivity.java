@@ -89,7 +89,6 @@ public class UploadTourActivity extends BaseActivity {
     private Spinner hour;
     private Spinner minute;
     private RadioGroup floorRadioGroup;
-    private RadioGroup privacyRadioGroup;
     private EditText tagContent;
     private Button addTag;
     private GridLayout imgGroup;
@@ -237,16 +236,6 @@ public class UploadTourActivity extends BaseActivity {
             }
         });
 
-        privacyRadioGroup = findViewById(R.id.uploadTour_privacyGroup);
-        privacyRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton radbtn = (RadioButton) findViewById(checkedId);
-                privacy = radbtn.getText().toString();
-            }
-        });
-
-
         uploadTourBtn = (Button) findViewById(R.id.uploadTourBtn);
         uploadTourBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -389,7 +378,6 @@ public class UploadTourActivity extends BaseActivity {
                                 floor,
                                 estimatedTime,
                                 tags,
-                                privacy,
                                 new ArrayList<String>(), //likeList
                                 imgUriList,
                                 startNode,

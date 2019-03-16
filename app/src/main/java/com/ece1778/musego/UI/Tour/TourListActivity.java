@@ -160,7 +160,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                                         path.getFloor(),
                                         path.getEstimated_time(),
                                         path.getTags(),
-                                        path.getPrivacy(),
                                         path.getLikeList(),
                                         path.getImgList(),
                                         path.getStart_node(),
