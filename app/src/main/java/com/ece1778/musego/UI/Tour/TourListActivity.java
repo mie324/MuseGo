@@ -314,7 +314,7 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
         recyclerView = (RecyclerView) findViewById(R.id.recycleViewId);
         layoutManager = new GridLayoutManager(TourListActivity.this,1);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new TourListAdapter(TourListActivity.this, pathList, instName);
+        adapter = new TourListAdapter(TourListActivity.this, pathList, instName,user);
         recyclerView.setAdapter(adapter);
 //
 //        loading = (Loading) findViewById(R.id.loading);

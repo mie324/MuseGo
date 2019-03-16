@@ -52,13 +52,16 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     //private Path path;
     private List<Path> pathList;
     private String instName;
+    private User user;
     private FirebaseUser currentUser;
     private FirebaseManager firebaseManager;
 
-    public TourListAdapter(Context context, List<Path> pathList, String instName){
+    public TourListAdapter(Context context, List<Path> pathList, String instName, User user){
         this.mContext = context;
         this.pathList = pathList;
         this.instName = instName;
+        this.user = user;
+
 
         firebaseManager = new FirebaseManager(context);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -132,6 +135,7 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 Intent intent = new Intent(mContext, TourDetailActivity.class);
                 //intent.putExtra("path", path);
                 intent.putExtra("path", new Gson().toJson(path));
+                intent.putExtra("user", new Gson().toJson(user));
                 mContext.startActivity(intent);
             }
         });
@@ -173,6 +177,7 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             @Override
             public void unLiked(LikeButton likeButton) {
+
 
                 if(path.getLikeList().contains(currentUser.getUid())) {
 

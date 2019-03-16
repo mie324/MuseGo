@@ -31,9 +31,11 @@ import com.ece1778.musego.Model.Comment;
 import com.ece1778.musego.Model.CommentList;
 import com.ece1778.musego.Model.NodeList;
 import com.ece1778.musego.Model.Path;
+import com.ece1778.musego.Model.User;
 import com.ece1778.musego.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
@@ -65,6 +67,7 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
     private List<String> imageList = new ArrayList<>();
 
     private Path path;
+    private User user;
     private NodeList nodeList;
 
     private Toolbar toolbar;
@@ -72,6 +75,7 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
     private TextView viewComment;
 
     private FirebaseManager firebaseManager;
+    private String uid;
 
     private List<Comment> commentList;
 
@@ -119,12 +123,17 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
 
     private void initFirebase(){
         firebaseManager = new FirebaseManager(this);
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     private void initData() {
 
         String pathJson = getIntent().getStringExtra("path");
         path = new Gson().fromJson(pathJson,Path.class);
+
+        String userJson = getIntent().getStringExtra("user");
+        user = new Gson().fromJson(userJson, User.class);
+
         imageList = path.getImgList();
         title.setText(path.getTitle());
         username.setText("By ".concat(path.getUsername()));
@@ -264,9 +273,9 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
             Intent intent = new Intent(TourDetailActivity.this, CommentDetailActivity.class);
             intent.putExtra("isExpand", true);
             intent.putExtra("postId", path.getpId());
-            intent.putExtra("userId", path.getUserId());
-            intent.putExtra("username", path.getUsername());
-            intent.putExtra("userAvatar", path.getUserAvatar());
+            intent.putExtra("userId", uid);
+            intent.putExtra("username", user.getUsername());
+            intent.putExtra("userAvatar", user.getAvatar());
             intent.putExtra("commentList",new Gson().toJson(new CommentList(commentList)));
             startActivityForResult(intent,GET_COMMENT);
 
@@ -278,9 +287,9 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
             Intent intent = new Intent(TourDetailActivity.this, CommentDetailActivity.class);
             intent.putExtra("isExpand", false);
             intent.putExtra("postId", path.getpId());
-            intent.putExtra("userId", path.getUserId());
-            intent.putExtra("username", path.getUsername());
-            intent.putExtra("userAvatar", path.getUserAvatar());
+            intent.putExtra("userId", uid);
+            intent.putExtra("username", user.getUsername());
+            intent.putExtra("userAvatar", user.getAvatar());
             intent.putExtra("commentList",new Gson().toJson(new CommentList(commentList)));
             startActivityForResult(intent, GET_COMMENT);
 
