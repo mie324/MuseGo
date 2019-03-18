@@ -79,9 +79,9 @@
                             android:textSize="25dp"
                             android:textColor="@color/colorPrimary"/>
                         
-                        <ImageView
-                            android:layout_width=""
-                            android:layout_height="" />
+                        <!--<ImageView-->
+                            <!--android:layout_width=""-->
+                            <!--android:layout_height="" />-->
                         
                         
                     </LinearLayout>
