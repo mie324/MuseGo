@@ -1,164 +1,250 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        android:theme="@style/Widget.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
-   <ScrollView
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_weight="1.0">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:layout_marginTop="20dp"
-           android:orientation="vertical">
-
-           <TextView
-               android:id="@+id/detail_title"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:layout_marginLeft="16dp"
-               android:layout_marginRight="16dp"
-               android:text="Curator’s Tour"
-               android:textSize="30dp"
-               android:textStyle="bold"/>
-
-           <com.cunoraz.tagview.TagView
-               xmlns:tagview="http://schemas.android.com/apk/res-auto"
-               android:id="@+id/detail_tags"
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:layout_marginLeft="16dp"
-               android:layout_marginRight="16dp"
-               android:gravity="end"
-               tagview:lineMargin="5dp"
-               tagview:tagMargin="5dp"
-               tagview:textPaddingLeft="12dp"
-               tagview:textPaddingTop="4dp"
-               tagview:textPaddingRight="12dp"
-               tagview:textPaddingBottom="4dp" />
-
-           <com.daimajia.slider.library.SliderLayout
-               android:id="@+id/detail_img"
-               android:layout_width="match_parent"
-               android:layout_height="250dp"
-               android:layout_marginTop="4dp"/>
-
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:orientation="horizontal"
-               android:layout_marginTop="12dp"
-               android:layout_marginLeft="16dp"
-               android:layout_marginRight="16dp">
-
-               <ImageView
-                   android:id="@+id/detail_avatar"
-                   android:layout_width="45dp"
-                   android:layout_height="45dp" />
-
-               <LinearLayout
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:orientation="vertical"
-                   android:layout_marginRight="16dp">
-
-                   <TextView
-                       android:id="@+id/detail_user"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:layout_marginLeft="16dp"
-                       android:layout_marginRight="16dp"
-                       android:layout_marginTop="8dp"
-                       android:text="By Keren He"
-                       android:textSize="15dp"
-                       android:textStyle="bold"/>
-
-                   <TextView
-                       android:id="@+id/detail_timestamp"
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:layout_marginLeft="16dp"
-                       android:layout_marginRight="16dp"
-                       android:text="timestamp"/>
-
-               </LinearLayout>
-
-           </LinearLayout>
-
-           <LinearLayout
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content">
-
-               <ImageView
-                   android:id="@+id/detail_page_do_comment"
-                   android:layout_width="30dp"
-                   android:layout_height="30dp"
-                   android:layout_marginLeft="16dp"
-                   android:layout_marginRight="16dp"
-                   android:src="@drawable/comment"
-                   android:visibility="gone"/>
-           </LinearLayout>
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar_appbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="@color/colorPrimary">
 
 
-           <TextView
-               android:id="@+id/detail_desc"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:layout_marginLeft="16dp"
-               android:layout_marginRight="16dp"
-               android:layout_marginTop="8dp"
-               android:textSize="16dp"
-               android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras pulvinar mauris non eros lacinia maximus. Nulla ullamcorper nisi quis orci convallis, nec lobortis diam elementum. Sed ullamcorper, purus at elementum laoreet, metus dui viverra dui, sed sollicitudin urna nisi blandit orci. Donec ac purus quis nunc malesuada volutpat non at lacus. "/>
 
-           <LinearLayout
-               android:id="@+id/comment_container"
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:layout_marginLeft="16dp"
-               android:layout_marginRight="16dp"
-               android:layout_marginTop="8dp"
-               android:orientation="vertical">
-
-               <TextView
-                   android:id="@+id/viewComment"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:text="View all comments"
-                   android:visibility="gone"/>
-
-               <!--<android.support.v7.widget.RecyclerView-->
-                   <!--android:id="@+id/recyclerViewId"-->
-                   <!--android:layout_width="match_parent"-->
-                   <!--android:layout_height="wrap_content">-->
-                   <!--tools:layout_editor_absoluteX="0dp"-->
-               <!--</android.support.v7.widget.RecyclerView>-->
+                <com.daimajia.slider.library.SliderLayout
+                    android:id="@+id/detail_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="450dp"
+                    />
 
 
-           </LinearLayout>
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:layout_collapseMode="pin" />
 
-       </LinearLayout>
-   </ScrollView>
+
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+         </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+                    
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/detail_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:text="Curator’s Tour"
+                            android:textSize="25dp"
+                            android:textColor="@color/colorPrimary"/>
+                        
+                        <ImageView
+                            android:layout_width=""
+                            android:layout_height="" />
+                        
+                        
+                    </LinearLayout>
+
+                   
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp">
+
+                        <ImageView
+                            android:id="@+id/detail_avatar"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_marginRight="16dp">
+
+                            <TextView
+                                android:id="@+id/detail_user"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginRight="16dp"
+                                android:layout_marginTop="8dp"
+                                android:textColor="@color/black"
+                                android:text="By Keren He"
+                                android:textSize="15dp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/detail_timestamp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginRight="16dp"
+                                android:text="timestamp"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="12dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/clock"/>
+
+
+                        <TextView
+                            android:id="@+id/tourTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="30px"
+                            android:text="2hrs"/>
+
+                        <com.like.LikeButton
+                            android:id="@+id/like"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="15px"
+                            app:icon_size="20dp"
+                            app:icon_type="heart" />
+
+                        <TextView
+                            android:id="@+id/likeCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="20dp"
+                            android:text="0"/>
+
+                        <ImageView
+                            android:id="@+id/detail_page_do_comment"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="16dp"
+                            android:src="@drawable/comment"
+                            android:visibility="gone"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/detail_desc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="20dp"
+                        android:textColor="@color/black"
+                        android:textSize="16dp"
+                        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras pulvinar mauris non eros lacinia maximus. Nulla ullamcorper nisi quis orci convallis, nec lobortis diam elementum. Sed ullamcorper, purus at elementum laoreet, metus dui viverra dui, sed sollicitudin urna nisi blandit orci. Donec ac purus quis nunc malesuada volutpat non at lacus. "/>
+
+                    <com.cunoraz.tagview.TagView
+                        xmlns:tagview="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/detail_tags"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="20dp"
+                        tagview:lineMargin="5dp"
+                        tagview:tagMargin="5dp"
+                        tagview:textPaddingLeft="12dp"
+                        tagview:textPaddingTop="4dp"
+                        tagview:textPaddingRight="12dp"
+                        tagview:textPaddingBottom="4dp" />
+
+                    <LinearLayout
+                        android:id="@+id/comment_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/viewComment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="View all comments"
+                            android:visibility="gone"/>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+        </android.support.v4.widget.NestedScrollView>
+
+
+    </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/startArBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom ="true"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"
@@ -166,32 +252,4 @@
         android:backgroundTint="@color/colorPrimary"
         />
 
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="40dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:background="@android:color/white"-->
-        <!--android:elevation="2dp"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:gravity="center_vertical">-->
-        <!--<TextView-->
-            <!--android:id="@+id/detail_page_do_comment"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="30dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:textColor="#B6B6B6"-->
-            <!--android:textSize="12sp"-->
-            <!--android:text="Say something..."-->
-            <!--android:layout_marginLeft="12dp"-->
-            <!--android:layout_marginRight="22dp"-->
-            <!--android:gravity="center_vertical"-->
-            <!--android:paddingLeft="18dp"/>-->
-        <!--<ImageView-->
-            <!--android:layout_width="22dp"-->
-            <!--android:layout_height="22dp"-->
-            <!--android:src="@drawable/send"/>-->
-
-    <!--</LinearLayout>-->
-
-
-</LinearLayout>
+</RelativeLayout>

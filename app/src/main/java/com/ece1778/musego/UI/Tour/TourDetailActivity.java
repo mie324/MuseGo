@@ -155,7 +155,7 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
         for(String content: path.getTags()){
             Tag tag = new Tag(content);
             tag.tagTextColor = Color.parseColor("#000000");
-            tag.layoutColor = Color.parseColor("#C4C4C4");
+            tag.layoutColor = Color.parseColor("#73AD01");
             tagView.addTag(tag);
         }
 
