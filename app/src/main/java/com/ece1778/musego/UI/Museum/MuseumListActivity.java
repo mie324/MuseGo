@@ -55,7 +55,7 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
     private GridLayoutManager layoutManager;
     private MuseumListAdapter adapter;
 
-    private List<String> museumList = new ArrayList<>(Arrays.asList("osc","rom"));
+    private List<String> museumList = new ArrayList<>(Arrays.asList("osc", "rom"));
 
     private ArrayList<String> mTitles = new ArrayList<>();
 
@@ -99,31 +99,30 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
         recyclerView.setLayoutManager(layoutManager);
 
 
-
-           // Initialize the views
+        // Initialize the views
         mTitles = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.menuOptions)));
         mViewHolder = new ViewHolder();
 
-    // Handle toolbar actions
+        // Handle toolbar actions
         handleToolbar();
 
-    // Handle user info
+        // Handle user info
         handleUserInfo();
 
 
-    // Handle menu actions
+        // Handle menu actions
         handleMenu();
 
-    // Handle drawer actions
+        // Handle drawer actions
         handleDrawer();
 
-}
+    }
 
     private void handleToolbar() {
         setSupportActionBar(mViewHolder.mToolbar);
     }
 
-    private void handleUserInfo(){
+    private void handleUserInfo() {
 
 
         firebasemanager.getUserRef()
@@ -145,20 +144,28 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
                                 .into(mViewHolder.avatar);
 
                         mViewHolder.username.setText(user.getUsername());
-                        mViewHolder.bio.setText(user.getBio());
+                        mViewHolder.bio.setText(roleFormat(user.getRole()));
 
                         // set adapter
 
-                        adapter = new MuseumListAdapter(MuseumListActivity.this, museumList, new User(user.getUsername(),user.getAvatar(),user.getBio(),user.getRole()));
+                        adapter = new MuseumListAdapter(MuseumListActivity.this, museumList, new User(user.getUsername(), user.getAvatar(), user.getBio(), user.getRole()));
                         recyclerView.setAdapter(adapter);
-
-
 
 
                     }
                 });
 
 
+    }
+
+    private String roleFormat(int role) {
+        if(role == 1){
+            return "Public User";
+        }else if(role == 2){
+            return  "Professional User";
+        }else{
+            return "Visitor";
+        }
     }
 
     private void handleDrawer() {
@@ -197,7 +204,7 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
 
-                if(currentUser != null){
+                if (currentUser != null) {
 
                     mAuth.signOut();
                     Intent intent = new Intent(MuseumListActivity.this, SigninActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -258,7 +265,6 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
         mViewHolder.mDuoDrawerLayout.closeDrawer();
 
 
-
     }
 
     private class ViewHolder {
@@ -274,9 +280,9 @@ public class MuseumListActivity extends BaseActivity implements View.OnClickList
             mDuoDrawerLayout = (DuoDrawerLayout) findViewById(R.id.drawer);
             mDuoMenuView = (DuoMenuView) mDuoDrawerLayout.getMenuView();
             mToolbar = (Toolbar) findViewById(R.id.toolbar);
-            avatar = (ImageView)mDuoMenuView.findViewById(R.id.userAvatar);
-            username = (TextView)mDuoMenuView.findViewById(R.id.username);
-            bio = (TextView)mDuoMenuView.findViewById(R.id.userbio);
+            avatar = (ImageView) mDuoMenuView.findViewById(R.id.userAvatar);
+            username = (TextView) mDuoMenuView.findViewById(R.id.username);
+            bio = (TextView) mDuoMenuView.findViewById(R.id.userbio);
         }
     }
 }

@@ -396,10 +396,18 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                 .into(mViewHolder.avatar);
 
         mViewHolder.username.setText(user.getUsername());
-        mViewHolder.bio.setText(user.getBio());
+        mViewHolder.bio.setText(roleFormat(user.getRole()));
 
+    }
 
-
+    private String roleFormat(int role) {
+        if(role == 1){
+            return "Public User";
+        }else if(role == 2){
+            return  "Professional User";
+        }else{
+            return "Visitor";
+        }
     }
 
     private void handleDrawer() {

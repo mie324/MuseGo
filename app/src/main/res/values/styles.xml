@@ -17,4 +17,9 @@
         <item name="android:textColor">@color/darkGreen</item>
     </style>
 
+    <style name="tagTheme">
+        <item name="android:background">@color/darkGreen</item>
+        <item name="android:textColor">@color/purewhite</item>
+    </style>
+
 </resources>
