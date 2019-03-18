@@ -68,6 +68,8 @@ public class SigninActivity extends BaseActivity {
                 String password = mPasswordField.getText().toString();
 
                 if(checkInput(email, password)){
+
+                    showProgressDialog();
                     signIn(email, password);
                 }
             }
@@ -123,6 +125,8 @@ public class SigninActivity extends BaseActivity {
                             Toast.makeText(SigninActivity.this, "Authentication Success",
                                     Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(SigninActivity.this, MuseumListActivity.class));
+
+                            hideProgressDialog();
 
 
                         } else {

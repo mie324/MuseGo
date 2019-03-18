@@ -58,7 +58,7 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         ((CommentListAdapter.ViewHolder_Comment) viewHolder).username.setText(comment.getUsername());
         ((CommentListAdapter.ViewHolder_Comment) viewHolder).content.setText(comment.getContent());
-        ((ViewHolder_Comment) viewHolder).timestamp.setText(comment.getTimestamp());
+        ((ViewHolder_Comment) viewHolder).timestamp.setText(timeFormat(comment.getTimestamp()));
 
         RequestOptions options = new RequestOptions();
         options.centerCrop();
@@ -99,6 +99,18 @@ public class CommentListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             throw new IllegalArgumentException("Comment is null!");
         }
     }
+
+    private String timeFormat(String description) {
+        String year = description.substring(0,4);
+        String month = description.substring(4,6);
+        String day = description.substring(6,8);
+        String hour = description.substring(9,11);
+        String minute = description.substring(11,13);
+        String second = description.substring(13,15);
+
+        return year+"-"+month+"-"+day+" "+hour+":"+minute+":"+second;
+    }
+
 
 
     public class ViewHolder_Comment extends RecyclerView.ViewHolder{

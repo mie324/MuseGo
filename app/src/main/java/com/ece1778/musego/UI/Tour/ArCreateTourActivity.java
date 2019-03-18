@@ -142,7 +142,7 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
 
         toggleBtn = findViewById(R.id.button_expandable);
         final List<ButtonData> buttonDatas = new ArrayList<>();
-        int[] drawable = {R.drawable.plus, R.drawable.crowd, R.drawable.noise, R.drawable.noise, R.drawable.temp,R.drawable.wash, R.drawable.wash};
+        int[] drawable = {R.drawable.plus, R.drawable.crowd, R.drawable.noise, R.drawable.light, R.drawable.temp,R.drawable.wash, R.drawable.food};
         int[] color = {R.color.darkGreen, R.color.darkGreen, R.color.darkGreen, R.color.darkGreen, R.color.darkGreen, R.color.darkGreen, R.color.darkGreen};
         for (int i = 0; i < drawable.length; i++) {
             ButtonData buttonData;
@@ -518,7 +518,7 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
 
     public void setupDatabase(Config config, Session session){
 
-        Bitmap ramenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.elephant);
+        Bitmap ramenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.scanme);
         AugmentedImageDatabase aid = new AugmentedImageDatabase(session);
         aid.addImage("ramen", ramenBitmap);
         config.setAugmentedImageDatabase(aid);

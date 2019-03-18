@@ -18,9 +18,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.ece1778.musego.Adapter.CommentListAdapter;
 import com.ece1778.musego.Model.Comment;
 import com.ece1778.musego.Model.CommentList;
@@ -28,6 +31,8 @@ import com.ece1778.musego.Model.Path;
 import com.ece1778.musego.R;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class CommentDetailActivity extends AppCompatActivity implements View.OnClickListener {
@@ -40,12 +45,19 @@ public class CommentDetailActivity extends AppCompatActivity implements View.OnC
     private String userId;
     private String username;
     private String userAvatar;
+    private String pathUserAvatar;
+    private String pathUsername;
+    private String pathContent;
     private boolean isExpand;
     private List<Comment> commentList;
 
     private RecyclerView recyclerView;
     private GridLayoutManager layoutManager;
     private CommentListAdapter adapter;
+
+    private ImageView pathUserAvatarIV;
+    private TextView pathUsernameTV;
+    private TextView pathContentTV;
 
 
 
@@ -67,9 +79,9 @@ public class CommentDetailActivity extends AppCompatActivity implements View.OnC
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-
-
-
+        pathUserAvatarIV = (ImageView) findViewById(R.id.userAvatar);
+        pathUsernameTV = (TextView) findViewById(R.id.username);
+        pathContentTV = (TextView) findViewById(R.id.content);
 
         bt_comment = (TextView)findViewById(R.id.detail_page_do_comment);
         bt_comment.setOnClickListener(this);
@@ -84,6 +96,9 @@ public class CommentDetailActivity extends AppCompatActivity implements View.OnC
         userId = intent.getStringExtra("userId");
         username = intent.getStringExtra("username");
         userAvatar = intent.getStringExtra("userAvatar");
+        pathUserAvatar = intent.getStringExtra("pathUserAvatar");
+        pathUsername = intent.getStringExtra("pathUsername");
+        pathContent = intent.getStringExtra("pathContent");
         String commentJson = getIntent().getStringExtra("commentList");
         CommentList cl = new Gson().fromJson(commentJson, CommentList.class);
         commentList = cl.getCommentList();
@@ -93,8 +108,27 @@ public class CommentDetailActivity extends AppCompatActivity implements View.OnC
             showCommentDialog();
         }
 
+        initPathInfo();
         initAdapter(commentList);
 
+
+
+
+    }
+
+    private void initPathInfo() {
+
+        RequestOptions options = new RequestOptions();
+        options.centerCrop();
+        options.circleCrop();
+
+        Glide.with(this)
+                .load(pathUserAvatar)
+                .apply(options)
+                .into(pathUserAvatarIV);
+
+        pathUsernameTV.setText(pathUsername);
+        pathContentTV.setText(pathContent);
 
 
     }
@@ -127,7 +161,7 @@ public class CommentDetailActivity extends AppCompatActivity implements View.OnC
 
                     dialog.dismiss();
 
-                    Comment comment = new Comment(pid,userId,commentContent,userAvatar,username,"now");
+                    Comment comment = new Comment(pid,userId,commentContent,userAvatar,username, new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()));
                     //commentList.add(comment);
                     adapter.addTheCommentData(comment);
                     Toast.makeText(CommentDetailActivity.this,"Comment Successfully.",Toast.LENGTH_SHORT).show();

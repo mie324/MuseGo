@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cunoraz.tagview.Tag;
 import com.cunoraz.tagview.TagView;
+import com.ece1778.musego.Adapter.TourListAdapter;
 import com.ece1778.musego.BaseActivity;
 import com.ece1778.musego.Manager.FirebaseManager;
 import com.ece1778.musego.Model.Comment;
@@ -34,6 +35,7 @@ import com.ece1778.musego.Model.Path;
 import com.ece1778.musego.Model.User;
 import com.ece1778.musego.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -45,6 +47,8 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 
 import org.w3c.dom.Text;
 
@@ -64,11 +68,16 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
     private TextView username;
     private TextView timestamp;
     private TextView desc;
+    private TextView floor;
+    private LikeButton likeBt;
+    private TextView likeCount;
     private List<String> imageList = new ArrayList<>();
 
     private Path path;
     private User user;
+    private String instName;
     private NodeList nodeList;
+    private TextView tourTime;
 
     private Toolbar toolbar;
     private ImageView iv_comment;
@@ -109,6 +118,12 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
         timestamp = findViewById(R.id.detail_timestamp);
         desc = findViewById(R.id.detail_desc);
         avatar = findViewById(R.id.detail_avatar);
+        floor = findViewById(R.id.floor);
+        likeBt = findViewById(R.id.like);
+        likeCount = findViewById(R.id.likeCount);
+
+
+        tourTime = findViewById(R.id.tourTime);
 
         findViewById(R.id.startArBtn).setOnClickListener(this);
 
@@ -134,12 +149,26 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
         String userJson = getIntent().getStringExtra("user");
         user = new Gson().fromJson(userJson, User.class);
 
+        instName = getIntent().getStringExtra("instName");
+
         imageList = path.getImgList();
         title.setText(path.getTitle());
         username.setText("By ".concat(path.getUsername()));
         timestamp.setText("Last Updated "+timeFormat(path.getTimestamp()));
         desc.setText(path.getDescription());
+        floor.setText(path.getFloor());
 
+        String[] times = path.getEstimated_time().split("/");
+        String estimatedTime = "";
+        if(!times[0].equals("0")){
+            estimatedTime += times[0] + "h";
+        }
+        estimatedTime += times[1] + "min";
+
+        tourTime.setText(estimatedTime);
+
+
+        initLike();
         initAvatar();
         initTagData();
         initCommentData();
@@ -150,12 +179,81 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
 
     }
 
+    private void initLike() {
+
+
+
+        likeCount.setText(path.getLikeList().size()+"");
+        if(path.getLikeList().contains(uid)){
+           likeBt.setLiked(true);
+        }
+
+
+        likeBt.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+
+                if (!path.getLikeList().contains(uid)) {
+
+
+                    path.getLikeList().add(uid);
+
+                   likeCount.setText("" + path.getLikeList().size());
+
+                    firebaseManager.getInstRef()
+                            .document(instName)
+                            .collection("paths")
+                            .document(path.getpId())
+                            .update("likeList", path.getLikeList())
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+
+
+
+
+                                }
+                            });
+                }
+            }
+
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+
+
+                if(path.getLikeList().contains(uid)) {
+
+                    path.getLikeList().remove(uid);
+
+                  likeCount.setText(""+path.getLikeList().size());
+
+                    firebaseManager.getInstRef()
+                            .document(instName)
+                            .collection("paths")
+                            .document(path.getpId())
+                            .update("likeList", path.getLikeList())
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+
+                                    // ((ViewHolder_Path) viewHolder).likeCount.setText(""+path.getLikeList().size());
+
+                                }
+                            });
+                }
+            }
+        });
+
+    }
+
     private void initTagData(){
 
         for(String content: path.getTags()){
             Tag tag = new Tag(content);
-            tag.tagTextColor = Color.parseColor("#000000");
+            tag.tagTextColor = Color.parseColor("#FFFFFF");
             tag.layoutColor = Color.parseColor("#73AD01");
+            tag.deleteIndicatorColor = Color.parseColor("#FFFFFF");
             tagView.addTag(tag);
         }
 
@@ -277,6 +375,9 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
             intent.putExtra("username", user.getUsername());
             intent.putExtra("userAvatar", user.getAvatar());
             intent.putExtra("commentList",new Gson().toJson(new CommentList(commentList)));
+            intent.putExtra("pathUsername", path.getUsername());
+            intent.putExtra("pathUserAvatar", path.getUserAvatar());
+            intent.putExtra("pathContent", path.getDescription());
             startActivityForResult(intent,GET_COMMENT);
 
 
@@ -291,6 +392,9 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
             intent.putExtra("username", user.getUsername());
             intent.putExtra("userAvatar", user.getAvatar());
             intent.putExtra("commentList",new Gson().toJson(new CommentList(commentList)));
+            intent.putExtra("pathUsername", path.getUsername());
+            intent.putExtra("pathUserAvatar", path.getUserAvatar());
+            intent.putExtra("pathContent", path.getDescription());
             startActivityForResult(intent, GET_COMMENT);
 
 
