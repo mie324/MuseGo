@@ -201,12 +201,12 @@ public class SearchFabFragment extends AAH_FabulousFragment {
                     if (tv.getTag() != null && tv.getTag().equals("selected")) {
                         tv.setTag("unselected");
                         tv.setBackgroundResource(R.drawable.chip_unselected);
-                        tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
+                        tv.setTextColor(ContextCompat.getColor(getContext(), R.color.darkGreen));
                         removeFromSelectedMap(filter_category, finalKeys.get(finalI));
                     } else {
                         tv.setTag("selected");
                         tv.setBackgroundResource(R.drawable.chip_selected);
-                        tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_header));
+                        tv.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                         addToSelectedMap(filter_category, finalKeys.get(finalI));
                     }
                 }
@@ -222,10 +222,10 @@ public class SearchFabFragment extends AAH_FabulousFragment {
             if (applied_filters != null && applied_filters.get(filter_category) != null && applied_filters.get(filter_category).contains(keys.get(finalI))) {
                 tv.setTag("selected");
                 tv.setBackgroundResource(R.drawable.chip_selected);
-                tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_header));
+                tv.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
             } else {
                 tv.setBackgroundResource(R.drawable.chip_unselected);
-                tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
+                tv.setTextColor(ContextCompat.getColor(getContext(), R.color.darkGreen));
             }
             textviews.add(tv);
 

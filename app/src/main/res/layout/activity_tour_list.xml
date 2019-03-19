@@ -65,7 +65,7 @@
                 android:backgroundTint="@color/colorPrimary"/>
 
             <android.support.design.widget.FloatingActionButton
-                android:tint="@color/filters_chips"
+                android:tint="@color/white"
                 android:id="@+id/fab2"
                 android:layout_width="56dp"
                 android:layout_height="56dp"
@@ -74,7 +74,7 @@
                 android:layout_marginBottom="16dp"
                 android:layout_marginRight="16dp"
                 android:src="@drawable/ic_filter"
-                app:backgroundTint="@color/filtersfab"
+                app:backgroundTint="@color/colorPrimary"
                 app:elevation="0dp" />
 
         <!--<com.ece1778.musego.Utils.Loading-->
