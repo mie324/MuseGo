@@ -31,7 +31,8 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/darkGreen"
             android:theme="@style/Widget.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:titleTextColor="@color/white"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

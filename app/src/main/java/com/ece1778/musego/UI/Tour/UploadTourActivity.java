@@ -154,7 +154,7 @@ public class UploadTourActivity extends BaseActivity {
 
         desc.addTextChangedListener(new TextWatcher() {
 
-            int MAX_WORDS = 120;
+            int MAX_WORDS = 200;
             @Override
             public void afterTextChanged(Editable s) {
             }

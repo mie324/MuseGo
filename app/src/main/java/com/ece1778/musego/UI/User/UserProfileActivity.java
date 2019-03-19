@@ -97,12 +97,9 @@ public class UserProfileActivity extends AppCompatActivity{
     private void initRecycler() {
         if(selected == CREATED){
             adapter = new TourListAdapter(UserProfileActivity.this, createdPath, "osc",user);
-            recyclerView.setBackgroundColor(getResources().getColor(R.color.yellow));
-
 
         }else if(selected == LIKED){
             adapter = new TourListAdapter(UserProfileActivity.this, likedPath, "osc",user);
-            recyclerView.setBackgroundColor(getResources().getColor(R.color.darkGreen));
         }
         recyclerView.setAdapter(adapter);
     }
