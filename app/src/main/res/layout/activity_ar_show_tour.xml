@@ -68,8 +68,8 @@
 
         <Button
             android:id="@+id/cancelArBtn"
-            android:layout_width="60dp"
-            android:layout_height="65dp"
+            android:layout_width="80dp"
+            android:layout_height="88dp"
             android:background="@drawable/cancel" />
 
     </LinearLayout>

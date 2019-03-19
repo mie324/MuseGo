@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Path implements Serializable {
 
-    private static final long serialVersionUID=1L;
+    private static final long serialVersionUID = 1L;
 
 
     private String pId;
@@ -19,14 +19,14 @@ public class Path implements Serializable {
     private String floor;
     private String estimated_time;
     private List<String> tags;
-    private String privacy;
     private List<String> likeList;
+    private List<String> imgList;
     private Node start_node;
     private Node end_node;
     private List<Node> nodes;
 
 
-    public Path(){
+    public Path() {
 
     }
 
@@ -64,7 +64,7 @@ public class Path implements Serializable {
 //
 //    }
 
-    public Path(String pId, String userId, String username, String userAvatar, String userBio, String timestamp, String title, String description, String floor, String estimated_time, List<String> tags, String privacy, List<String> likeList, Node start_node, Node end_node, List<Node> nodes) {
+    public Path(String pId, String userId, String username, String userAvatar, String userBio, String timestamp, String title, String description, String floor, String estimated_time, List<String> tags, List<String> likeList, List<String> imgList, Node start_node, Node end_node, List<Node> nodes) {
         this.pId = pId;
         this.userId = userId;
         this.username = username;
@@ -76,14 +76,14 @@ public class Path implements Serializable {
         this.floor = floor;
         this.estimated_time = estimated_time;
         this.tags = tags;
-        this.privacy = privacy;
         this.likeList = likeList;
+        this.imgList = imgList;
         this.start_node = start_node;
         this.end_node = end_node;
         this.nodes = nodes;
     }
 
-    public Path(String userId, String username, String userAvatar, String userBio, String timestamp, String title, String description, String floor, String estimated_time, List<String> tags, String privacy,List<String> likeList, Node start_node, Node end_node, List<Node> nodes) {
+    public Path(String userId, String username, String userAvatar, String userBio, String timestamp, String title, String description, String floor, String estimated_time, List<String> tags, List<String> likeList, List<String> imgList, Node start_node, Node end_node, List<Node> nodes) {
         this.userId = userId;
         this.username = username;
         this.userAvatar = userAvatar;
@@ -94,8 +94,8 @@ public class Path implements Serializable {
         this.floor = floor;
         this.estimated_time = estimated_time;
         this.tags = tags;
-        this.privacy = privacy;
         this.likeList = likeList;
+        this.imgList = imgList;
         this.start_node = start_node;
         this.end_node = end_node;
         this.nodes = nodes;
@@ -198,14 +198,6 @@ public class Path implements Serializable {
         this.tags = tags;
     }
 
-    public String getPrivacy() {
-        return privacy;
-    }
-
-    public void setPrivacy(String privacy) {
-        this.privacy = privacy;
-    }
-
     public Node getStart_node() {
         return start_node;
     }
@@ -228,5 +220,13 @@ public class Path implements Serializable {
 
     public void setNodes(List<Node> nodes) {
         this.nodes = nodes;
+    }
+
+    public List<String> getImgList() {
+        return imgList;
+    }
+
+    public void setImgList(List<String> imgList) {
+        this.imgList = imgList;
     }
 }

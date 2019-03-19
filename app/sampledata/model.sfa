@@ -37,7 +37,7 @@
     file: 'sampledata/model.obj',
     name: 'model',
     recenter: 'root',
-    scale: 0.100000
+    scale: 0.050000
   },
   version: '0.54:2',
 }

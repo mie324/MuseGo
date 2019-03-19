@@ -137,8 +137,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="0.5"
-                    android:textColor="@android:color/black"
-                    android:entries="@array/hour" />
+                    android:entries="@array/hour"
+                    android:theme="@style/spinnerTheme"/>
 
                 <Spinner
                     android:id="@+id/uploadTour_minute"
@@ -146,7 +146,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="0.5"
-                    android:entries="@array/minute" />
+                    android:entries="@array/minute"
+                    android:theme="@style/spinnerTheme"/>
 
             </LinearLayout>
 
@@ -182,22 +183,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="16dp">
-
-                <com.yzs.imageshowpickerview.ImageShowPickerView
-                    android:id="@+id/uploadTour_imgPicker"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                </com.yzs.imageshowpickerview.ImageShowPickerView>
-
-            </LinearLayout>
-
             <com.cunoraz.tagview.TagView xmlns:tagview="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/tag_group"
                 android:layout_width="match_parent"
@@ -212,41 +197,36 @@
                 tagview:textPaddingRight="12dp"
                 tagview:textPaddingTop="8dp" />
 
-            <RadioGroup
-                android:id="@+id/uploadTour_privacyGroup"
+            <GridLayout
+                android:id="@+id/uploadTour_imgGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
-                android:orientation="vertical">
+                android:layout_marginTop="16dp"
+                android:columnCount="4"
+                android:rowCount="2">
 
-                <RadioButton
-                    android:id="@+id/uploadTour_public"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Private"
-                    android:textSize="16dp" />
+                <Button
+                    android:id="@+id/uploadTour_addImg"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_margin="5dp"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/default_upload"/>
 
-                <RadioButton
-                    android:id="@+id/ruploadTour_private"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Public"
-                    android:textSize="16dp" />
-
-            </RadioGroup>
-
+            </GridLayout>
 
             <Button
                 android:id="@+id/uploadTourBtn"
                 android:layout_width="120dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="30dp"
                 android:layout_marginBottom="40dp"
-                android:background="@color/green"
+                android:background="@color/darkGreen"
                 android:text="Create"
-                android:textColor="@color/white"
+                android:textColor="@color/purewhite"
                 android:textSize="16dp" />
 
         </LinearLayout>
@@ -258,7 +238,6 @@
             android:layout_height="match_parent" />
 
     </RelativeLayout>
-
 
 
 </ScrollView>

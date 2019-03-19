@@ -64,11 +64,10 @@ dependencies {
     //Circle Menu
     implementation 'com.github.uin3566:AllAngleExpandableButton:v1.2.0'
 
-    //imagePicker
-    implementation 'com.github.yaozs:ImageShowPicker:1.0.0'
+    // navigation drawer
+    implementation 'nl.psdcompany:duo-navigation-drawer:2.0.8'
 
-//    implementation project(':gooeymenu')
-
+    implementation 'com.github.donkingliang:GroupedRecyclerViewAdapter:1.3.2'
 
 
 }
@@ -99,3 +98,34 @@ sceneform.asset('sampledata/tinker.obj',
         'sampledata/tinker.sfa',
         'src/main/res/raw/tinker')
 
+
+
+sceneform.asset('sampledata/crowd.obj',
+        'default',
+        'sampledata/crowd.sfa',
+        'src/main/res/raw/crowd')
+
+sceneform.asset('sampledata/food.obj',
+        'default',
+        'sampledata/food.sfa',
+        'src/main/res/raw/food')
+
+sceneform.asset('sampledata/light.obj',
+        'default',
+        'sampledata/light.sfa',
+        'src/main/res/raw/light')
+
+sceneform.asset('sampledata/noise.obj',
+        'default',
+        'sampledata/noise.sfa',
+        'src/main/res/raw/noise')
+
+sceneform.asset('sampledata/temp.obj',
+        'default',
+        'sampledata/temp.sfa',
+        'src/main/res/raw/temp')
+
+sceneform.asset('sampledata/wash.obj',
+        'default',
+        'sampledata/wash.sfa',
+        'src/main/res/raw/wash')

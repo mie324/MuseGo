@@ -1,34 +1,22 @@
 package com.ece1778.musego.UI.Tour;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ece1778.musego.BaseActivity;
@@ -47,19 +35,16 @@ import com.google.ar.core.Config;
 import com.google.ar.core.Frame;
 import com.google.ar.core.HitResult;
 import com.google.ar.core.Plane;
-import com.google.ar.core.Pose;
 import com.google.ar.core.Session;
 import com.google.ar.core.TrackingState;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.FrameTime;
-import com.google.ar.sceneform.HitTestResult;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.Scene;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
-import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 import com.google.gson.Gson;
 import com.sdsmdg.tastytoast.TastyToast;
@@ -79,11 +64,16 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
     private static final int ARROW = 2;
     private static final int END_MARKER = 3;
     private static final int WHERECHAIR = 4;
-
+    private static final int CROWD = 5;
+    private static final int FOOD = 6;
+    private static final int LIGHT = 7;
+    private static final int NOISE = 8;
+    private static final int TEMP = 9;
+    private static final int WASH = 10;
 
     private CustomArFragment arFragment;
     private ModelRenderable startRenderable, endRenderable, arrowRenderable;
-    private ModelRenderable wheelRenderable;
+    private ModelRenderable wheelRenderable, crowdRenderable, foodRenderable, lightRenderable, noiseRenderable, tempRenderable, washRenderable;
     private int selected = ARROW;
 
     private com.ece1778.musego.Model.Node starter;
@@ -152,8 +142,8 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
 
         toggleBtn = findViewById(R.id.button_expandable);
         final List<ButtonData> buttonDatas = new ArrayList<>();
-        int[] drawable = {R.drawable.plus,R.drawable.pass, R.drawable.quite, R.drawable.light, R.drawable.humid,R.drawable.washroom,R.drawable.food};
-        int[] color = {R.color.green, R.color.green, R.color.green, R.color.green, R.color.green, R.color.green, R.color.green};
+        int[] drawable = {R.drawable.plus, R.drawable.crowd, R.drawable.noise, R.drawable.light, R.drawable.temp,R.drawable.wash, R.drawable.food};
+        int[] color = {R.color.darkGreen, R.color.darkGreen, R.color.darkGreen, R.color.darkGreen, R.color.darkGreen, R.color.darkGreen, R.color.darkGreen};
         for (int i = 0; i < drawable.length; i++) {
             ButtonData buttonData;
             if(i == 0){
@@ -170,21 +160,25 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
             public void onButtonClicked(int i) {
                 switch (i){
                     case 1:
+                        selected = CROWD;
                         break;
                     case 2:
+                        selected = NOISE;
                         break;
                     case 3:
+                        selected = LIGHT;
                         break;
                     case 4:
+                        selected = TEMP;
                         break;
                     case 5:
                         selected = WHERECHAIR;
                         break;
                     case 6:
+                        selected = FOOD;
                         break;
-
-                        default:
-                            selected = ARROW;
+                    default:
+                        selected = ARROW;
 
                 }
             }
@@ -283,6 +277,78 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                             return null;
                         });
 
+        ModelRenderable.builder()
+                .setSource(this, R.raw.crowd)
+                .build()
+                .thenAccept(renderable -> crowdRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load crow renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, R.raw.food)
+                .build()
+                .thenAccept(renderable -> foodRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, R.raw.light)
+                .build()
+                .thenAccept(renderable -> lightRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, R.raw.noise)
+                .build()
+                .thenAccept(renderable -> noiseRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, R.raw.temp)
+                .build()
+                .thenAccept(renderable -> tempRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, R.raw.wash)
+                .build()
+                .thenAccept(renderable -> washRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
     }
 
     private void addInfoCard(Node flag) {
@@ -362,6 +428,42 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                         object.setRenderable(wheelRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, WHERECHAIR));
 
+                    }else if(selected == CROWD) {
+                        object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+                        object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
+                        object.setRenderable(crowdRenderable);
+                        nodes.add(new com.ece1778.musego.Model.Node(t, r, CROWD));
+
+                    }else if(selected == FOOD) {
+                        object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+                        object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
+                        object.setRenderable(foodRenderable);
+                        nodes.add(new com.ece1778.musego.Model.Node(t, r, FOOD));
+
+                    }else if(selected == LIGHT) {
+                        object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+                        object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
+                        object.setRenderable(lightRenderable);
+                        nodes.add(new com.ece1778.musego.Model.Node(t, r, LIGHT));
+
+                    }else if(selected == NOISE) {
+                        object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+                        object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
+                        object.setRenderable(noiseRenderable);
+                        nodes.add(new com.ece1778.musego.Model.Node(t, r, NOISE));
+
+                    }else if(selected == TEMP) {
+                        object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+                        object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
+                        object.setRenderable(tempRenderable);
+                        nodes.add(new com.ece1778.musego.Model.Node(t, r, TEMP));
+
+                    }else if(selected == WASH) {
+                        object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+                        object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
+                        object.setRenderable(washRenderable);
+                        nodes.add(new com.ece1778.musego.Model.Node(t, r, WASH));
+
                     }
 
                     object.select();
@@ -416,7 +518,7 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
 
     public void setupDatabase(Config config, Session session){
 
-        Bitmap ramenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.elephant);
+        Bitmap ramenBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.scanme);
         AugmentedImageDatabase aid = new AugmentedImageDatabase(session);
         aid.addImage("ramen", ramenBitmap);
         config.setAugmentedImageDatabase(aid);

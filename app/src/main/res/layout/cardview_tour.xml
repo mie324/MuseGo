@@ -15,96 +15,123 @@
     android:foreground="?attr/selectableItemBackgroundBorderless"
     app:cardPreventCornerOverlap="false"
     >
-
+    
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10px"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-
-        <TextView
-            android:id="@+id/tourTitle"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginBottom="5dp"
-            android:text="Title"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:layout_marginLeft="20px"
-            android:layout_marginRight="20px"
-            android:layout_marginTop="20px"
-            />
-
-        <TextView
-            android:id="@+id/tourDescription"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20px"
-            android:layout_marginBottom="5dp"
-            android:maxLines="2"
-            android:maxEms="20"
-            android:ellipsize="end"
-            />
+            android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/firstImage"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_marginTop="20px"
+                android:layout_marginLeft="20px"
+                android:layout_marginRight="20px"
+                android:layout_marginBottom="20px"
+                android:src="@drawable/scanme"
+                android:scaleType="centerCrop"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20px"
-            android:layout_marginTop="20px"
             android:layout_marginBottom="10px"
-            android:layout_marginRight="30px"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/userAvatar"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginRight="20px"
-                android:src="@color/black" />
 
             <TextView
-                android:id="@+id/username"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:text="keren" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:id="@+id/tourTitle"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginBottom="5dp"
+                android:text="Title"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_marginLeft="20px"
                 android:layout_marginRight="20px"
-                android:src="@drawable/clock"/>
+                android:layout_marginTop="20px"
+                />
 
             <TextView
-                android:id="@+id/tourTime"
+                android:id="@+id/tourDescription"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20px"
+                android:layout_marginBottom="5dp"
+                android:maxLines="2"
+                android:maxEms="20"
+                android:ellipsize="end"
+                />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20px"
+                android:layout_marginTop="20px"
+                android:layout_marginBottom="10px"
                 android:layout_marginRight="30px"
-                android:text="2hrs"/>
+                android:orientation="horizontal">
 
-            <com.like.LikeButton
-                android:id="@+id/like"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginRight="20px"
-                app:icon_size="20dp"
-                app:icon_type="heart" />
+                <ImageView
+                    android:id="@+id/userAvatar"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="20px"
+                    android:src="@color/black" />
 
-            <TextView
-                android:id="@+id/likeCount"
-                android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:text="0"/>
+                <TextView
+                    android:id="@+id/username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="keren" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:layout_width="2dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="20px"
+                    android:src="@drawable/clock"/>
+
+                <TextView
+                    android:id="@+id/tourTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="30px"
+                    android:text="2hrs"/>
+
+                <com.like.LikeButton
+                    android:id="@+id/like"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="20px"
+                    app:icon_size="20dp"
+                    app:icon_type="heart" />
+
+                <TextView
+                    android:id="@+id/likeCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="0"/>
+
+
+
+            </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
+
+
 
 
 

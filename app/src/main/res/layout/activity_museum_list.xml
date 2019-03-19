@@ -1,19 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+
+<nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer"
+    android:background="@color/lightGreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycleViewId"
+    <nl.psdcompany.duonavigationdrawer.views.DuoMenuView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#26A69A"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:tag="@string/tag_menu"
+        app:footer="@layout/duo_view_footer_customized"
+        app:header="@layout/duo_view_header_customized"
+        app:contentScaleClosed="1.0"
+        app:contentScaleOpen="0.7"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:tag="@string/tag_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/darkGreen"
+            android:theme="@style/Widget.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:titleTextColor="@color/white"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycleViewId"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp" />
+
+        </RelativeLayout>
 
 
+    </LinearLayout>
 
-</RelativeLayout>
+</nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout>
+

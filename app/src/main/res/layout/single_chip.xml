@@ -15,7 +15,7 @@
         android:gravity="center"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:textColor="@color/filters_chips"
+        android:textColor="@color/darkGreen"
         android:textSize="14sp"
         tools:text="Filter 1" />
 

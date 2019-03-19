@@ -3,23 +3,25 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical">
 
 
     <ImageView
-        android:layout_width="220dp"
-        android:layout_height="60dp"
+        android:layout_width="250dp"
+        android:layout_height="190dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="20dp"
         android:layout_gravity="center"
-        android:layout_marginTop="120dp"
-        android:src="@drawable/logo"/>
+        android:src="@drawable/cover"/>
 
     <EditText
         android:id="@+id/signin_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="50dp"
         android:ems="10"
         android:hint="Username"
         android:inputType="textEmailAddress" />
@@ -38,11 +40,11 @@
     <Button
         android:id="@+id/signinBtn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:background="@color/green"
+        android:background="@drawable/login"
         android:textColor="@color/white"
         android:text="Log In"/>
 
@@ -51,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:text="Don’t have an account? Sign up or Skip"/>
 
 

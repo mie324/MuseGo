@@ -44,7 +44,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center"
-            android:background="@drawable/ic_check" />
+            android:background="@drawable/check" />
 
     </LinearLayout>
 
@@ -52,7 +52,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-
         android:layout_marginBottom="50dp">
 
         <Button
@@ -61,7 +60,7 @@
             android:layout_height="60dp"
             android:layout_marginRight="40dp"
             android:layout_gravity="center"
-            android:background="@drawable/location" />
+            android:background="@drawable/end" />
 
         <com.fangxu.allangleexpandablebutton.AllAngleExpandableButton
             android:id="@+id/button_expandable"
@@ -85,7 +84,7 @@
             android:layout_height="60dp"
             android:layout_marginLeft="40dp"
             android:layout_gravity="center"
-            android:background="@drawable/arrow" />
+            android:background="@drawable/arrow1"/>
 
     </LinearLayout>
 

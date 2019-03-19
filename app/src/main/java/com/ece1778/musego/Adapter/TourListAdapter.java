@@ -52,18 +52,19 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     //private Path path;
     private List<Path> pathList;
     private String instName;
+    private User user;
     private FirebaseUser currentUser;
     private FirebaseManager firebaseManager;
 
-    public TourListAdapter(Context context, List<Path> pathList, String instName){
+    public TourListAdapter(Context context, List<Path> pathList, String instName, User user){
         this.mContext = context;
         this.pathList = pathList;
         this.instName = instName;
+        this.user = user;
+
 
         firebaseManager = new FirebaseManager(context);
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-
 
     }
 
@@ -87,8 +88,12 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         Path path = pathList.get(i);
 
+        List<String> imageList = path.getImgList();
+
 
         ((ViewHolder_Path) viewHolder).title.setText(path.getTitle());
+        ((ViewHolder_Path) viewHolder).username.setText(path.getUsername());
+        ((ViewHolder_Path) viewHolder).likeCount.setText("" + path.getLikeList().size());
 
         if (path.getDescription().length() > 0) {
             ((ViewHolder_Path) viewHolder).description.setText(path.getDescription());
@@ -97,8 +102,17 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         }
 
-        ((ViewHolder_Path) viewHolder).username.setText(path.getUsername());
-        ((ViewHolder_Path) viewHolder).likeCount.setText("" + path.getLikeList().size());
+        // time
+
+        String[] time = path.getEstimated_time().split("/");
+        String estimatedTime = "";
+        if(!time[0].equals("0")){
+            estimatedTime += time[0]+"h";
+        }
+        estimatedTime += time[1] + "min";
+
+
+        ((ViewHolder_Path) viewHolder).tourTime.setText(estimatedTime);
 
         //avatar
         RequestOptions options = new RequestOptions();
@@ -110,6 +124,20 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 .apply(options)
                 .into(((ViewHolder_Path) viewHolder).avatar);
 
+       if(imageList == null || imageList.size() == 0){
+           Glide.with(mContext)
+                   .load(R.drawable.scanme)
+                   .into(((ViewHolder_Path) viewHolder).firstImage);
+
+       }
+       else{
+
+           Glide.with(mContext)
+                   .load(imageList.get(0))
+                   .into(((ViewHolder_Path) viewHolder).firstImage);
+
+       }
+
 
         ((ViewHolder_Path) viewHolder).cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +146,8 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 Intent intent = new Intent(mContext, TourDetailActivity.class);
                 //intent.putExtra("path", path);
                 intent.putExtra("path", new Gson().toJson(path));
+                intent.putExtra("user", new Gson().toJson(user));
+                intent.putExtra("instName", instName);
                 mContext.startActivity(intent);
             }
         });
@@ -159,6 +189,7 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             @Override
             public void unLiked(LikeButton likeButton) {
+
 
                 if(path.getLikeList().contains(currentUser.getUid())) {
 
@@ -246,6 +277,8 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public ImageView avatar;
         public LikeButton like;
         public TextView likeCount;
+        public ImageView firstImage;
+        public TextView tourTime;
 
 
         public ViewHolder_Path(View view){
@@ -258,6 +291,8 @@ public class TourListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             like = (LikeButton) view.findViewById(R.id.like);
             likeCount = (TextView) view.findViewById(R.id.likeCount);
             cardView = (CardView) view.findViewById(R.id.cardview_id);
+            firstImage = (ImageView) view.findViewById(R.id.firstImage);
+            tourTime = (TextView) view.findViewById(R.id.tourTime);
 
 
         }

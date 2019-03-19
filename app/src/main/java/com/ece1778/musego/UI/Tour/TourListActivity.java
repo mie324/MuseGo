@@ -1,6 +1,8 @@
 package com.ece1778.musego.UI.Tour;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,36 +12,56 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.util.ArrayMap;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.ece1778.musego.Adapter.MenuAdapter;
+import com.ece1778.musego.Adapter.MuseumListAdapter;
 import com.ece1778.musego.Adapter.TourListAdapter;
 import com.ece1778.musego.BaseActivity;
 import com.ece1778.musego.Manager.FirebaseManager;
 import com.ece1778.musego.Model.Path;
 import com.ece1778.musego.Model.User;
 import com.ece1778.musego.R;
+import com.ece1778.musego.UI.Auth.SigninActivity;
+import com.ece1778.musego.UI.Museum.MuseumListActivity;
 import com.ece1778.musego.UI.Search.SearchFabFragment;
+import com.ece1778.musego.UI.User.UserProfileActivity;
 import com.ece1778.musego.Utils.Loading;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class TourListActivity extends BaseActivity implements View.OnClickListener, AAH_FabulousFragment.Callbacks, AAH_FabulousFragment.AnimationListener {
+import nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout;
+import nl.psdcompany.duonavigationdrawer.views.DuoMenuView;
+import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle;
 
+public class TourListActivity extends BaseActivity implements View.OnClickListener, AAH_FabulousFragment.Callbacks, AAH_FabulousFragment.AnimationListener, DuoMenuView.OnMenuClickListener {
+
+    private static final String TAG = "TourList";
     private RecyclerView recyclerView;
     private GridLayoutManager layoutManager;
     private TourListAdapter adapter;
@@ -51,11 +73,25 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     private FloatingActionButton createPathBtn, fab2;
     private SearchFabFragment dialogFrag;
 
-
     private FirebaseManager firebaseManager;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+
+
+    private User user;
+    private static final int VISITOR = 0;
+    private static final int PUBLIC_USER = 1;
+    private static final int PROFESSION_USER = 2;
+    private int role = VISITOR;
 
     private Loading loading;
     private FloatingActionButton createTourBtn;
+
+    private ArrayList<String> mTitles = new ArrayList<>();
+
+    private ViewHolder mViewHolder;
+    private MenuAdapter mMenuAdapter;
+
 
 
 
@@ -68,19 +104,48 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
         initView();
         initFirebase();
+        fetchUserInfo();
         fetchDataAndRenderView();
 
     }
 
-
     private void initFirebase() {
-
         firebaseManager = new FirebaseManager(TourListActivity.this);
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
+
 
     }
 
-    private void fetchDataAndRenderView() {
+    private void fetchUserInfo(){
+        if(mAuth.getUid() == null){
+            role = 0;
+            return;
+        }
 
+        firebaseManager.getUserRef()
+                .document(mAuth.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(task.isSuccessful()){
+                            DocumentSnapshot document = task.getResult();
+                            user = new User(
+                                    (String) document.get("username"),
+                                    (String) document.get("bio"),
+                                    (String) document.get("avatar"),
+                                    (int) (long) document.get("role")
+                            );
+                            role = (int) (long) document.get("role");
+                        }
+
+                    }
+                });
+    }
+
+    private void fetchDataAndRenderView() {
 
         firebaseManager.getInstRef()
                 .document(instName)
@@ -99,8 +164,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                                 Path path = document.toObject(Path.class);
                                 String pid = document.getId();
 
-                                Log.d("!!!!!!pid", pid);
-
 
                                 Path pathModel = new Path(
                                         pid,
@@ -114,8 +177,8 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                                         path.getFloor(),
                                         path.getEstimated_time(),
                                         path.getTags(),
-                                        path.getPrivacy(),
                                         path.getLikeList(),
+                                        path.getImgList(),
                                         path.getStart_node(),
                                         path.getEnd_node(),
                                         path.getNodes());
@@ -142,10 +205,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
                     }
                 });
-
-
-
-
     }
 
     @Override
@@ -159,13 +218,13 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                 ArrayMap<String, List<String>> applied_filters = (ArrayMap<String, List<String>>) result;
                 if (applied_filters.size() != 0) {
                     List<Path> filteredList = allPath;
-                    Log.d("!!!!!!!again!!!!","hhh");
+
 
                     for (Map.Entry<String, List<String>> entry : applied_filters.entrySet()) {
 
                         switch (entry.getKey()) {
                             case "TAG":
-                                Log.d("!!!!!!!", "tag");
+
                                 filteredList = getTagFilteredPath(entry.getValue(), filteredList);
                                 break;
 
@@ -224,7 +283,7 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
 
         for(String tag: tags){
-                Log.d("!!newPathSizebefore", newPathList.size()+"");
+
                 tempList = new ArrayList<>();
                 for(Path path: newPathList){
 
@@ -249,12 +308,14 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     private void initView() {
 
         instName = getIntent().getStringExtra("instName");
+        String userJson = getIntent().getStringExtra("currentUser");
+        user = new Gson().fromJson(userJson,User.class);
 
 
         recyclerView = (RecyclerView) findViewById(R.id.recycleViewId);
         layoutManager = new GridLayoutManager(TourListActivity.this,1);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new TourListAdapter(TourListActivity.this, pathList, instName);
+        adapter = new TourListAdapter(TourListActivity.this, pathList, instName,user);
         recyclerView.setAdapter(adapter);
 //
 //        loading = (Loading) findViewById(R.id.loading);
@@ -275,6 +336,22 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
+
+        mTitles = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.menuOptions)));
+        mViewHolder = new ViewHolder();
+
+        // Handle toolbar actions
+        handleToolbar();
+
+        handleUserInfo();
+
+        // Handle menu actions
+        handleMenu();
+
+        // Handle drawer actions
+        handleDrawer();
+
+
     }
 
 
@@ -284,14 +361,175 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
         int i = v.getId();
         if (i == R.id.createTourBtn) {
 
-            Intent intent = new Intent(TourListActivity.this, CreateInstructionActivity.class);
-            //intent.putExtra("path", path);
-            intent.putExtra("instName",instName);
-            startActivity(intent);
+            if(role == PROFESSION_USER){
+                Intent intent = new Intent(TourListActivity.this, CreateInstructionActivity.class);
+                intent.putExtra("instName", instName);
+                startActivity(intent);
+
+            }else if(role == VISITOR){
+                Intent intent = new Intent(TourListActivity.this, SigninActivity.class);
+                startActivity(intent);
+
+            }else {
+                Toast.makeText(this, "Only Professionals can create path.",Toast.LENGTH_SHORT).show();
+            }
 
         }
 
     }
+
+
+    private void handleToolbar() {
+        setSupportActionBar(mViewHolder.mToolbar);
+    }
+
+    private void handleUserInfo(){
+
+
+        RequestOptions options = new RequestOptions();
+        options.centerCrop();
+        options.circleCrop();
+
+
+        Glide.with(TourListActivity.this)
+                .load(user.getAvatar())
+                .apply(options)
+                .into(mViewHolder.avatar);
+
+        mViewHolder.username.setText(user.getUsername());
+        mViewHolder.bio.setText(roleFormat(user.getRole()));
+
+    }
+
+    private String roleFormat(int role) {
+        if(role == 1){
+            return "Public User";
+        }else if(role == 2){
+            return  "Professional User";
+        }else{
+            return "Visitor";
+        }
+    }
+
+    private void handleDrawer() {
+        DuoDrawerToggle duoDrawerToggle = new DuoDrawerToggle(this,
+                mViewHolder.mDuoDrawerLayout,
+                mViewHolder.mToolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+
+        mViewHolder.mDuoDrawerLayout.setDrawerListener(duoDrawerToggle);
+        duoDrawerToggle.syncState();
+
+    }
+
+    private void handleMenu() {
+        mMenuAdapter = new MenuAdapter(mTitles);
+
+        mViewHolder.mDuoMenuView.setOnMenuClickListener(this);
+        mViewHolder.mDuoMenuView.setAdapter(mMenuAdapter);
+    }
+
+
+
+    @Override
+    public void onFooterClicked() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Log out of MuseGo?");
+        builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+
+                if(currentUser != null){
+
+                    mAuth.signOut();
+                    Intent intent = new Intent(TourListActivity.this, SigninActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+
+
+                }
+
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+            }
+
+
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+
+    }
+
+    @Override
+    public void onHeaderClicked() {
+
+
+    }
+
+    @Override
+    public void onOptionClicked(int position, Object objectClicked) {
+
+        String userJson = getIntent().getStringExtra("currentUser");
+        user = new Gson().fromJson(userJson,User.class);
+
+
+        setTitle(mTitles.get(position));
+
+
+        // Set the right options selected
+        mMenuAdapter.setViewSelected(position, true);
+
+        // Navigate to the right fragment
+        switch (position) {
+            case 0:
+
+                Intent intent = new Intent(this, UserProfileActivity.class);
+                intent.putExtra("user", new Gson().toJson(user));
+                startActivity(intent);
+                break;
+
+            case 1:
+                startActivity(new Intent(this, MuseumListActivity.class));
+                break;
+            default:
+                //goToFragment(new MainFragment(), false);
+
+
+                break;
+        }
+
+        // Close the drawer
+        mViewHolder.mDuoDrawerLayout.closeDrawer();
+
+
+    }
+
+    private class ViewHolder {
+        private DuoDrawerLayout mDuoDrawerLayout;
+        private DuoMenuView mDuoMenuView;
+        private Toolbar mToolbar;
+        private ImageView avatar;
+        private TextView username;
+        private TextView bio;
+
+
+        ViewHolder() {
+            mDuoDrawerLayout = (DuoDrawerLayout) findViewById(R.id.drawer);
+            mDuoMenuView = (DuoMenuView) mDuoDrawerLayout.getMenuView();
+            mToolbar = (Toolbar) findViewById(R.id.toolbar);
+            avatar = (ImageView)mDuoMenuView.findViewById(R.id.userAvatar);
+            username = (TextView)mDuoMenuView.findViewById(R.id.username);
+            bio = (TextView)mDuoMenuView.findViewById(R.id.userbio);
+        }
+    }
+
 
     @Override
     public void onOpenAnimationStart() {
