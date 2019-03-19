@@ -1,6 +1,7 @@
 package com.ece1778.musego.UI.User;
 
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -76,10 +77,13 @@ public class UserProfileActivity extends AppCompatActivity{
         initData();
 
         created = findViewById(R.id.profile_created);
+        created.setTextColor(ContextCompat.getColor(UserProfileActivity.this, R.color.white));
         created.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selected = CREATED;
+                created.setTextColor(ContextCompat.getColor(UserProfileActivity.this, R.color.white));
+                liked.setTextColor(ContextCompat.getColor(UserProfileActivity.this, R.color.bg));
                 initRecycler();
             }
         });
@@ -89,6 +93,8 @@ public class UserProfileActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 selected = LIKED;
+                liked.setTextColor(ContextCompat.getColor(UserProfileActivity.this, R.color.white));
+                created.setTextColor(ContextCompat.getColor(UserProfileActivity.this, R.color.bg));
                 initRecycler();
             }
         });

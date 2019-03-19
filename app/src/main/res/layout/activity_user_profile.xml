@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:background="@color/darkGreen"
-            android:textColor="@color/white"
+            android:textColor="@color/bg"
             android:textStyle="bold"
             android:text="My Tours" />
 
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:background="@color/darkGreen"
-            android:textColor="@color/white"
+            android:textColor="@color/bg"
             android:textStyle="bold"
             android:text="Favorites"/>
 
