@@ -112,6 +112,7 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     private void initFirebase() {
         firebaseManager = new FirebaseManager(TourListActivity.this);
         mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
 
 
 
@@ -445,6 +446,7 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                     mAuth.signOut();
                     Intent intent = new Intent(TourListActivity.this, SigninActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
+
 
                 }
 
