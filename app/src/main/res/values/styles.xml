@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
     </style>
 
     <style name="MatchMatch">
@@ -17,9 +18,5 @@
         <item name="android:textColor">@color/darkGreen</item>
     </style>
 
-    <style name="tagTheme">
-        <item name="android:background">@color/darkGreen</item>
-        <item name="android:textColor">@color/purewhite</item>
-    </style>
 
 </resources>
