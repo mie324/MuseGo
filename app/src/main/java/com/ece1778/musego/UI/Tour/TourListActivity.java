@@ -380,7 +380,9 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
 
     private void handleToolbar() {
+
         setSupportActionBar(mViewHolder.mToolbar);
+
     }
 
     private void handleUserInfo(){

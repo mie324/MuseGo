@@ -32,7 +32,28 @@
             android:background="@color/darkGreen"
             android:theme="@style/Widget.AppCompat.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:titleTextColor="@color/white"/>
+            app:titleTextColor="@color/white"
+            app:title="MuseGo">
+
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="200dp">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:tint="@color/white"
+                    android:id="@+id/fab2"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_filter"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:elevation="0dp" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -61,22 +82,22 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="76dp"
+                android:layout_marginBottom="16dp"
                 android:src="@drawable/plus"
                 app:backgroundTint="@color/colorPrimary"/>
 
-            <android.support.design.widget.FloatingActionButton
-                android:tint="@color/white"
-                android:id="@+id/fab2"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="16dp"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/ic_filter"
-                app:backgroundTint="@color/colorPrimary"
-                app:elevation="0dp" />
+            <!--<android.support.design.widget.FloatingActionButton-->
+                <!--android:tint="@color/white"-->
+                <!--android:id="@+id/fab3"-->
+                <!--android:layout_width="56dp"-->
+                <!--android:layout_height="56dp"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_marginBottom="16dp"-->
+                <!--android:layout_marginRight="16dp"-->
+                <!--android:src="@drawable/ic_filter"-->
+                <!--app:backgroundTint="@color/colorPrimary"-->
+                <!--app:elevation="0dp" />-->
 
         <!--<com.ece1778.musego.Utils.Loading-->
         <!--android:id="@+id/loading"-->
