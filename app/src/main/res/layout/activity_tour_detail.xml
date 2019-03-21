@@ -26,14 +26,10 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="@color/colorPrimary">
 
-
-
                 <com.daimajia.slider.library.SliderLayout
                     android:id="@+id/detail_img"
                     android:layout_width="match_parent"
-                    android:layout_height="450dp"
-                    />
-
+                    android:layout_height="450dp" />
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -41,8 +37,6 @@
                     android:layout_height="?attr/actionBarSize"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     app:layout_collapseMode="pin" />
-
-
 
             </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -77,8 +71,7 @@
                             android:layout_marginRight="16dp"
                             android:text="Curator’s Tour"
                             android:textSize="25dp"
-                            android:textColor="@color/colorPrimary"
-                            />
+                            android:textColor="@color/colorPrimary" />
 
 
                         <LinearLayout
@@ -125,13 +118,10 @@
                         </LinearLayout>
                     </LinearLayout>
 
-
-
                         <View
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:layout_weight="1"
-                            />
+                            android:layout_weight="1" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -158,7 +148,6 @@
                         </LinearLayout>
 
                     </LinearLayout>
-
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -204,8 +193,6 @@
                             android:visibility="gone"/>
 
                     </LinearLayout>
-
-
 
                     <TextView
                         android:id="@+id/detail_desc"
@@ -253,9 +240,6 @@
                     </LinearLayout>
 
                 </LinearLayout>
-
-
-
 
 
         </android.support.v4.widget.NestedScrollView>

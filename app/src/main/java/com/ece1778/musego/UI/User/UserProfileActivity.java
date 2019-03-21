@@ -131,7 +131,6 @@ public class UserProfileActivity extends AppCompatActivity{
         username = (TextView) findViewById(R.id.username);
         bio = (TextView) findViewById(R.id.bio);
 
-
     }
 
 
