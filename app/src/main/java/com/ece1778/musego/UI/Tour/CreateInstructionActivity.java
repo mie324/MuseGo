@@ -53,7 +53,8 @@ public class CreateInstructionActivity extends AhoyOnboarderActivity implements 
         }
 
         setFinishButtonTitle("Let's begin");
-        setFinishButtonDrawableStyle(ContextCompat.getDrawable(this, R.drawable.rounded_button));
+        setFinishButtonDrawableStyle(ContextCompat.getDrawable(this, R.drawable.button));
+
 
         showNavigationControls(true);
         setImageBackground(R.drawable.bg2);

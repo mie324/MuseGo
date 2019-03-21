@@ -2,6 +2,7 @@ package com.ece1778.musego.UI.Tour;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
 
@@ -59,6 +60,8 @@ public class ShowInstructionActivity extends AhoyOnboarderActivity implements Vi
         setFinishButtonTitle("Let's begin");
         showNavigationControls(true);
         setImageBackground(R.drawable.bg2);
+        setFinishButtonDrawableStyle(ContextCompat.getDrawable(this, R.drawable.button));
+
 
         setOnboardPages(pages);
     }
