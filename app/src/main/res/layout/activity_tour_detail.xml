@@ -31,7 +31,7 @@
                 <com.daimajia.slider.library.SliderLayout
                     android:id="@+id/detail_img"
                     android:layout_width="match_parent"
-                    android:layout_height="450dp"
+                    android:layout_height="300dp"
                     />
 
 
@@ -253,10 +253,6 @@
                     </LinearLayout>
 
                 </LinearLayout>
-
-
-
-
 
         </android.support.v4.widget.NestedScrollView>
 
