@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.util.ArrayMap;
+import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,6 +41,8 @@ import com.ece1778.musego.UI.Museum.MuseumListActivity;
 import com.ece1778.musego.UI.Search.SearchFabFragment;
 import com.ece1778.musego.UI.User.UserProfileActivity;
 import com.ece1778.musego.Utils.Loading;
+import com.ece1778.musego.Utils.PopularCompareUtil;
+import com.ece1778.musego.Utils.TimeCompareUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -52,6 +56,8 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -72,6 +78,8 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
     private FloatingActionButton createPathBtn, fab2;
     private SearchFabFragment dialogFrag;
+
+    private AppCompatSpinner sorting;
 
     private FirebaseManager firebaseManager;
     private FirebaseAuth mAuth;
@@ -333,6 +341,28 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onClick(View v) {
                 dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
+            }
+        });
+
+        sorting = (AppCompatSpinner) findViewById(R.id.sorting);
+        sorting.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                if(position == 0){
+                    Collections.sort(pathList,new TimeCompareUtil());
+                }
+                else{
+                    Collections.sort(pathList, new PopularCompareUtil());
+                }
+
+                adapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 

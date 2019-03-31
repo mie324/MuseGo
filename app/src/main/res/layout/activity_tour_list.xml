@@ -65,6 +65,46 @@
                 android:layout_alignParentTop="true"
                 android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="Sorted By:"
+                        android:textSize="16dp" />
+
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/sorting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.5"
+                        android:entries="@array/sorting"
+                        android:theme="@style/spinnerTheme">
+
+                    </android.support.v7.widget.AppCompatSpinner>
+
+                    <!--<Spinner-->
+                        <!--android:id="@+id/uploadTour_minute"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_weight="0.5"-->
+                        <!--android:entries="@array/minute"-->
+                        <!--android:theme="@style/spinnerTheme"/>-->
+
+                </LinearLayout>
+
+
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycleViewId"
                     android:layout_width="match_parent"

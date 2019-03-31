@@ -4,27 +4,21 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
-import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.ece1778.musego.Model.User;
 import com.bumptech.glide.request.RequestOptions;
 import com.ece1778.musego.R;
-import com.ece1778.musego.UI.Museum.MuseumListActivity;
-import com.ece1778.musego.UI.Tour.TourDetailActivity;
 import com.ece1778.musego.UI.Tour.TourListActivity;
 import com.google.gson.Gson;
-import com.like.LikeButton;
 
 import java.util.HashMap;
 import java.util.List;
