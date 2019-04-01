@@ -31,6 +31,8 @@
     <string-array name="sorting">
         <item>Most Recent</item>
         <item>Most Popular</item>
+        <item>Length Short to Long</item>
+        <item>Length Long to Short</item>
     </string-array>
 
     <array name="menuOptions">

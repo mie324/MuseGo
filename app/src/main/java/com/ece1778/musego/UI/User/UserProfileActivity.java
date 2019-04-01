@@ -61,6 +61,8 @@ public class UserProfileActivity extends AppCompatActivity{
     private TextView bio;
     private Button created;
     private Button liked;
+    private ImageView created_tab;
+    private ImageView liked_tab;
 
     private ArrayList<Path> createdPath = new ArrayList<>();
     private ArrayList<Path> likedPath = new ArrayList<>();
@@ -77,24 +79,31 @@ public class UserProfileActivity extends AppCompatActivity{
         initData();
 
         created = findViewById(R.id.profile_created);
+        created_tab = findViewById(R.id.created_tab);
         created.setTextColor(ContextCompat.getColor(UserProfileActivity.this, R.color.white));
+        created_tab.setBackgroundColor(ContextCompat.getColor(UserProfileActivity.this,R.color.yellow));
         created.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selected = CREATED;
                 created.setTextColor(ContextCompat.getColor(UserProfileActivity.this, R.color.white));
+                created_tab.setBackgroundColor(ContextCompat.getColor(UserProfileActivity.this,R.color.yellow));
                 liked.setTextColor(ContextCompat.getColor(UserProfileActivity.this, R.color.bg));
+                liked_tab.setBackgroundColor(ContextCompat.getColor(UserProfileActivity.this,R.color.darkGreen));
                 initRecycler();
             }
         });
 
         liked = findViewById(R.id.profile_liked);
+        liked_tab = findViewById(R.id.liked_tab);
         liked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selected = LIKED;
                 liked.setTextColor(ContextCompat.getColor(UserProfileActivity.this, R.color.white));
+                liked_tab.setBackgroundColor(ContextCompat.getColor(UserProfileActivity.this,R.color.yellow));
                 created.setTextColor(ContextCompat.getColor(UserProfileActivity.this, R.color.bg));
+                created_tab.setBackgroundColor(ContextCompat.getColor(UserProfileActivity.this,R.color.darkGreen));
                 initRecycler();
             }
         });

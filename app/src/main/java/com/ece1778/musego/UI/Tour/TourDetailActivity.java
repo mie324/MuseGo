@@ -189,61 +189,61 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
         }
 
 
-        likeBt.setOnLikeListener(new OnLikeListener() {
-            @Override
-            public void liked(LikeButton likeButton) {
-
-                if (!path.getLikeList().contains(uid)) {
-
-
-                    path.getLikeList().add(uid);
-
-                   likeCount.setText("" + path.getLikeList().size());
-
-                    firebaseManager.getInstRef()
-                            .document(instName)
-                            .collection("paths")
-                            .document(path.getpId())
-                            .update("likeList", path.getLikeList())
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-
-
-
-
-                                }
-                            });
-                }
-            }
-
-
-            @Override
-            public void unLiked(LikeButton likeButton) {
+//        likeBt.setOnLikeListener(new OnLikeListener() {
+//            @Override
+//            public void liked(LikeButton likeButton) {
+//
+//                if (!path.getLikeList().contains(uid)) {
+//
+//
+//                    path.getLikeList().add(uid);
+//
+//                   likeCount.setText("" + path.getLikeList().size());
+//
+//                    firebaseManager.getInstRef()
+//                            .document(instName)
+//                            .collection("paths")
+//                            .document(path.getpId())
+//                            .update("likeList", path.getLikeList())
+//                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                @Override
+//                                public void onSuccess(Void aVoid) {
+//
+//
+//
+//
+//                                }
+//                            });
+//                }
+//            }
 
 
-                if(path.getLikeList().contains(uid)) {
-
-                    path.getLikeList().remove(uid);
-
-                  likeCount.setText(""+path.getLikeList().size());
-
-                    firebaseManager.getInstRef()
-                            .document(instName)
-                            .collection("paths")
-                            .document(path.getpId())
-                            .update("likeList", path.getLikeList())
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-
-                                    // ((ViewHolder_Path) viewHolder).likeCount.setText(""+path.getLikeList().size());
-
-                                }
-                            });
-                }
-            }
-        });
+//            @Override
+//            public void unLiked(LikeButton likeButton) {
+//
+//
+//                if(path.getLikeList().contains(uid)) {
+//
+//                    path.getLikeList().remove(uid);
+//
+//                  likeCount.setText(""+path.getLikeList().size());
+//
+//                    firebaseManager.getInstRef()
+//                            .document(instName)
+//                            .collection("paths")
+//                            .document(path.getpId())
+//                            .update("likeList", path.getLikeList())
+//                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                @Override
+//                                public void onSuccess(Void aVoid) {
+//
+//                                    // ((ViewHolder_Path) viewHolder).likeCount.setText(""+path.getLikeList().size());
+//
+//                                }
+//                            });
+//                }
+//            }
+//        });
 
     }
 

@@ -42,6 +42,7 @@ import com.ece1778.musego.UI.Search.SearchFabFragment;
 import com.ece1778.musego.UI.User.UserProfileActivity;
 import com.ece1778.musego.Utils.Loading;
 import com.ece1778.musego.Utils.PopularCompareUtil;
+import com.ece1778.musego.Utils.ShortToLongCompareUtil;
 import com.ece1778.musego.Utils.TimeCompareUtil;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -349,14 +350,30 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                if(position == 0){
-                    Collections.sort(pathList,new TimeCompareUtil());
-                }
-                else{
-                    Collections.sort(pathList, new PopularCompareUtil());
+
+
+                switch(position){
+                    case 0:
+                        Collections.sort(pathList,new TimeCompareUtil());
+                        adapter.notifyDataSetChanged();
+                        break;
+                    case 1:
+                        Collections.sort(pathList, new PopularCompareUtil());
+                        adapter.notifyDataSetChanged();
+                        break;
+                    case 2:
+                        Collections.sort(pathList, new ShortToLongCompareUtil());
+                        adapter.notifyDataSetChanged();
+                        break;
+                    case 3:
+                        Collections.sort(pathList, new ShortToLongCompareUtil());
+                        Collections.reverse(pathList);
+                        adapter.notifyDataSetChanged();
+                        break;
+
                 }
 
-                adapter.notifyDataSetChanged();
+
 
             }
 

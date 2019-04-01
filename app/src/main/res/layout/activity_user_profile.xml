@@ -74,25 +74,52 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/profile_created"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:background="@color/darkGreen"
-            android:textColor="@color/bg"
-            android:textStyle="bold"
-            android:text="My Tours" />
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/profile_liked"
+            <Button
+                android:id="@+id/profile_created"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/darkGreen"
+                style="?android:attr/borderlessButtonStyle"
+                android:textColor="@color/bg"
+                android:textStyle="bold"
+                android:text="My Tours" />
+            <ImageView
+                android:id="@+id/created_tab"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/darkGreen"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:background="@color/darkGreen"
-            android:textColor="@color/bg"
-            android:textStyle="bold"
-            android:text="Favorites"/>
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/profile_liked"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/darkGreen"
+                style="?android:attr/borderlessButtonStyle"
+                android:textColor="@color/bg"
+                android:textStyle="bold"
+                android:text="Favorites"/>
+
+            <ImageView
+                android:id="@+id/liked_tab"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/darkGreen"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
