@@ -37,8 +37,8 @@ public class ShowInstructionActivity extends AhoyOnboarderActivity implements Vi
 
     private void initView() {
 
-        AhoyOnboarderCard ahoyOnboarderCard1 = new AhoyOnboarderCard("Scan Starter Image", "Find a starter image, adjust your camera to scan the starter image.", R.drawable.instruction1);
-        AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Follow Indicators", "Follow the arrow indicators when walking around.", R.drawable.instruction2);
+        AhoyOnboarderCard ahoyOnboarderCard1 = new AhoyOnboarderCard("Scan the Dino", "Find a starter image, adjust your camera to scan the starter image.", R.drawable.instruction1);
+        AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Follow AR Objects", "Follow the arrow indicators when walking around.", R.drawable.instruction2);
         ahoyOnboarderCard1.setBackgroundColor(R.color.purewhite);
         ahoyOnboarderCard2.setBackgroundColor(R.color.purewhite);
 
