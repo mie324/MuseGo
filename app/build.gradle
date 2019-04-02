@@ -129,3 +129,14 @@ sceneform.asset('sampledata/wash.obj',
         'default',
         'sampledata/wash.sfa',
         'src/main/res/raw/wash')
+
+
+sceneform.asset('sampledata/temp_cold.obj',
+        'default',
+        'sampledata/temp_cold.sfa',
+        'src/main/res/raw/temp_cold')
+
+sceneform.asset('sampledata/temp_hot.obj',
+        'default',
+        'sampledata/temp_hot.sfa',
+        'src/main/res/raw/temp_hot')

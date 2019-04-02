@@ -8,15 +8,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.ece1778.musego.BaseActivity;
@@ -43,6 +47,7 @@ import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.Scene;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
+import com.google.ar.sceneform.rendering.Color;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.TransformableNode;
@@ -51,7 +56,9 @@ import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
@@ -69,16 +76,20 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
     private static final int LIGHT = 7;
     private static final int NOISE = 8;
     private static final int TEMP = 9;
+    private static final int TEMP_HOT = 91;
+    private static final int TEMP_COLD = 92;
     private static final int WASH = 10;
 
     private CustomArFragment arFragment;
     private ModelRenderable startRenderable, endRenderable, arrowRenderable;
     private ModelRenderable wheelRenderable, crowdRenderable, foodRenderable, lightRenderable, noiseRenderable, tempRenderable, washRenderable;
+    private ModelRenderable hotRenderable, coldRenderable;
     private int selected = ARROW;
 
     private com.ece1778.musego.Model.Node starter;
     private com.ece1778.musego.Model.Node end;
     private List<com.ece1778.musego.Model.Node> nodes = new ArrayList<>();
+    private Set<String> sensor = new HashSet<>();
 
     private Button renderable_arrow;
     private Button renderable_end;
@@ -169,7 +180,7 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                         selected = LIGHT;
                         break;
                     case 4:
-                        selected = TEMP;
+                        initPopWindow(i);
                         break;
                     case 5:
                         selected = WHERECHAIR;
@@ -198,6 +209,64 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
         });
 
         toggleBtn.setVisibility(View.GONE);
+    }
+
+    private void initPopWindow(int i) {
+
+        if( i == 4) {
+
+            View view = LayoutInflater.from(this).inflate(R.layout.cardview_temp, null, false);
+            Button hot = (Button) view.findViewById(R.id.temp_hot);
+            Button humid = (Button) view.findViewById(R.id.temp_humid);
+            Button cold = (Button) view.findViewById(R.id.temp_cold);
+            Button dismiss = (Button) view.findViewById(R.id.temp_dismiss);
+
+            final PopupWindow popWindow = new PopupWindow(view,
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+
+            popWindow.setTouchable(true);
+            popWindow.setTouchInterceptor(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return false;
+                }
+            });
+            popWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+            popWindow.showAtLocation(view.getRootView(), Gravity.CENTER, 0, 0);
+
+            dismiss.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popWindow.dismiss();
+                }
+            });
+
+
+            hot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selected = TEMP_HOT;
+                    popWindow.dismiss();
+                }
+            });
+
+            humid.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selected = TEMP;
+                    popWindow.dismiss();
+                }
+            });
+
+            cold.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selected = TEMP_COLD;
+                    popWindow.dismiss();
+                }
+            });
+
+        }
     }
 
     @Override
@@ -337,6 +406,31 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                             return null;
                         });
 
+
+        ModelRenderable.builder()
+                .setSource(this, R.raw.temp_cold)
+                .build()
+                .thenAccept(renderable -> coldRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, R.raw.temp_hot)
+                .build()
+                .thenAccept(renderable -> hotRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
         ModelRenderable.builder()
                 .setSource(this, R.raw.wash)
                 .build()
@@ -351,36 +445,36 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
 
     }
 
-    private void addInfoCard(Node flag) {
-        Node infoCard = new Node();
-        infoCard.setParent(flag);
-        infoCard.setLocalPosition(new Vector3(0f, 0.25f, 0f));
-
-        ViewRenderable.builder()
-                .setView(this, R.layout.description_card)
-                .build()
-                .thenAccept(
-                        (renderable) -> {
-                            infoCard.setRenderable(renderable);
-                            EditText mContent = (EditText) renderable.getView().findViewById(R.id.card_content);
-                            Button mUploadBtn = (Button) renderable.getView().findViewById(R.id.card_upload);
-                            mUploadBtn.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Log.d(TAG, "Content is" + mContent.getText().toString());
-                                    mUploadBtn.setVisibility(View.INVISIBLE);
-
-                                }
-                            });
-                        })
-                .exceptionally(
-                        throwable -> {
-                            Toast toast = Toast.makeText(this, "Unable to load andy renderable", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER, 0, 0);
-                            toast.show();
-                            return null;
-                        });
-    }
+//    private void addInfoCard(Node flag) {
+//        Node infoCard = new Node();
+//        infoCard.setParent(flag);
+//        infoCard.setLocalPosition(new Vector3(0f, 0.25f, 0f));
+//
+//        ViewRenderable.builder()
+//                .setView(this, R.layout.description_card)
+//                .build()
+//                .thenAccept(
+//                        (renderable) -> {
+//                            infoCard.setRenderable(renderable);
+//                            EditText mContent = (EditText) renderable.getView().findViewById(R.id.card_content);
+//                            Button mUploadBtn = (Button) renderable.getView().findViewById(R.id.card_upload);
+//                            mUploadBtn.setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    Log.d(TAG, "Content is" + mContent.getText().toString());
+//                                    mUploadBtn.setVisibility(View.INVISIBLE);
+//
+//                                }
+//                            });
+//                        })
+//                .exceptionally(
+//                        throwable -> {
+//                            Toast toast = Toast.makeText(this, "Unable to load andy renderable", Toast.LENGTH_LONG);
+//                            toast.setGravity(Gravity.CENTER, 0, 0);
+//                            toast.show();
+//                            return null;
+//                        });
+//    }
 
     private void createPath() {
 
@@ -427,42 +521,64 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(wheelRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, WHERECHAIR));
+                        sensor.add("WHERECHAIR");
 
                     }else if(selected == CROWD) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(crowdRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, CROWD));
+                        sensor.add("CROWD");
+
 
                     }else if(selected == FOOD) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(foodRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, FOOD));
+                        sensor.add("FOOD");
 
                     }else if(selected == LIGHT) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(lightRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, LIGHT));
+                        sensor.add("LIGHT");
 
                     }else if(selected == NOISE) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(noiseRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, NOISE));
+                        sensor.add("NOISE");
 
                     }else if(selected == TEMP) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(tempRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, TEMP));
+                        sensor.add("TEMP");
+
+                    }else if(selected == TEMP_HOT) {
+                        object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+                        object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
+                        object.setRenderable(hotRenderable);
+                        nodes.add(new com.ece1778.musego.Model.Node(t, r, TEMP_HOT));
+                        sensor.add("TEMP_HOT");
+
+                    }else if(selected == TEMP_COLD) {
+                        object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+                        object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
+                        object.setRenderable(coldRenderable);
+                        nodes.add(new com.ece1778.musego.Model.Node(t, r, TEMP_COLD));
+                        sensor.add("TEMP_COLD");
 
                     }else if(selected == WASH) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(washRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, WASH));
+                        sensor.add("WASH");
 
                     }
 
@@ -478,9 +594,13 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
         builder.setPositiveButton("Upload", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
+                List<String> sensorList = new ArrayList<String>();
+                sensorList.addAll(sensor);
+
                 NodeList nodeList = new NodeList(starter, end, nodes);
                 Intent intent = new Intent(ArCreateTourActivity.this, UploadTourActivity.class);
                 intent.putExtra("nodeList", new Gson().toJson(nodeList));
+                intent.putExtra("sensor",new Gson().toJson(sensorList));
                 intent.putExtra("instName", getIntent().getStringExtra("instName"));
                 startActivity(intent);
                 finish();

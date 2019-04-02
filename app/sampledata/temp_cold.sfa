@@ -7,13 +7,12 @@
           baseColor: null,
         },
         {
-         baseColorTint: [
-                     0.996078431372549,
-                     0.796078431372549,
-                     0.313725490196078,
-                     1,
-         ]
-
+          baseColorTint: [
+            0.01,
+            0.60999999999999999,
+            0.90000000000000002,
+            1,
+          ],
         },
         {
           metallic: 0,
@@ -34,8 +33,8 @@
       'Orientation',
     ],
     collision: {},
-    file: 'sampledata/temp.obj',
-    name: 'temp',
+    file: 'sampledata/temp_cold.obj',
+    name: 'temp_cold',
     recenter: 'root',
     scale: 0.002,
   },

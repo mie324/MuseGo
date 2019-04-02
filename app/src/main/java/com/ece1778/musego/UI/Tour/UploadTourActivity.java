@@ -73,8 +73,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
@@ -111,6 +113,7 @@ public class UploadTourActivity extends BaseActivity {
     private String instName;
     private List<String> imgList = new ArrayList<>();
     private List<String> imgUriList = new ArrayList<>();
+    private ArrayList<String> sensorList = new ArrayList<>();
 
     private Loading loading;
 
@@ -125,6 +128,9 @@ public class UploadTourActivity extends BaseActivity {
         endNode = nodeList.getEnd_node();
         nodes = nodeList.getNodes();
         instName = this.getIntent().getStringExtra("instName");
+
+        String sensor = this.getIntent().getStringExtra("sensor");
+        sensorList = new Gson().fromJson(sensor, ArrayList.class);
 
         initView();
         initFirebase();
@@ -177,6 +183,14 @@ public class UploadTourActivity extends BaseActivity {
         });
 
         TagView tagGroup = (TagView) findViewById(R.id.tag_group);
+        for (String sensor : sensorList) {
+            Log.d(TAG, "sensor tag is "+ sensor);
+            Tag tag = new Tag("#".concat(sensor));
+            tag.tagTextColor = Color.parseColor("#FFFFFF");
+            tag.layoutColor = Color.parseColor("#FECB50");
+            tagGroup.addTag(tag);
+        }
+
         tagGroup.setOnTagDeleteListener(new TagView.OnTagDeleteListener() {
 
             @Override
@@ -379,6 +393,7 @@ public class UploadTourActivity extends BaseActivity {
                                 estimatedTime,
                                 tags,
                                 new ArrayList<String>(), //likeList
+                                sensorList,
                                 imgUriList,
                                 startNode,
                                 endNode,

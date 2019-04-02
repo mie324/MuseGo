@@ -15,6 +15,8 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ece1778.musego.BaseActivity;
@@ -42,6 +44,7 @@ import com.google.ar.sceneform.Scene;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
+import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.ar.sceneform.ux.ArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
 import com.google.firebase.firestore.CollectionReference;
@@ -68,11 +71,14 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
     private static final int LIGHT = 7;
     private static final int NOISE = 8;
     private static final int TEMP = 9;
+    private static final int TEMP_HOT = 91;
+    private static final int TEMP_COLD = 92;
     private static final int WASH = 10;
 
     private CustomArFragmentShow arFragment;
     private ModelRenderable startRenderable, endRenderable, arrowRenderable;
     private ModelRenderable wheelRenderable, crowdRenderable, foodRenderable, lightRenderable, noiseRenderable, tempRenderable, washRenderable;
+    private ModelRenderable hotRenderable, coldRenderable;
 
 
     private CollectionReference pathRef;
@@ -249,6 +255,30 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
                         });
 
         ModelRenderable.builder()
+                .setSource(this, R.raw.temp_cold)
+                .build()
+                .thenAccept(renderable -> coldRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, R.raw.temp_hot)
+                .build()
+                .thenAccept(renderable -> hotRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
+        ModelRenderable.builder()
                 .setSource(this, R.raw.wash)
                 .build()
                 .thenAccept(renderable -> washRenderable = renderable)
@@ -347,6 +377,20 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
 
             andy.setRenderable(tempRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+            addInfoCard(andy, TEMP);
+
+        }else if (node.getTag() == TEMP_HOT) {
+
+            andy.setRenderable(hotRenderable);
+            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+            addInfoCard(andy, TEMP_HOT);
+
+        }else if (node.getTag() == TEMP_COLD) {
+
+            andy.setRenderable(coldRenderable);
+            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+            addInfoCard(andy, TEMP_COLD);
+
 
         }else if (node.getTag() == WASH) {
 
@@ -361,6 +405,39 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
 
         andy.select();
 
+    }
+
+    private void addInfoCard(com.google.ar.sceneform.Node flag, int tag) {
+        com.google.ar.sceneform.Node infoCard = new com.google.ar.sceneform.Node();
+        infoCard.setParent(flag);
+        infoCard.setLocalPosition(new Vector3(0f, 0.25f, 0f));
+        infoCard.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 90f));
+
+        ViewRenderable.builder()
+                .setView(this, R.layout.description_card)
+                .build()
+                .thenAccept(
+                        (renderable) -> {
+                            infoCard.setRenderable(renderable);
+
+                            TextView textView = (TextView) renderable.getView().findViewById(R.id.desc_text);
+                            if(tag == TEMP_HOT){
+                                textView.setText("Current temperature is above 40C, please take care!");
+                            }else if(tag == TEMP_COLD){
+                                textView.setText("Current temperature is below 10C, please take care!");
+                            }else if(tag == TEMP){
+                                textView.setText("Current temperature is humid, please take care!");
+                            }
+
+
+                        })
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load andy renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
     }
 
     private float[] calToffset(Node node, Translation t) {
