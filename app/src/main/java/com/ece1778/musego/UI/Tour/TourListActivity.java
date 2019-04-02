@@ -148,6 +148,8 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                                     (int) (long) document.get("role")
                             );
                             role = (int) (long) document.get("role");
+
+                            handleUserInfo();
                         }
 
                     }
@@ -390,7 +392,7 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
         // Handle toolbar actions
         handleToolbar();
 
-        handleUserInfo();
+        //handleUserInfo();
 
         // Handle menu actions
         handleMenu();
