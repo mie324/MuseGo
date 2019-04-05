@@ -36,7 +36,7 @@
     file: 'sampledata/crowd.obj',
     name: 'crowd',
     recenter: 'root',
-    scale: 0.002,
+    scale: 0.0008,
   },
   version: '0.54:2',
 }

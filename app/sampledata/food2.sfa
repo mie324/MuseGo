@@ -36,7 +36,7 @@
     file: 'sampledata/food2.obj',
     name: 'food2',
     recenter: 'root',
-    scale: 0.020998000000000001,
+    scale: 0.004,
   },
   version: '0.54:2',
 }

@@ -62,24 +62,30 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
 
     private static final String TAG = ArShowTourActivity.class.getSimpleName();
     private static final double MIN_OPENGL_VERSION = 3.0;
+    private static final int END_MARKER = 0;
     private static final int START_MARKER = 1;
     private static final int ARROW = 2;
-    private static final int END_MARKER = 3;
-    private static final int WHEEL = 4;
-    private static final int CROWD = 5;
-    private static final int FOOD = 6;
+    private static final int WASH  = 3;
+    private static final int CROWD = 4;
+    private static final int FOOD = 5;
+    private static final int HAND = 6;
     private static final int LIGHT = 7;
+    private static final int DARK = 71;
+    private static final int BRIGHT = 72;
     private static final int NOISE = 8;
+    private static final int LOUD = 81;
+    private static final int QUIET = 82;
     private static final int TEMP = 9;
-    private static final int TEMP_HOT = 91;
-    private static final int TEMP_COLD = 92;
-    private static final int WASH = 10;
+    private static final int HOT = 91;
+    private static final int COLD = 92;
+    private static final int HUMID = 93;
 
     private CustomArFragmentShow arFragment;
     private ModelRenderable startRenderable, endRenderable, arrowRenderable;
-    private ModelRenderable wheelRenderable, crowdRenderable, foodRenderable, lightRenderable, noiseRenderable, tempRenderable, washRenderable;
-    private ModelRenderable hotRenderable, coldRenderable;
-
+    private ModelRenderable washRenderable, crowdRenderable, foodRenderable, handRenderable;
+    private ModelRenderable darkRenderable, brightRenderable;
+    private ModelRenderable quietRenderable, loudRenderable;
+    private ModelRenderable coldRenderable, hotRenderable, humidRenderable;
 
     private CollectionReference pathRef;
     private int counter = 0;
@@ -158,6 +164,7 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
                             return null;
                         });
 
+
         ModelRenderable.builder()
                 .setSource(this, R.raw.model)
                 .build()
@@ -183,19 +190,19 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
                         });
 
         ModelRenderable.builder()
-                .setSource(this, R.raw.tinker)
+                .setSource(this, R.raw.washroom)
                 .build()
-                .thenAccept(renderable -> wheelRenderable = renderable)
+                .thenAccept(renderable -> washRenderable = renderable)
                 .exceptionally(
                         throwable -> {
-                            Toast toast = Toast.makeText(this, "Unable to load wheel marker renderable", Toast.LENGTH_LONG);
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
                             toast.setGravity(Gravity.CENTER, 0, 0);
                             toast.show();
                             return null;
                         });
 
         ModelRenderable.builder()
-                .setSource(this, R.raw.crowd)
+                .setSource(this, R.raw.crowd_title)
                 .build()
                 .thenAccept(renderable -> crowdRenderable = renderable)
                 .exceptionally(
@@ -207,7 +214,7 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
                         });
 
         ModelRenderable.builder()
-                .setSource(this, R.raw.food)
+                .setSource(this, R.raw.food2)
                 .build()
                 .thenAccept(renderable -> foodRenderable = renderable)
                 .exceptionally(
@@ -219,9 +226,9 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
                         });
 
         ModelRenderable.builder()
-                .setSource(this, R.raw.light)
+                .setSource(this, R.raw.interactive)
                 .build()
-                .thenAccept(renderable -> lightRenderable = renderable)
+                .thenAccept(renderable -> handRenderable = renderable)
                 .exceptionally(
                         throwable -> {
                             Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
@@ -231,9 +238,9 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
                         });
 
         ModelRenderable.builder()
-                .setSource(this, R.raw.noise)
+                .setSource(this, R.raw.bright)
                 .build()
-                .thenAccept(renderable -> noiseRenderable = renderable)
+                .thenAccept(renderable -> brightRenderable = renderable)
                 .exceptionally(
                         throwable -> {
                             Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
@@ -243,9 +250,9 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
                         });
 
         ModelRenderable.builder()
-                .setSource(this, R.raw.temp)
+                .setSource(this, R.raw.dark)
                 .build()
-                .thenAccept(renderable -> tempRenderable = renderable)
+                .thenAccept(renderable -> darkRenderable = renderable)
                 .exceptionally(
                         throwable -> {
                             Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
@@ -255,7 +262,20 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
                         });
 
         ModelRenderable.builder()
-                .setSource(this, R.raw.temp_cold)
+                .setSource(this, R.raw.hot)
+                .build()
+                .thenAccept(renderable -> hotRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
+
+        ModelRenderable.builder()
+                .setSource(this, R.raw.cold)
                 .build()
                 .thenAccept(renderable -> coldRenderable = renderable)
                 .exceptionally(
@@ -267,9 +287,9 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
                         });
 
         ModelRenderable.builder()
-                .setSource(this, R.raw.temp_hot)
+                .setSource(this, R.raw.humid)
                 .build()
-                .thenAccept(renderable -> hotRenderable = renderable)
+                .thenAccept(renderable -> humidRenderable = renderable)
                 .exceptionally(
                         throwable -> {
                             Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
@@ -279,9 +299,21 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
                         });
 
         ModelRenderable.builder()
-                .setSource(this, R.raw.wash)
+                .setSource(this, R.raw.quiet)
                 .build()
-                .thenAccept(renderable -> washRenderable = renderable)
+                .thenAccept(renderable -> quietRenderable = renderable)
+                .exceptionally(
+                        throwable -> {
+                            Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
+                            return null;
+                        });
+
+        ModelRenderable.builder()
+                .setSource(this, R.raw.loud)
+                .build()
+                .thenAccept(renderable -> loudRenderable = renderable)
                 .exceptionally(
                         throwable -> {
                             Toast toast = Toast.makeText(this, "Unable to load end marker renderable", Toast.LENGTH_LONG);
@@ -296,7 +328,7 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
 
         //removePreviousAnchors();
 
-        if (startRenderable == null || endRenderable == null || arrowRenderable == null || wheelRenderable == null) {
+        if (startRenderable == null || endRenderable == null || arrowRenderable == null) {
             Log.d(TAG, "!!!!!!!Renderable unprovided!");
             return;
         }
@@ -348,9 +380,9 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 225f));
             andy.setLocalPosition(new Vector3(0f, 0.2f, 0f));
 
-        } else if (node.getTag() == WHEEL) {
+        } else if (node.getTag() == WASH) {
 
-            andy.setRenderable(wheelRenderable);
+            andy.setRenderable(washRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
 
         } else if (node.getTag() == CROWD) {
@@ -363,43 +395,54 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
             andy.setRenderable(foodRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
 
-        }else if (node.getTag() == LIGHT) {
+        }else if (node.getTag() == HAND) {
 
-            andy.setRenderable(lightRenderable);
+            andy.setRenderable(handRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
 
-        }else if (node.getTag() == NOISE) {
+        }else if (node.getTag() == DARK) {
 
-            andy.setRenderable(noiseRenderable);
+            andy.setRenderable(darkRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
 
-        }else if (node.getTag() == TEMP) {
+        }else if (node.getTag() == BRIGHT) {
 
-            andy.setRenderable(tempRenderable);
+            andy.setRenderable(brightRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
-            addInfoCard(andy, TEMP);
 
-        }else if (node.getTag() == TEMP_HOT) {
+        }else if (node.getTag() == QUIET) {
 
-            andy.setRenderable(hotRenderable);
+            andy.setRenderable(quietRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
-            addInfoCard(andy, TEMP_HOT);
 
-        }else if (node.getTag() == TEMP_COLD) {
+        }else if (node.getTag() == LOUD) {
+
+            andy.setRenderable(loudRenderable);
+            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+
+        }else if (node.getTag() == COLD) {
 
             andy.setRenderable(coldRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
-            addInfoCard(andy, TEMP_COLD);
 
 
-        }else if (node.getTag() == WASH) {
+        }else if (node.getTag() == HOT) {
 
-            andy.setRenderable(washRenderable);
+            andy.setRenderable(hotRenderable);
+            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+
+        }else if (node.getTag() == HUMID) {
+
+            andy.setRenderable(humidRenderable);
+            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+
+        }else if (node.getTag() == END_MARKER) {
+
+            andy.setRenderable(endRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
 
         } else {
-
-            andy.setRenderable(endRenderable);
+            andy.setRenderable(arrowRenderable);
             andy.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
         }
 
@@ -407,38 +450,6 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
 
     }
 
-    private void addInfoCard(com.google.ar.sceneform.Node flag, int tag) {
-        com.google.ar.sceneform.Node infoCard = new com.google.ar.sceneform.Node();
-        infoCard.setParent(flag);
-        infoCard.setLocalPosition(new Vector3(0f, 0.25f, 0f));
-        infoCard.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 90f));
-
-        ViewRenderable.builder()
-                .setView(this, R.layout.description_card)
-                .build()
-                .thenAccept(
-                        (renderable) -> {
-                            infoCard.setRenderable(renderable);
-
-                            TextView textView = (TextView) renderable.getView().findViewById(R.id.desc_text);
-                            if(tag == TEMP_HOT){
-                                textView.setText("Current temperature is above 40C, please take care!");
-                            }else if(tag == TEMP_COLD){
-                                textView.setText("Current temperature is below 10C, please take care!");
-                            }else if(tag == TEMP){
-                                textView.setText("Current temperature is humid, please take care!");
-                            }
-
-
-                        })
-                .exceptionally(
-                        throwable -> {
-                            Toast toast = Toast.makeText(this, "Unable to load andy renderable", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER, 0, 0);
-                            toast.show();
-                            return null;
-                        });
-    }
 
     private float[] calToffset(Node node, Translation t) {
 

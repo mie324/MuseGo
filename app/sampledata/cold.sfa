@@ -36,7 +36,7 @@
     file: 'sampledata/cold.obj',
     name: 'cold',
     recenter: 'root',
-    scale: 0.02000000000000001,
+    scale: 0.004,
   },
   version: '0.54:2',
 }

@@ -36,7 +36,7 @@
     file: 'sampledata/washroom.obj',
     name: 'washroom',
     recenter: 'root',
-    scale: 0.002,
+    scale: 0.004,
   },
   version: '0.54:2',
 }

@@ -36,7 +36,7 @@
     file: 'sampledata/dark.obj',
     name: 'dark',
     recenter: 'root',
-    scale: 0.02000000000000001,
+    scale: 0.004,
   },
   version: '0.54:2',
 }

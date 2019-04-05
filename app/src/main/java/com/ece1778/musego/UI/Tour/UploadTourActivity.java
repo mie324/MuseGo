@@ -206,7 +206,8 @@ public class UploadTourActivity extends BaseActivity {
                 });
                 builder.setNegativeButton("No", null);
                 builder.show();
-                tags.remove(position);
+                tags.remove(position-sensorList.size()
+                );
 
             }
         });

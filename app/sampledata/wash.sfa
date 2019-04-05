@@ -8,9 +8,9 @@
         },
         {
           baseColorTint: [
-            0.996078431372549,
-            0.796078431372549,
-            0.313725490196078,
+            0.59999999999999998,
+            0.59999999999999998,
+            0.59999999999999998,
             1,
           ],
         },
@@ -33,10 +33,10 @@
       'Orientation',
     ],
     collision: {},
-    file: 'sampledata/interactive.obj',
-    name: 'interactive',
+    file: 'sampledata/wash.obj',
+    name: 'wash',
     recenter: 'root',
-    scale: 0.004,
+    scale: 0.10000000000000001,
   },
   version: '0.54:2',
 }

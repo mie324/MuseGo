@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+
     <cn.bingoogolapple.qrcode.zxing.ZXingView
         android:id="@+id/scanbox"
         style="@style/MatchMatch"
