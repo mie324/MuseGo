@@ -74,7 +74,11 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
     private static final int CROWD = 5;
     private static final int FOOD = 6;
     private static final int LIGHT = 7;
+    private static final int LIGHT_BRIGHT = 71;
+    private static final int LIGHT_DARK = 72;
     private static final int NOISE = 8;
+    private static final int SOUND_LOUD = 81;
+    private static final int SOUND_QUIET = 82;
     private static final int TEMP = 9;
     private static final int TEMP_HOT = 91;
     private static final int TEMP_COLD = 92;
@@ -174,13 +178,13 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                         selected = CROWD;
                         break;
                     case 2:
-                        selected = NOISE;
+                        initPopWindow(NOISE);
                         break;
                     case 3:
-                        selected = LIGHT;
+                        initPopWindow(LIGHT);
                         break;
                     case 4:
-                        initPopWindow(i);
+                        initPopWindow(TEMP);
                         break;
                     case 5:
                         selected = WHERECHAIR;
@@ -213,7 +217,7 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
 
     private void initPopWindow(int i) {
 
-        if( i == 4) {
+        if( i == TEMP) {
 
             View view = LayoutInflater.from(this).inflate(R.layout.cardview_temp, null, false);
             Button hot = (Button) view.findViewById(R.id.temp_hot);
@@ -265,6 +269,97 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                     popWindow.dismiss();
                 }
             });
+
+        }else if(i == LIGHT){
+
+            View view = LayoutInflater.from(this).inflate(R.layout.cardview_light, null, false);
+            Button dismiss = (Button) view.findViewById(R.id.light_dismiss);
+            Button bright = (Button) view.findViewById(R.id.light_bright);
+            Button dark = (Button) view.findViewById(R.id.light_dark);
+
+            final PopupWindow popWindow = new PopupWindow(view,
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+
+            popWindow.setTouchable(true);
+            popWindow.setTouchInterceptor(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return false;
+                }
+            });
+            popWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+            popWindow.showAtLocation(view.getRootView(), Gravity.CENTER, 0, 0);
+
+            dismiss.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popWindow.dismiss();
+                }
+            });
+
+
+            bright.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selected = LIGHT_BRIGHT;
+                    popWindow.dismiss();
+                }
+            });
+
+            dark.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selected = LIGHT_DARK;
+                    popWindow.dismiss();
+                }
+            });
+
+        }else if(i == NOISE){
+
+            View view = LayoutInflater.from(this).inflate(R.layout.cardview_sound, null, false);
+            Button dismiss = (Button) view.findViewById(R.id.sound_dismiss);
+            Button loud = (Button) view.findViewById(R.id.sound_loud);
+            Button quiet = (Button) view.findViewById(R.id.sound_quiet);
+
+            final PopupWindow popWindow = new PopupWindow(view,
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+
+            popWindow.setTouchable(true);
+            popWindow.setTouchInterceptor(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return false;
+                }
+            });
+            popWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+            popWindow.showAtLocation(view.getRootView(), Gravity.CENTER, 0, 0);
+
+            dismiss.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popWindow.dismiss();
+                }
+            });
+
+
+            loud.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selected = SOUND_LOUD;
+                    popWindow.dismiss();
+                }
+            });
+
+            quiet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selected = SOUND_QUIET;
+                    popWindow.dismiss();
+                }
+            });
+
+
+
 
         }
     }
@@ -590,7 +685,7 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
     private void endTour() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Wanna share the tour?");
+        builder.setTitle("Do you want to finish and share your tour?");
         builder.setPositiveButton("Upload", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button

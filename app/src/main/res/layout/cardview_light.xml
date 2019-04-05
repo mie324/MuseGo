@@ -4,7 +4,7 @@
     android:layout_height="180dp">
 
     <Button
-        android:id="@+id/temp_dismiss"
+        android:id="@+id/light_dismiss"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="right"
@@ -35,34 +35,27 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="25dp"
             android:layout_marginBottom="15dp"
             android:gravity="center"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/temp_hot"
+                android:id="@+id/light_bright"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="25dp"
                 android:layout_weight="0.33"
-                android:background="@drawable/temp_hot" />
+                android:background="@drawable/light_bright" />
+
 
             <Button
-                android:id="@+id/temp_cold"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:layout_weight="0.33"
-                android:background="@drawable/temp_cold"/>
-
-            <Button
-                android:id="@+id/temp_humid"
+                android:id="@+id/light_dark"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.33"
-                android:background="@drawable/temp_humid"/>
+                android:background="@drawable/light_dark"/>
 
 
         </LinearLayout>
