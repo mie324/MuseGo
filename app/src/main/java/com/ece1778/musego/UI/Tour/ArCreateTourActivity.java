@@ -86,6 +86,8 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
     private static final int HOT = 91;
     private static final int COLD = 92;
     private static final int HUMID = 93;
+    private static final int HELPER = 10;
+
 
 
     private CustomArFragment arFragment;
@@ -104,6 +106,7 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
 
     private Button renderable_arrow;
     private Button renderable_end;
+    private Button helper;
     private AllAngleExpandableButton toggleBtn;
     private Button end_tour;
 
@@ -153,6 +156,10 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
         renderable_end = (Button) findViewById(R.id.renderable_end);
         renderable_end.setOnClickListener(this);
         renderable_end.setVisibility(View.GONE);
+
+        helper = (Button) findViewById(R.id.helper);
+        helper.setOnClickListener(this);
+        helper.setVisibility(View.GONE);
 
         end_tour = (Button) findViewById(R.id.endTour);
         end_tour.setOnClickListener(this);
@@ -369,8 +376,30 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                 }
             });
 
+        }else if(i == HELPER){
 
+            View view = LayoutInflater.from(this).inflate(R.layout.cardview_helper, null, false);
+            Button dismiss = (Button) view.findViewById(R.id.info_dismiss);
 
+            final PopupWindow popWindow = new PopupWindow(view,
+                    1200, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+
+            popWindow.setTouchable(true);
+            popWindow.setTouchInterceptor(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return false;
+                }
+            });
+            popWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));
+            popWindow.showAtLocation(view.getRootView(), Gravity.CENTER, 0, 0);
+
+            dismiss.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popWindow.dismiss();
+                }
+            });
 
         }
     }
@@ -384,7 +413,10 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
             selected = END_MARKER;
         } else if(i == R.id.endTour){
             endTour();
+        }else if(i == R.id.helper){
+            initPopWindow(HELPER);
         }
+
 
     }
 
@@ -824,6 +856,7 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
         renderable_arrow.setVisibility(View.VISIBLE);
         renderable_end.setVisibility(View.VISIBLE);
         toggleBtn.setVisibility(View.VISIBLE);
+        helper.setVisibility(View.VISIBLE);
 
     }
 
