@@ -69,6 +69,10 @@ dependencies {
 
     implementation 'com.github.donkingliang:GroupedRecyclerViewAdapter:1.3.2'
 
+    //slidebar
+    implementation 'com.nikoyuwono:toolbar-panel:0.1.1'
+
+
 
 }
 
@@ -129,3 +133,69 @@ sceneform.asset('sampledata/wash.obj',
         'default',
         'sampledata/wash.sfa',
         'src/main/res/raw/wash')
+
+
+sceneform.asset('sampledata/temp_cold.obj',
+        'default',
+        'sampledata/temp_cold.sfa',
+        'src/main/res/raw/temp_cold')
+
+sceneform.asset('sampledata/temp_hot.obj',
+        'default',
+        'sampledata/temp_hot.sfa',
+        'src/main/res/raw/temp_hot')
+
+sceneform.asset('sampledata/crowd_title.obj',
+        'default',
+        'sampledata/crowd_title.sfa',
+        'src/main/res/raw/crowd_title')
+
+sceneform.asset('sampledata/interactive.obj',
+        'default',
+        'sampledata/interactive.sfa',
+        'src/main/res/raw/interactive')
+
+sceneform.asset('sampledata/bright.obj',
+        'default',
+        'sampledata/bright.sfa',
+        'src/main/res/raw/bright')
+
+sceneform.asset('sampledata/dark.obj',
+        'default',
+        'sampledata/dark.sfa',
+        'src/main/res/raw/dark')
+
+sceneform.asset('sampledata/loud.obj',
+        'default',
+        'sampledata/loud.sfa',
+        'src/main/res/raw/loud')
+
+sceneform.asset('sampledata/hot.obj',
+        'default',
+        'sampledata/hot.sfa',
+        'src/main/res/raw/hot')
+
+sceneform.asset('sampledata/cold.obj',
+        'default',
+        'sampledata/cold.sfa',
+        'src/main/res/raw/cold')
+
+sceneform.asset('sampledata/humid.obj',
+        'default',
+        'sampledata/humid.sfa',
+        'src/main/res/raw/humid')
+
+sceneform.asset('sampledata/food2.obj',
+        'default',
+        'sampledata/food2.sfa',
+        'src/main/res/raw/food2')
+
+sceneform.asset('sampledata/washroom.obj',
+        'default',
+        'sampledata/washroom.sfa',
+        'src/main/res/raw/washroom')
+
+sceneform.asset('sampledata/quiet.obj',
+        'default',
+        'sampledata/quiet.sfa',
+        'src/main/res/raw/quiet')

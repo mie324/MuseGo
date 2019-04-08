@@ -111,10 +111,11 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tour_list);
 
-        initView();
         initFirebase();
         fetchUserInfo();
+        initView();
         fetchDataAndRenderView();
+
 
     }
 
@@ -122,8 +123,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
         firebaseManager = new FirebaseManager(TourListActivity.this);
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-
-
 
     }
 
@@ -189,6 +188,7 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                                         path.getEstimated_time(),
                                         path.getTags(),
                                         path.getLikeList(),
+                                        path.getSensorList(),
                                         path.getImgList(),
                                         path.getStart_node(),
                                         path.getEnd_node(),

@@ -1,18 +1,18 @@
 {
   materials: [
     {
-      name: 'color_13814060',
+      name: 'color_undefined',
       parameters: [
         {
           baseColor: null,
         },
         {
           baseColorTint: [
-                      0.01,
-                      0.60999999999999999,
-                      0.90000000000000002,
-                      1,
-                    ],
+            0.59999999999999998,
+            0.59999999999999998,
+            0.59999999999999998,
+            1,
+          ],
         },
         {
           metallic: 0,
@@ -36,7 +36,7 @@
     file: 'sampledata/wash.obj',
     name: 'wash',
     recenter: 'root',
-    scale: 0.002,
+    scale: 0.10000000000000001,
   },
   version: '0.54:2',
 }

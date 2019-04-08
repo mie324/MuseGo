@@ -27,9 +27,9 @@ public class CreateInstructionActivity extends AhoyOnboarderActivity implements 
 
     private void initView() {
 
-        AhoyOnboarderCard ahoyOnboarderCard1 = new AhoyOnboarderCard("Scan Starter Image", "Find a starter image, adjust your camera to scan the starter image.", R.drawable.instruction1);
-        AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Place Indicators", "As you walk around, click the screen to place directional arrows or accessibility icons.", R.drawable.instruction2);
-        AhoyOnboarderCard ahoyOnboarderCard3 = new AhoyOnboarderCard("Place EndNode to Finish", "To complete your tour, click Finish to place the EndNode.", R.drawable.instruction3);
+        AhoyOnboarderCard ahoyOnboarderCard1 = new AhoyOnboarderCard("Scan the Dino", "Find a starter image, adjust your camera to scan the starter image.", R.drawable.instruction1);
+        AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Place AR Objects", "As you walk around, click the screen to place directional arrows or accessibility icons.", R.drawable.instruction2);
+        AhoyOnboarderCard ahoyOnboarderCard3 = new AhoyOnboarderCard("Place the End Object to Finish", "To complete your tour, click Finish to place the EndNode.", R.drawable.instruction3);
 
         ahoyOnboarderCard1.setBackgroundColor(R.color.purewhite);
         ahoyOnboarderCard2.setBackgroundColor(R.color.purewhite);
