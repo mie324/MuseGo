@@ -257,6 +257,16 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
             tagView.addTag(tag);
         }
 
+        for(String content: path.getSensorList()){
+            Tag tag = new Tag(content);
+            tag.tagTextColor = Color.parseColor("#FFFFFF");
+            tag.layoutColor = Color.parseColor("#73AD01");
+            tag.deleteIndicatorColor = Color.parseColor("#FFFFFF");
+            tagView.addTag(tag);
+        }
+
+
+
     }
 
     private void initAvatar(){

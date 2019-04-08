@@ -38,6 +38,7 @@
     <array name="menuOptions">
         <item>Profile</item>
         <item>Institutions</item>
+        <item>Helper</item>
         <item>About</item>
     </array>
 

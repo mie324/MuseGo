@@ -185,7 +185,7 @@ public class UploadTourActivity extends BaseActivity {
         TagView tagGroup = (TagView) findViewById(R.id.tag_group);
         for (String sensor : sensorList) {
             Log.d(TAG, "sensor tag is "+ sensor);
-            Tag tag = new Tag("#".concat(sensor));
+            Tag tag = new Tag("#"+sensor);
             tag.tagTextColor = Color.parseColor("#FFFFFF");
             tag.layoutColor = Color.parseColor("#FECB50");
             tagGroup.addTag(tag);

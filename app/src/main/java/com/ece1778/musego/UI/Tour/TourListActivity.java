@@ -241,6 +241,10 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
                             case "FLOOR":
                                 filteredList = getFloorFilteredPath(entry.getValue(), filteredList);
+                                break;
+
+                            case "TIME":
+                                filteredList = getTimeFilteredPath(entry.getValue(), filteredList);
 
                         }
                     }
@@ -262,6 +266,26 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
     }
 
+    private List<Path> getTimeFilteredPath(List<String> lengths, List<Path> filteredList){
+        List<Path> tempList = new ArrayList<>();
+
+        for(String length: lengths) {
+            String h1 = length.charAt(0) + "";
+            tempList = new ArrayList<>();
+            for (Path path : filteredList) {
+
+                String h2 = path.getEstimated_time().split("/")[0];
+                if (h2.equals(h1)) {
+                    tempList.add(path);
+                }
+            }
+            filteredList = tempList;
+        }
+
+        return tempList;
+
+
+    }
     private List<Path> getFloorFilteredPath(List<String> floors, List<Path> filteredList) {
 
         List<Path> tempList = new ArrayList<>();
@@ -302,6 +326,15 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                         if(!tempList.contains(path)){
                             tempList.add(path);
                         }
+                    }
+
+                    if(path.getSensorList() != null){
+                        if(path.getSensorList().contains(tag)) {
+                            if (!tempList.contains(path)) {
+                                tempList.add(path);
+                            }
+                        }
+
                     }
                 }
                 newPathList = tempList;
@@ -548,6 +581,10 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
             case 1:
                 startActivity(new Intent(this, MuseumListActivity.class));
+                break;
+
+            case 2:
+                startActivity(new Intent(this, HelperActivity.class));
                 break;
             default:
                 //goToFragment(new MainFragment(), false);
