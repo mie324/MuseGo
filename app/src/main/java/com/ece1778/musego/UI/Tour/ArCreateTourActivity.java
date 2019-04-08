@@ -744,7 +744,7 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(humidRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, HUMID));
-                        sensor.add("humid");
+                        sensor.add("Humid");
 
                     }
 
