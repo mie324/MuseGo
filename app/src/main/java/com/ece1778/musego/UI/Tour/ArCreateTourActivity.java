@@ -762,6 +762,13 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
                 List<String> sensorList = new ArrayList<String>();
+
+                if(sensor.contains("Crowded")){
+                    sensor.remove("Crowded");
+                }else{
+                    sensor.add("No Crowded");
+                }
+
                 sensorList.addAll(sensor);
 
                 NodeList nodeList = new NodeList(starter, end, nodes);
