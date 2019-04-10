@@ -439,7 +439,7 @@ public class ArShowTourActivity extends BaseActivity implements Scene.OnUpdateLi
         }else if (node.getTag() == END_MARKER) {
 
             andy.setRenderable(endRenderable);
-            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
+            andy.setLocalRotation(Quaternion.axisAngle(new Vector3(0, 1f, 0), 270f));
 
         } else {
             andy.setRenderable(arrowRenderable);
