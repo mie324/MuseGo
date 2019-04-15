@@ -47,6 +47,7 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:padding="5dp"
                     android:layout_marginRight="12dp"
                     android:src="@drawable/info_wash"/>
 
@@ -84,6 +85,7 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:padding="5dp"
                     android:layout_marginRight="12dp"
                     android:src="@drawable/info_crowd"/>
 
@@ -121,6 +123,7 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:padding="5dp"
                     android:layout_marginRight="12dp"
                     android:src="@drawable/info_foods"/>
 
@@ -158,6 +161,7 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:padding="5dp"
                     android:layout_marginRight="12dp"
                     android:src="@drawable/info_hands"/>
 
@@ -195,6 +199,7 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:padding="5dp"
                     android:layout_marginRight="12dp"
                     android:src="@drawable/info_light"/>
 
@@ -209,7 +214,7 @@
                         android:layout_marginBottom="4dp"
                         android:textSize="18dp"
                         android:textStyle="bold"
-                        android:text="Interactive"/>
+                        android:text="Lighting"/>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -227,13 +232,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"
-                            android:src="@drawable/info_bright"/>
+                            android:src="@drawable/info_dark"/>
 
                         <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_height="34dp"
+                            android:layout_height="wrap_content"
                             android:layout_weight="0.5"
-                            android:src="@drawable/info_dark"/>
+                            android:src="@drawable/info_bright"/>
 
 
                     </LinearLayout>
@@ -253,6 +258,7 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:padding="10dp"
                     android:layout_marginRight="12dp"
                     android:src="@drawable/info_sound"/>
 
@@ -309,6 +315,7 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:padding="5dp"
                     android:layout_marginRight="12dp"
                     android:src="@drawable/info_temp"/>
 
