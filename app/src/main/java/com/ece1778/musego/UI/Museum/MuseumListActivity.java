@@ -4,40 +4,30 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ece1778.musego.Adapter.MenuAdapter;
 import com.ece1778.musego.Adapter.MuseumListAdapter;
-import com.ece1778.musego.Adapter.TourListAdapter;
 import com.ece1778.musego.BaseActivity;
 import com.ece1778.musego.Manager.FirebaseManager;
-import com.ece1778.musego.Model.NodeList;
 import com.ece1778.musego.Model.User;
 import com.ece1778.musego.R;
 import com.ece1778.musego.UI.Auth.SigninActivity;
-import com.ece1778.musego.UI.Auth.SignupActivity;
-import com.ece1778.musego.UI.Tour.ArCreateTourActivity;
-import com.ece1778.musego.UI.Tour.TourListActivity;
-import com.ece1778.musego.UI.Tour.UploadTourActivity;
 import com.ece1778.musego.UI.User.UserProfileActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.gson.Gson;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
