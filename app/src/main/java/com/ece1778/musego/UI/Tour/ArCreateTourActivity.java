@@ -57,6 +57,7 @@ import com.google.gson.Gson;
 import com.sdsmdg.tastytoast.TastyToast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -102,7 +103,7 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
     private com.ece1778.musego.Model.Node starter;
     private com.ece1778.musego.Model.Node end;
     private List<com.ece1778.musego.Model.Node> nodes = new ArrayList<>();
-    private Set<String> sensor = new HashSet<>();
+    private List<String> sensorList = new ArrayList<>(Arrays.asList("#Crowd Free", "#Interactive Free", "#Dark Area Free", "#Bright Area Free", "#Hot Area Free", "#Cold Area Free", "#Humid Area Free"));
 
     private Button renderable_arrow;
     private Button renderable_end;
@@ -671,35 +672,39 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(washRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, WASH));
-                        sensor.add("#Accessible Washroom");
+                        if(!sensorList.contains("#Washroom")){
+                            sensorList.add("#Washroom");
+                        }
 
                     }else if(selected == CROWD) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(crowdRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, CROWD));
-                        sensor.add("#Crowded");
+                        sensorList.remove("#Crowd Free");
 
                     }else if(selected == FOOD) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(foodRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, FOOD));
-                        sensor.add("#Food Allowed");
+                        if(!sensorList.contains("#Food Allowed")){
+                            sensorList.add("#Food Allowed");
+                        }
 
                     }else if(selected == HAND) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(handRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, HAND));
-                        sensor.add("#Interactive");
+                        sensorList.remove("#Interactive Free");
 
                     }else if(selected == DARK) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(darkRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, DARK));
-                        sensor.add("#Dark");
+                        sensorList.remove("#Dark Area Free");
 
 
                     }else if(selected == BRIGHT) {
@@ -707,21 +712,26 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(brightRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, BRIGHT));
-                        sensor.add("#Bright");
+                        sensorList.remove("#Bright Area Free");
 
                     }else if(selected == QUIET) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(quietRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, QUIET));
-                        sensor.add("#Quiet");
+                        if(!sensorList.contains("#Quiet Area")){
+                            sensorList.add("#Quiet Area");
+                        }
+
 
                     }else if(selected == LOUD) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(loudRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, LOUD));
-                        sensor.add("#Loud");
+                        if(!sensorList.contains("#Loud Area")){
+                            sensorList.add("#Loud Area");
+                        }
 
 
                     }else if(selected == HOT) {
@@ -729,22 +739,21 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(hotRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, HOT));
-                        sensor.add("#Hot");
-
+                        sensorList.remove("#Hot Area Free");
 
                     }else if(selected == COLD) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(coldRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, COLD));
-                        sensor.add("#Cold");
+                        sensorList.remove("#Cold Area Free");
 
                     }else if(selected == HUMID) {
                         object.setLocalRotation(Quaternion.axisAngle(new Vector3(1, 0f, 0), 270f));
                         object.setLocalPosition(new Vector3(0f, 0.2f, 0f));
                         object.setRenderable(humidRenderable);
                         nodes.add(new com.ece1778.musego.Model.Node(t, r, HUMID));
-                        sensor.add("#Humid");
+                        sensorList.remove("#Humid Area Free");
 
                     }
 
@@ -761,15 +770,6 @@ public class ArCreateTourActivity extends BaseActivity implements Scene.OnUpdate
         builder.setPositiveButton("Upload", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
-                List<String> sensorList = new ArrayList<String>();
-
-                if(sensor.contains("Crowded")){
-                    sensor.remove("Crowded");
-                }else{
-                    sensor.add("#No Crowded");
-                }
-
-                sensorList.addAll(sensor);
 
                 NodeList nodeList = new NodeList(starter, end, nodes);
                 Intent intent = new Intent(ArCreateTourActivity.this, UploadTourActivity.class);
