@@ -2,25 +2,24 @@ package com.ece1778.musego.UI.Tour;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.util.ArrayMap;
-import android.support.v7.widget.AppCompatSpinner;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.collection.ArrayMap;
+import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +28,6 @@ import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.ece1778.musego.Adapter.MenuAdapter;
-import com.ece1778.musego.Adapter.MuseumListAdapter;
 import com.ece1778.musego.Adapter.TourListAdapter;
 import com.ece1778.musego.BaseActivity;
 import com.ece1778.musego.Manager.FirebaseManager;
@@ -54,10 +52,22 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.materialdrawer.AccountHeader;
+import com.mikepenz.materialdrawer.AccountHeaderBuilder;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerImageLoader;
+import com.mikepenz.materialdrawer.util.DrawerUIUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -66,7 +76,7 @@ import nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout;
 import nl.psdcompany.duonavigationdrawer.views.DuoMenuView;
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle;
 
-public class TourListActivity extends BaseActivity implements View.OnClickListener, AAH_FabulousFragment.Callbacks, AAH_FabulousFragment.AnimationListener, DuoMenuView.OnMenuClickListener {
+public class TourListActivity extends BaseActivity implements View.OnClickListener, AAH_FabulousFragment.Callbacks, AAH_FabulousFragment.AnimationListener {
 
     private static final String TAG = "TourList";
     private RecyclerView recyclerView;
@@ -75,6 +85,7 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     private List<Path> pathList = new ArrayList<>();
     private List<Path> allPath = new ArrayList<>();
     public List<String> tagsList = new ArrayList<>();
+    public List<String> sensorList = new ArrayList<>();
     private String instName;
 
     private FloatingActionButton createPathBtn, fab2;
@@ -86,6 +97,8 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
 
+    private Toolbar toolbar;
+
 
     private User user;
     private static final int VISITOR = 0;
@@ -96,10 +109,7 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     private Loading loading;
     private FloatingActionButton createTourBtn;
 
-    private ArrayList<String> mTitles = new ArrayList<>();
 
-    private ViewHolder mViewHolder;
-    private MenuAdapter mMenuAdapter;
 
 
 
@@ -112,8 +122,8 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
         setContentView(R.layout.activity_tour_list);
 
         initFirebase();
-        fetchUserInfo();
         initView();
+        fetchUserInfo();
         fetchDataAndRenderView();
 
 
@@ -125,6 +135,89 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
         currentUser = mAuth.getCurrentUser();
 
     }
+
+    @SuppressLint("RestrictedApi")
+    private void initView() {
+
+        toolbar = findViewById(R.id.toolbar);
+
+        instName = getIntent().getStringExtra("instName");
+        String userJson = getIntent().getStringExtra("currentUser");
+        user = new Gson().fromJson(userJson,User.class);
+
+
+        recyclerView = (RecyclerView) findViewById(R.id.recycleViewId);
+        layoutManager = new GridLayoutManager(TourListActivity.this,1);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new TourListAdapter(TourListActivity.this, pathList, instName,user);
+        recyclerView.setAdapter(adapter);
+//
+//        loading = (Loading) findViewById(R.id.loading);
+//        loading.setLoadingText("I want data...");
+
+        createTourBtn = (FloatingActionButton) findViewById(R.id.createTourBtn);
+        createTourBtn.setOnClickListener(this);
+        createTourBtn.setVisibility(View.GONE);
+
+        fab2 = (FloatingActionButton) findViewById(R.id.fab2);
+        dialogFrag = SearchFabFragment.newInstance();
+        dialogFrag.setParentFab(fab2);
+        fab2.setVisibility(View.GONE);
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
+            }
+        });
+
+        sorting = (AppCompatSpinner) findViewById(R.id.sorting);
+        sorting.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+
+                switch(position){
+                    case 0:
+                        Collections.sort(pathList,new TimeCompareUtil());
+                        adapter.notifyDataSetChanged();
+                        break;
+                    case 1:
+                        Collections.sort(pathList, new PopularCompareUtil());
+                        adapter.notifyDataSetChanged();
+                        break;
+                    case 2:
+                        Collections.sort(pathList, new ShortToLongCompareUtil());
+                        adapter.notifyDataSetChanged();
+                        break;
+                    case 3:
+                        Collections.sort(pathList, new ShortToLongCompareUtil());
+                        Collections.reverse(pathList);
+                        adapter.notifyDataSetChanged();
+                        break;
+
+                }
+
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        handleToolbar();
+
+
+    }
+
+    private void handleToolbar() {
+        setSupportActionBar(toolbar);
+    }
+
 
     private void fetchUserInfo(){
         if(mAuth.getUid() == null){
@@ -142,17 +235,156 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                             DocumentSnapshot document = task.getResult();
                             user = new User(
                                     (String) document.get("username"),
-                                    (String) document.get("bio"),
                                     (String) document.get("avatar"),
+                                    (String) document.get("bio"),
                                     (int) (long) document.get("role")
                             );
                             role = (int) (long) document.get("role");
 
-                            handleUserInfo();
+
+                            handleDrawer();
                         }
 
                     }
                 });
+    }
+
+    private void handleDrawer(){
+
+        RequestOptions options = new RequestOptions();
+        options.centerCrop();
+        options.circleCrop();
+
+        DrawerImageLoader.init(new AbstractDrawerImageLoader() {
+            @Override
+            public void set(ImageView imageView, Uri uri, Drawable placeholder, String tag) {
+                Glide.with(imageView.getContext())
+                        .load(uri)
+                        .apply(options
+                                .placeholder(R.drawable.avatar))
+                        .into(imageView);
+            }
+
+            @Override
+            public void cancel(ImageView imageView) {
+                Glide.with(imageView.getContext()).clear(imageView);
+            }
+
+            @Override
+            public Drawable placeholder(Context ctx, String tag) {
+                //define different placeholders for different imageView targets
+                //default tags are accessible via the DrawerImageLoader.Tags
+                //custom ones can be checked via string. see the CustomUrlBasePrimaryDrawerItem LINE 111
+                if (DrawerImageLoader.Tags.PROFILE.name().equals(tag)) {
+                    return DrawerUIUtils.getPlaceHolder(ctx);
+                } else if (DrawerImageLoader.Tags.ACCOUNT_HEADER.name().equals(tag)) {
+                    return new IconicsDrawable(ctx).iconText(" ").backgroundColorRes(com.mikepenz.materialdrawer.R.color.primary).sizeDp(56);
+                } else if ("customUrlItem".equals(tag)) {
+                    return new IconicsDrawable(ctx).iconText(" ").backgroundColorRes(R.color.md_red_500).sizeDp(56);
+                }
+
+                //we use the default one for
+                //DrawerImageLoader.Tags.PROFILE_DRAWER_ITEM.name()
+
+                return super.placeholder(ctx, tag);
+            }
+        });
+
+
+        AccountHeader headerResult = new AccountHeaderBuilder()
+                .withActivity(this)
+                .withHeaderBackground(R.color.darkGreen)
+                .addProfiles(
+                        new ProfileDrawerItem().withName(user.getUsername()).withEmail(roleFormat(user.getRole())).withIcon(user.getAvatar())
+                )
+                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
+                    @Override
+                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
+                        return false;
+                    }
+                })
+                .build();
+
+        PrimaryDrawerItem institute = new PrimaryDrawerItem().withIdentifier(1).withName("Institutions").withIcon(R.drawable.ic_account_balance);
+        PrimaryDrawerItem help = new PrimaryDrawerItem().withIdentifier(2).withName("Help").withIcon(R.drawable.ic_info);
+        PrimaryDrawerItem myProfile = new PrimaryDrawerItem().withIdentifier(3).withName("My Profile").withIcon(R.drawable.ic_account_circle);
+        // PrimaryDrawerItem logoutHere = new PrimaryDrawerItem().withIdentifier(3).withName("Log Out");
+
+        PrimaryDrawerItem logout = new PrimaryDrawerItem().withIdentifier(4).withName("Log Out").withIcon(R.drawable.ic_account_circle);
+
+        Drawer result = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(toolbar)
+                .withAccountHeader(headerResult)
+                .addDrawerItems(
+                        institute,
+                        help,
+                        myProfile,
+                        new DividerDrawerItem(),
+                        logout
+
+
+                )
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        // do something with the clicked item :D
+                        switch (position) {
+                            case 1:
+                                startActivity(new Intent(TourListActivity.this, MuseumListActivity.class));
+                                break;
+
+                            case 2:
+                                startActivity(new Intent(TourListActivity.this, HelperActivity.class));
+                                break;
+                            case 3:
+                                Intent intent = new Intent(TourListActivity.this, UserProfileActivity.class);
+                                intent.putExtra("user", new Gson().toJson(user));
+                                startActivity(intent);
+                                break;
+                            default:
+                                logoutHere();
+                                break;
+                        }
+
+                        return false;
+                    }
+                })
+                .build();
+
+        //result.addStickyFooterItem(logout);
+    }
+
+    private void logoutHere(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Log out of MuseGo?");
+        builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+
+                if(currentUser != null){
+
+                    mAuth.signOut();
+                    Intent intent = new Intent(TourListActivity.this, SigninActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+
+
+                }
+
+
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int id) {
+            }
+
+
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void fetchDataAndRenderView() {
@@ -199,7 +431,10 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                                 adapter.notifyDataSetChanged();
                             }
 
-                            createTourBtn.setVisibility(View.VISIBLE);
+
+                            if(role == 2) {
+                                createTourBtn.setVisibility(View.VISIBLE);
+                            }
                             fab2.setVisibility(View.VISIBLE);
                         }
                     }
@@ -213,6 +448,9 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         tagsList = (List<String>)documentSnapshot.get("tagList");
+                        sensorList = (List<String>)documentSnapshot.get("sensorList");
+
+                        Log.d("!!!!!!TAG",""+sensorList.size());
 
                     }
                 });
@@ -238,6 +476,11 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
                                 filteredList = getTagFilteredPath(entry.getValue(), filteredList);
                                 break;
+
+                            case "ACCESSIBILITY":
+                                filteredList = getSensorTagFilteredPath(entry.getValue(), filteredList);
+                                break;
+
 
                             case "FLOOR":
                                 filteredList = getFloorFilteredPath(entry.getValue(), filteredList);
@@ -312,6 +555,35 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
 
     }
 
+    private List<Path> getSensorTagFilteredPath(List<String> tags, List<Path> newPathList){
+        List<Path> tempList = new ArrayList<>();
+
+
+
+        for(String tag: tags){
+
+            tempList = new ArrayList<>();
+            for(Path path: newPathList){
+
+
+                if(path.getSensorList() != null){
+                    if(path.getSensorList().contains(tag)) {
+                        if (!tempList.contains(path)) {
+                            tempList.add(path);
+                        }
+                    }
+
+                }
+            }
+            newPathList = tempList;
+
+
+        }
+
+        return tempList;
+
+    }
+
     private List<Path> getTagFilteredPath(List<String> tags, List<Path> newPathList){
         List<Path> tempList = new ArrayList<>();
 
@@ -328,14 +600,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                         }
                     }
 
-                    if(path.getSensorList() != null){
-                        if(path.getSensorList().contains(tag)) {
-                            if (!tempList.contains(path)) {
-                                tempList.add(path);
-                            }
-                        }
-
-                    }
                 }
                 newPathList = tempList;
 
@@ -347,94 +611,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     }
 
 
-
-    @SuppressLint("RestrictedApi")
-    private void initView() {
-
-        instName = getIntent().getStringExtra("instName");
-        String userJson = getIntent().getStringExtra("currentUser");
-        user = new Gson().fromJson(userJson,User.class);
-
-
-        recyclerView = (RecyclerView) findViewById(R.id.recycleViewId);
-        layoutManager = new GridLayoutManager(TourListActivity.this,1);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new TourListAdapter(TourListActivity.this, pathList, instName,user);
-        recyclerView.setAdapter(adapter);
-//
-//        loading = (Loading) findViewById(R.id.loading);
-//        loading.setLoadingText("I want data...");
-
-        createTourBtn = (FloatingActionButton) findViewById(R.id.createTourBtn);
-        createTourBtn.setOnClickListener(this);
-        createTourBtn.setVisibility(View.GONE);
-
-        fab2 = (FloatingActionButton) findViewById(R.id.fab2);
-        dialogFrag = SearchFabFragment.newInstance();
-        dialogFrag.setParentFab(fab2);
-        fab2.setVisibility(View.GONE);
-        fab2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
-            }
-        });
-
-        sorting = (AppCompatSpinner) findViewById(R.id.sorting);
-        sorting.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-
-
-                switch(position){
-                    case 0:
-                        Collections.sort(pathList,new TimeCompareUtil());
-                        adapter.notifyDataSetChanged();
-                        break;
-                    case 1:
-                        Collections.sort(pathList, new PopularCompareUtil());
-                        adapter.notifyDataSetChanged();
-                        break;
-                    case 2:
-                        Collections.sort(pathList, new ShortToLongCompareUtil());
-                        adapter.notifyDataSetChanged();
-                        break;
-                    case 3:
-                        Collections.sort(pathList, new ShortToLongCompareUtil());
-                        Collections.reverse(pathList);
-                        adapter.notifyDataSetChanged();
-                        break;
-
-                }
-
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-
-        mTitles = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.menuOptions)));
-        mViewHolder = new ViewHolder();
-
-        // Handle toolbar actions
-        handleToolbar();
-
-        //handleUserInfo();
-
-        // Handle menu actions
-        handleMenu();
-
-        // Handle drawer actions
-        handleDrawer();
-
-
-    }
 
 
 
@@ -461,29 +637,8 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     }
 
 
-    private void handleToolbar() {
-
-        setSupportActionBar(mViewHolder.mToolbar);
-
-    }
-
-    private void handleUserInfo(){
 
 
-        RequestOptions options = new RequestOptions();
-        options.centerCrop();
-        options.circleCrop();
-
-
-        Glide.with(TourListActivity.this)
-                .load(user.getAvatar())
-                .apply(options)
-                .into(mViewHolder.avatar);
-
-        mViewHolder.username.setText(user.getUsername());
-        mViewHolder.bio.setText(roleFormat(user.getRole()));
-
-    }
 
     private String roleFormat(int role) {
         if(role == 1){
@@ -495,128 +650,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    private void handleDrawer() {
-        DuoDrawerToggle duoDrawerToggle = new DuoDrawerToggle(this,
-                mViewHolder.mDuoDrawerLayout,
-                mViewHolder.mToolbar,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
-
-        mViewHolder.mDuoDrawerLayout.setDrawerListener(duoDrawerToggle);
-        duoDrawerToggle.syncState();
-
-    }
-
-    private void handleMenu() {
-        mMenuAdapter = new MenuAdapter(mTitles);
-
-        mViewHolder.mDuoMenuView.setOnMenuClickListener(this);
-        mViewHolder.mDuoMenuView.setAdapter(mMenuAdapter);
-    }
-
-
-
-    @Override
-    public void onFooterClicked() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Log out of MuseGo?");
-        builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User clicked OK button
-
-                if(currentUser != null){
-
-                    mAuth.signOut();
-                    Intent intent = new Intent(TourListActivity.this, SigninActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-
-
-                }
-
-
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int id) {
-            }
-
-
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
-
-
-    }
-
-    @Override
-    public void onHeaderClicked() {
-
-
-    }
-
-    @Override
-    public void onOptionClicked(int position, Object objectClicked) {
-
-        String userJson = getIntent().getStringExtra("currentUser");
-        user = new Gson().fromJson(userJson,User.class);
-
-
-        setTitle(mTitles.get(position));
-
-
-        // Set the right options selected
-        mMenuAdapter.setViewSelected(position, true);
-
-        // Navigate to the right fragment
-        switch (position) {
-            case 0:
-
-                Intent intent = new Intent(this, UserProfileActivity.class);
-                intent.putExtra("user", new Gson().toJson(user));
-                startActivity(intent);
-                break;
-
-            case 1:
-                startActivity(new Intent(this, MuseumListActivity.class));
-                break;
-
-            case 2:
-                startActivity(new Intent(this, HelperActivity.class));
-                break;
-            default:
-                //goToFragment(new MainFragment(), false);
-
-
-                break;
-        }
-
-        // Close the drawer
-        mViewHolder.mDuoDrawerLayout.closeDrawer();
-
-
-    }
-
-    private class ViewHolder {
-        private DuoDrawerLayout mDuoDrawerLayout;
-        private DuoMenuView mDuoMenuView;
-        private Toolbar mToolbar;
-        private ImageView avatar;
-        private TextView username;
-        private TextView bio;
-
-
-        ViewHolder() {
-            mDuoDrawerLayout = (DuoDrawerLayout) findViewById(R.id.drawer);
-            mDuoMenuView = (DuoMenuView) mDuoDrawerLayout.getMenuView();
-            mToolbar = (Toolbar) findViewById(R.id.toolbar);
-            avatar = (ImageView)mDuoMenuView.findViewById(R.id.userAvatar);
-            username = (TextView)mDuoMenuView.findViewById(R.id.username);
-            bio = (TextView)mDuoMenuView.findViewById(R.id.userbio);
-        }
-    }
 
 
     @Override

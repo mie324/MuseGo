@@ -2,16 +2,13 @@ package com.ece1778.musego.UI.Tour;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.view.View;
-import android.widget.Button;
 
 import com.codemybrainsout.onboarder.AhoyOnboarderActivity;
 import com.codemybrainsout.onboarder.AhoyOnboarderCard;
-import com.ece1778.musego.BaseActivity;
 import com.ece1778.musego.Model.NodeList;
 import com.ece1778.musego.R;
-import com.ece1778.musego.Utils.Loading;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -54,7 +51,7 @@ public class ShowInstructionActivity extends AhoyOnboarderActivity implements Vi
             page.setTitleColor(R.color.darkGreen);
             page.setDescriptionColor(R.color.black);
             //page.setTitleTextSize(dpToPixels(12, this));
-            page.setDescriptionTextSize(dpToPixels(4, this));
+            page.setDescriptionTextSize(dpToPixels(6, this));
         }
 
         setFinishButtonTitle("Let's begin");

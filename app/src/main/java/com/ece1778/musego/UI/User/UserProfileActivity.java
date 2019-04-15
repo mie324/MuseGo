@@ -1,42 +1,34 @@
 package com.ece1778.musego.UI.User;
 
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.donkingliang.groupedadapter.adapter.GroupedRecyclerViewAdapter;
-import com.donkingliang.groupedadapter.holder.BaseViewHolder;
 import com.ece1778.musego.Adapter.TourListAdapter;
-import com.ece1778.musego.Adapter.UserProfileAdapter;
 import com.ece1778.musego.Manager.FirebaseManager;
 import com.ece1778.musego.Model.ExpandableGroupEntity;
 import com.ece1778.musego.Model.Path;
 import com.ece1778.musego.Model.User;
 import com.ece1778.musego.R;
-import com.ece1778.musego.UI.Tour.TourListActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 

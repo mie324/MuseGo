@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".UI.Tour.CommentDetailActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         app:title="Comment"
@@ -72,11 +72,11 @@
             android:orientation="vertical"
             >
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            </android.support.v7.widget.RecyclerView>
+            </androidx.recyclerview.widget.RecyclerView>
 
 
         </LinearLayout>

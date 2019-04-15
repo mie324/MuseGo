@@ -25,7 +25,7 @@
         android:orientation="vertical"
         android:tag="@string/tag_content">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="200dp">
 
-                <android.support.design.widget.FloatingActionButton
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:tint="@color/white"
                     android:id="@+id/fab2"
                     android:layout_width="56dp"
@@ -52,7 +52,7 @@
 
             </RelativeLayout>
 
-        </android.support.v7.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>
 
 
         <RelativeLayout
@@ -81,7 +81,7 @@
                         android:text="Sorted By:"
                         android:textSize="16dp" />
 
-                    <android.support.v7.widget.AppCompatSpinner
+                    <androidx.appcompat.widget.AppCompatSpinner
                         android:id="@+id/sorting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                         android:entries="@array/sorting"
                         android:theme="@style/spinnerTheme">
 
-                    </android.support.v7.widget.AppCompatSpinner>
+                    </androidx.appcompat.widget.AppCompatSpinner>
 
                     <!--<Spinner-->
                         <!--android:id="@+id/uploadTour_minute"-->
@@ -105,7 +105,7 @@
 
 
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycleViewId"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -115,7 +115,7 @@
 
             </LinearLayout>
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/createTourBtn"
                 android:layout_width="58dp"
                 android:layout_height="58dp"

@@ -1,9 +1,9 @@
 package com.ece1778.musego.Utils;
 
 import android.content.Context;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.text.Layout;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ece1778.musego.R;
-
-import org.w3c.dom.Text;
 
 public class Loading extends RelativeLayout {
 

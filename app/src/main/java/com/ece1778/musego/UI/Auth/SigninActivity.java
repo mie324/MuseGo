@@ -2,9 +2,9 @@ package com.ece1778.musego.UI.Auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.text.SpannableString;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -18,9 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ece1778.musego.BaseActivity;
-import com.ece1778.musego.MainActivity;
 import com.ece1778.musego.Manager.FirebaseManager;
-import com.ece1778.musego.Model.User;
 import com.ece1778.musego.R;
 import com.ece1778.musego.UI.Museum.MuseumListActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,7 +26,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 public class SigninActivity extends BaseActivity {
 

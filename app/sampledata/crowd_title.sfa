@@ -36,7 +36,7 @@
     file: 'sampledata/crowd_title.obj',
     name: 'crowd_title',
     recenter: 'root',
-    scale: 0.0008,
+    scale: 0.004,
   },
   version: '0.54:2',
 }
