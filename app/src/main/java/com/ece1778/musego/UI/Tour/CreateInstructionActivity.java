@@ -47,7 +47,7 @@ public class CreateInstructionActivity extends AhoyOnboarderActivity implements 
             page.setTitleColor(R.color.darkGreen);
             page.setDescriptionColor(R.color.black);
             //page.setTitleTextSize(dpToPixels(12, this));
-            page.setDescriptionTextSize(dpToPixels(4, this));
+            page.setDescriptionTextSize(dpToPixels(6, this));
         }
 
         setFinishButtonTitle("Let's begin");

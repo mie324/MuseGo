@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -28,14 +29,14 @@
             android:layout_marginLeft="20dp"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/info_dismiss"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="right"
-                android:background="?android:attr/selectableItemBackground"
-                android:textSize="18dp"
-                android:text="X"/>
+            <!--<Button-->
+                <!--android:id="@+id/info_dismiss"-->
+                <!--android:layout_width="40dp"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_gravity="right"-->
+                <!--android:background="?android:attr/selectableItemBackground"-->
+                <!--android:textSize="18dp"-->
+                <!--android:text="X"/>-->
 
             <TextView
                 android:layout_width="match_parent"
@@ -56,7 +57,6 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="5dp"
                     android:layout_marginRight="12dp"
                     android:src="@drawable/info_wash"/>
 
@@ -94,7 +94,6 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="5dp"
                     android:layout_marginRight="12dp"
                     android:src="@drawable/info_crowd"/>
 
@@ -132,7 +131,6 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="5dp"
                     android:layout_marginRight="12dp"
                     android:src="@drawable/info_foods"/>
 
@@ -170,7 +168,6 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="5dp"
                     android:layout_marginRight="12dp"
                     android:src="@drawable/info_hands"/>
 
@@ -208,7 +205,6 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="5dp"
                     android:layout_marginRight="12dp"
                     android:src="@drawable/info_light"/>
 
@@ -241,13 +237,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.5"
-                            android:src="@drawable/info_dark"/>
+                            android:src="@drawable/info_bright"/>
 
                         <ImageView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="34dp"
                             android:layout_weight="0.5"
-                            android:src="@drawable/info_bright"/>
+                            android:src="@drawable/info_dark"/>
 
 
                     </LinearLayout>
@@ -267,7 +263,6 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="10dp"
                     android:layout_marginRight="12dp"
                     android:src="@drawable/info_sound"/>
 
@@ -324,7 +319,6 @@
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:padding="5dp"
                     android:layout_marginRight="12dp"
                     android:src="@drawable/info_temp"/>
 
@@ -385,4 +379,5 @@
 
     </ScrollView>
 
-</androidx.cardview.widget.CardView>
+
+</LinearLayout>

@@ -122,10 +122,15 @@ public class SearchFabFragment extends AAH_FabulousFragment {
                     break;
 
                 case 1:
+                    inflateLayoutWithFilters("ACCESSIBILITY", fbl);
+                    break;
+
+
+                case 2:
                     inflateLayoutWithFilters("FLOOR", fbl);
                     break;
 
-                case 2:
+                case 3:
                     inflateLayoutWithFilters("TIME", fbl);
                     break;
 
@@ -144,7 +149,7 @@ public class SearchFabFragment extends AAH_FabulousFragment {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Override
@@ -153,8 +158,10 @@ public class SearchFabFragment extends AAH_FabulousFragment {
                 case 0:
                     return "TAG";
                 case 1:
-                    return "FLOOR";
+                    return "ACCESSIBILITY";
                 case 2:
+                    return "FLOOR";
+                case 3:
                     return "TIME";
 
 
@@ -174,6 +181,10 @@ public class SearchFabFragment extends AAH_FabulousFragment {
         switch (filter_category) {
             case "TAG":
                 keys = ((TourListActivity) getActivity()).tagsList;
+                break;
+
+            case "ACCESSIBILITY":
+                keys = ((TourListActivity) getActivity()).sensorList;
                 break;
 
             case "FLOOR":

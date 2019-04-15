@@ -66,11 +66,14 @@ dependencies {
 
     // navigation drawer
     implementation 'nl.psdcompany:duo-navigation-drawer:2.0.8'
+    implementation "com.mikepenz:materialdrawer:6.1.2"
 
     implementation 'com.github.donkingliang:GroupedRecyclerViewAdapter:1.3.2'
 
     //slidebar
     implementation 'com.nikoyuwono:toolbar-panel:0.1.1'
+
+
 
 
 
