@@ -102,10 +102,6 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
     private MenuAdapter mMenuAdapter;
 
 
-
-
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -199,7 +195,9 @@ public class TourListActivity extends BaseActivity implements View.OnClickListen
                                 adapter.notifyDataSetChanged();
                             }
 
-                            createTourBtn.setVisibility(View.VISIBLE);
+                            if(role == PROFESSION_USER) {
+                                createTourBtn.setVisibility(View.VISIBLE);
+                            }
                             fab2.setVisibility(View.VISIBLE);
                         }
                     }
