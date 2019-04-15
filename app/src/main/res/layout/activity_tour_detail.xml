@@ -8,17 +8,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.design.widget.CollapsingToolbarLayout
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar_appbar_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -26,29 +26,25 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="@color/colorPrimary">
 
-
-
                 <com.daimajia.slider.library.SliderLayout
                     android:id="@+id/detail_img"
                     android:layout_width="match_parent"
-                    android:layout_height="450dp"
+                    android:layout_height="300dp"
                     />
 
 
-                <android.support.v7.widget.Toolbar
+                <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     app:layout_collapseMode="pin" />
 
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
 
+         </com.google.android.material.appbar.AppBarLayout>
 
-            </android.support.design.widget.CollapsingToolbarLayout>
-
-         </android.support.design.widget.AppBarLayout>
-
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -77,8 +73,7 @@
                             android:layout_marginRight="16dp"
                             android:text="Curator’s Tour"
                             android:textSize="25dp"
-                            android:textColor="@color/colorPrimary"
-                            />
+                            android:textColor="@color/colorPrimary" />
 
 
                         <LinearLayout
@@ -125,13 +120,10 @@
                         </LinearLayout>
                     </LinearLayout>
 
-
-
                         <View
                             android:layout_width="0dp"
                             android:layout_height="0dp"
-                            android:layout_weight="1"
-                            />
+                            android:layout_weight="1" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -159,7 +151,6 @@
 
                     </LinearLayout>
 
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -186,7 +177,8 @@
                             android:layout_height="20dp"
                             android:layout_marginRight="15px"
                             app:icon_size="20dp"
-                            app:icon_type="heart" />
+                            app:icon_type="heart"
+                            app:is_enabled="false"/>
 
                         <TextView
                             android:id="@+id/likeCount"
@@ -204,8 +196,6 @@
                             android:visibility="gone"/>
 
                     </LinearLayout>
-
-
 
                     <TextView
                         android:id="@+id/detail_desc"
@@ -254,16 +244,12 @@
 
                 </LinearLayout>
 
+        </androidx.core.widget.NestedScrollView>
 
 
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-
-        </android.support.v4.widget.NestedScrollView>
-
-
-    </android.support.design.widget.CoordinatorLayout>
-
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/startArBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

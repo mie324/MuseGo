@@ -29,7 +29,7 @@
             android:layout_marginTop="523dp"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="250dp"
-            android:text="Open the camera...."
+            android:text="Loading your camera...."
             android:textAlignment="center"
             android:textSize="24sp" />
 

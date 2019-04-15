@@ -1,29 +1,25 @@
 package com.ece1778.musego.UI.Tour;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -36,27 +32,19 @@ import com.bumptech.glide.request.RequestOptions;
 import com.cunoraz.tagview.Tag;
 import com.cunoraz.tagview.TagView;
 import com.ece1778.musego.BaseActivity;
-import com.ece1778.musego.MainActivity;
 import com.ece1778.musego.Manager.FirebaseManager;
 import com.ece1778.musego.Model.Node;
 import com.ece1778.musego.Model.NodeList;
 import com.ece1778.musego.Model.Path;
-import com.ece1778.musego.Model.Rotation;
-import com.ece1778.musego.Model.Translation;
 import com.ece1778.musego.Model.User;
 import com.ece1778.musego.R;
-import com.ece1778.musego.UI.Auth.SignupActivity;
-import com.ece1778.musego.UI.Museum.MuseumListActivity;
 import com.ece1778.musego.Utils.Loading;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.api.SystemParametersOrBuilder;
-import com.google.ar.core.Config;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -65,12 +53,8 @@ import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -111,6 +95,7 @@ public class UploadTourActivity extends BaseActivity {
     private String instName;
     private List<String> imgList = new ArrayList<>();
     private List<String> imgUriList = new ArrayList<>();
+    private ArrayList<String> sensorList = new ArrayList<>();
 
     private Loading loading;
 
@@ -125,6 +110,9 @@ public class UploadTourActivity extends BaseActivity {
         endNode = nodeList.getEnd_node();
         nodes = nodeList.getNodes();
         instName = this.getIntent().getStringExtra("instName");
+
+        String sensor = this.getIntent().getStringExtra("sensor");
+        sensorList = new Gson().fromJson(sensor, ArrayList.class);
 
         initView();
         initFirebase();
@@ -177,6 +165,14 @@ public class UploadTourActivity extends BaseActivity {
         });
 
         TagView tagGroup = (TagView) findViewById(R.id.tag_group);
+        for (String sensor : sensorList) {
+            Log.d(TAG, "sensor tag is "+ sensor);
+            Tag tag = new Tag("#"+sensor);
+            tag.tagTextColor = Color.parseColor("#FFFFFF");
+            tag.layoutColor = Color.parseColor("#FECB50");
+            tagGroup.addTag(tag);
+        }
+
         tagGroup.setOnTagDeleteListener(new TagView.OnTagDeleteListener() {
 
             @Override
@@ -192,7 +188,8 @@ public class UploadTourActivity extends BaseActivity {
                 });
                 builder.setNegativeButton("No", null);
                 builder.show();
-                tags.remove(position);
+                tags.remove(position-sensorList.size()
+                );
 
             }
         });
@@ -379,6 +376,7 @@ public class UploadTourActivity extends BaseActivity {
                                 estimatedTime,
                                 tags,
                                 new ArrayList<String>(), //likeList
+                                sensorList,
                                 imgUriList,
                                 startNode,
                                 endNode,

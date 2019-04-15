@@ -6,12 +6,12 @@
 
     <Button
         android:id="@+id/duo_view_footer_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
         android:layout_centerVertical="true"
         android:layout_marginBottom="50dp"
         android:layout_marginLeft="32dp"
-        android:background="@color/yellow"
+        android:background="@drawable/btn_yellow"
         android:gravity="center"
         android:minWidth="@android:dimen/thumbnail_width"
         android:padding="8dp"

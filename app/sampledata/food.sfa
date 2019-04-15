@@ -1,7 +1,7 @@
 {
   materials: [
     {
-      name: 'color_3367204',
+      name: 'color_undefined',
       parameters: [
         {
           baseColor: null,
@@ -36,7 +36,7 @@
     file: 'sampledata/food.obj',
     name: 'food',
     recenter: 'root',
-    scale: 0.002,
+    scale: 0.030998000000000001,
   },
   version: '0.54:2',
 }

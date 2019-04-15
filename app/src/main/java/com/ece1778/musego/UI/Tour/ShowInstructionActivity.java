@@ -2,15 +2,13 @@ package com.ece1778.musego.UI.Tour;
 
 import android.content.Intent;
 import android.os.Bundle;
+import androidx.core.content.ContextCompat;
 import android.view.View;
-import android.widget.Button;
 
 import com.codemybrainsout.onboarder.AhoyOnboarderActivity;
 import com.codemybrainsout.onboarder.AhoyOnboarderCard;
-import com.ece1778.musego.BaseActivity;
 import com.ece1778.musego.Model.NodeList;
 import com.ece1778.musego.R;
-import com.ece1778.musego.Utils.Loading;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -36,8 +34,8 @@ public class ShowInstructionActivity extends AhoyOnboarderActivity implements Vi
 
     private void initView() {
 
-        AhoyOnboarderCard ahoyOnboarderCard1 = new AhoyOnboarderCard("Scan Starter Image", "Find a starter image, adjust your camera to scan the starter image.", R.drawable.instruction1);
-        AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Follow Indicators", "Follow the arrow indicators when walking around.", R.drawable.instruction2);
+        AhoyOnboarderCard ahoyOnboarderCard1 = new AhoyOnboarderCard("Scan the Dino", "Find a starter image, adjust your camera to scan the starter image.", R.drawable.instruction1);
+        AhoyOnboarderCard ahoyOnboarderCard2 = new AhoyOnboarderCard("Follow AR Objects", "Follow the arrow indicators when walking around.", R.drawable.instruction2);
         ahoyOnboarderCard1.setBackgroundColor(R.color.purewhite);
         ahoyOnboarderCard2.setBackgroundColor(R.color.purewhite);
 
@@ -53,12 +51,14 @@ public class ShowInstructionActivity extends AhoyOnboarderActivity implements Vi
             page.setTitleColor(R.color.darkGreen);
             page.setDescriptionColor(R.color.black);
             //page.setTitleTextSize(dpToPixels(12, this));
-            page.setDescriptionTextSize(dpToPixels(4, this));
+            page.setDescriptionTextSize(dpToPixels(6, this));
         }
 
         setFinishButtonTitle("Let's begin");
         showNavigationControls(true);
         setImageBackground(R.drawable.bg2);
+        setFinishButtonDrawableStyle(ContextCompat.getDrawable(this, R.drawable.button));
+
 
         setOnboardPages(pages);
     }

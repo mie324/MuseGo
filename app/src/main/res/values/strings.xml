@@ -28,9 +28,17 @@
         <item>55 min</item>
     </string-array>
 
+    <string-array name="sorting">
+        <item>Most Recent</item>
+        <item>Most Popular</item>
+        <item>Length Short to Long</item>
+        <item>Length Long to Short</item>
+    </string-array>
+
     <array name="menuOptions">
         <item>Profile</item>
         <item>Institutions</item>
+        <item>Helper</item>
         <item>About</item>
     </array>
 

@@ -7,12 +7,12 @@
           baseColor: null,
         },
         {
-          baseColorTint: [
-            0.59999999999999998,
-            0.59999999999999998,
-            0.59999999999999998,
-            1,
-          ],
+         baseColorTint: [
+                     0.01,
+                     0.60999999999999999,
+                     0.90000000000000002,
+                     1,
+                   ],
         },
         {
           metallic: 0,
@@ -36,7 +36,7 @@
     file: 'sampledata/crowd.obj',
     name: 'crowd',
     recenter: 'root',
-    scale: 0.002,
+    scale: 0.0008,
   },
   version: '0.54:2',
 }

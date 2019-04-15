@@ -1,24 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="300dp"
-    android:layout_height="200dp"
-    android:background="@color/colorPrimary"
-    android:orientation="vertical"
-    app:layout_constraintCircleRadius="8dp">
+    android:layout_height="150dp"
+    android:layout_width="200dp">
 
-    <EditText
-        android:id="@+id/card_content"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Add your comment..."
-        android:textColor="#fff"
-        android:textSize="26dp"/>
+        android:layout_height="wrap_content">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/card_upload"
-        android:text="Upliad"/>
+        <TextView
+            android:id="@+id/desc_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Notice"/>
 
-</LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -4,28 +4,19 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.cunoraz.tagview.Tag;
 import com.cunoraz.tagview.TagView;
-import com.ece1778.musego.Adapter.TourListAdapter;
 import com.ece1778.musego.BaseActivity;
 import com.ece1778.musego.Manager.FirebaseManager;
 import com.ece1778.musego.Model.Comment;
@@ -35,7 +26,6 @@ import com.ece1778.musego.Model.Path;
 import com.ece1778.musego.Model.User;
 import com.ece1778.musego.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -48,12 +38,8 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.like.LikeButton;
-import com.like.OnLikeListener;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class TourDetailActivity extends BaseActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener, View.OnClickListener {
@@ -189,61 +175,61 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
         }
 
 
-        likeBt.setOnLikeListener(new OnLikeListener() {
-            @Override
-            public void liked(LikeButton likeButton) {
-
-                if (!path.getLikeList().contains(uid)) {
-
-
-                    path.getLikeList().add(uid);
-
-                   likeCount.setText("" + path.getLikeList().size());
-
-                    firebaseManager.getInstRef()
-                            .document(instName)
-                            .collection("paths")
-                            .document(path.getpId())
-                            .update("likeList", path.getLikeList())
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-
-
-
-
-                                }
-                            });
-                }
-            }
-
-
-            @Override
-            public void unLiked(LikeButton likeButton) {
+//        likeBt.setOnLikeListener(new OnLikeListener() {
+//            @Override
+//            public void liked(LikeButton likeButton) {
+//
+//                if (!path.getLikeList().contains(uid)) {
+//
+//
+//                    path.getLikeList().add(uid);
+//
+//                   likeCount.setText("" + path.getLikeList().size());
+//
+//                    firebaseManager.getInstRef()
+//                            .document(instName)
+//                            .collection("paths")
+//                            .document(path.getpId())
+//                            .update("likeList", path.getLikeList())
+//                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                @Override
+//                                public void onSuccess(Void aVoid) {
+//
+//
+//
+//
+//                                }
+//                            });
+//                }
+//            }
 
 
-                if(path.getLikeList().contains(uid)) {
-
-                    path.getLikeList().remove(uid);
-
-                  likeCount.setText(""+path.getLikeList().size());
-
-                    firebaseManager.getInstRef()
-                            .document(instName)
-                            .collection("paths")
-                            .document(path.getpId())
-                            .update("likeList", path.getLikeList())
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-
-                                    // ((ViewHolder_Path) viewHolder).likeCount.setText(""+path.getLikeList().size());
-
-                                }
-                            });
-                }
-            }
-        });
+//            @Override
+//            public void unLiked(LikeButton likeButton) {
+//
+//
+//                if(path.getLikeList().contains(uid)) {
+//
+//                    path.getLikeList().remove(uid);
+//
+//                  likeCount.setText(""+path.getLikeList().size());
+//
+//                    firebaseManager.getInstRef()
+//                            .document(instName)
+//                            .collection("paths")
+//                            .document(path.getpId())
+//                            .update("likeList", path.getLikeList())
+//                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                @Override
+//                                public void onSuccess(Void aVoid) {
+//
+//                                    // ((ViewHolder_Path) viewHolder).likeCount.setText(""+path.getLikeList().size());
+//
+//                                }
+//                            });
+//                }
+//            }
+//        });
 
     }
 
@@ -256,6 +242,16 @@ public class TourDetailActivity extends BaseActivity implements BaseSliderView.O
             tag.deleteIndicatorColor = Color.parseColor("#FFFFFF");
             tagView.addTag(tag);
         }
+
+        for(String content: path.getSensorList()){
+            Tag tag = new Tag(content);
+            tag.tagTextColor = Color.parseColor("#FFFFFF");
+            tag.layoutColor = Color.parseColor("#73AD01");
+            tag.deleteIndicatorColor = Color.parseColor("#FFFFFF");
+            tagView.addTag(tag);
+        }
+
+
 
     }
 

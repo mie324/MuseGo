@@ -25,14 +25,35 @@
         android:orientation="vertical"
         android:tag="@string/tag_content">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/darkGreen"
             android:theme="@style/Widget.AppCompat.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:titleTextColor="@color/white"/>
+            app:titleTextColor="@color/white"
+            app:title="MuseGo">
+
+            <RelativeLayout
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="200dp">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:tint="@color/white"
+                    android:id="@+id/fab2"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_filter"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:elevation="0dp" />
+
+            </RelativeLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -44,7 +65,47 @@
                 android:layout_alignParentTop="true"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.RecyclerView
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="Sorted By:"
+                        android:textSize="16dp" />
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/sorting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.5"
+                        android:entries="@array/sorting"
+                        android:theme="@style/spinnerTheme">
+
+                    </androidx.appcompat.widget.AppCompatSpinner>
+
+                    <!--<Spinner-->
+                        <!--android:id="@+id/uploadTour_minute"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_weight="0.5"-->
+                        <!--android:entries="@array/minute"-->
+                        <!--android:theme="@style/spinnerTheme"/>-->
+
+                </LinearLayout>
+
+
+
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycleViewId"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -54,29 +115,29 @@
 
             </LinearLayout>
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/createTourBtn"
                 android:layout_width="58dp"
                 android:layout_height="58dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="76dp"
-                android:src="@drawable/vector"
-                android:backgroundTint="@color/colorPrimary"/>
-
-            <android.support.design.widget.FloatingActionButton
-                android:tint="@color/white"
-                android:id="@+id/fab2"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
                 android:layout_marginBottom="16dp"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/ic_filter"
-                app:backgroundTint="@color/colorPrimary"
-                app:elevation="0dp" />
+                android:src="@drawable/plus"
+                app:backgroundTint="@color/colorPrimary"/>
+
+            <!--<android.support.design.widget.FloatingActionButton-->
+                <!--android:tint="@color/white"-->
+                <!--android:id="@+id/fab3"-->
+                <!--android:layout_width="56dp"-->
+                <!--android:layout_height="56dp"-->
+                <!--android:layout_alignParentBottom="true"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_marginBottom="16dp"-->
+                <!--android:layout_marginRight="16dp"-->
+                <!--android:src="@drawable/ic_filter"-->
+                <!--app:backgroundTint="@color/colorPrimary"-->
+                <!--app:elevation="0dp" />-->
 
         <!--<com.ece1778.musego.Utils.Loading-->
         <!--android:id="@+id/loading"-->

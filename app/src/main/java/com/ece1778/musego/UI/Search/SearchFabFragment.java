@@ -1,21 +1,18 @@
 package com.ece1778.musego.UI.Search;
 
 import android.app.Dialog;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.util.ArrayMap;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import com.google.android.material.tabs.TabLayout;
+
+import androidx.core.content.ContextCompat;
+import androidx.collection.ArrayMap;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -125,10 +122,15 @@ public class SearchFabFragment extends AAH_FabulousFragment {
                     break;
 
                 case 1:
+                    inflateLayoutWithFilters("ACCESSIBILITY", fbl);
+                    break;
+
+
+                case 2:
                     inflateLayoutWithFilters("FLOOR", fbl);
                     break;
 
-                case 2:
+                case 3:
                     inflateLayoutWithFilters("TIME", fbl);
                     break;
 
@@ -147,7 +149,7 @@ public class SearchFabFragment extends AAH_FabulousFragment {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Override
@@ -156,8 +158,10 @@ public class SearchFabFragment extends AAH_FabulousFragment {
                 case 0:
                     return "TAG";
                 case 1:
-                    return "FLOOR";
+                    return "ACCESSIBILITY";
                 case 2:
+                    return "FLOOR";
+                case 3:
                     return "TIME";
 
 
@@ -177,6 +181,10 @@ public class SearchFabFragment extends AAH_FabulousFragment {
         switch (filter_category) {
             case "TAG":
                 keys = ((TourListActivity) getActivity()).tagsList;
+                break;
+
+            case "ACCESSIBILITY":
+                keys = ((TourListActivity) getActivity()).sensorList;
                 break;
 
             case "FLOOR":

@@ -25,7 +25,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UI.Tour.CommentDetailActivity"></activity>
+        <activity android:name=".UI.Tour.CommentDetailActivity" />
         <activity android:name=".UI.User.UserProfileActivity" />
         <activity android:name=".UI.Tour.CreateInstructionActivity" />
 
@@ -40,6 +40,7 @@
         <activity android:name=".UI.Tour.ArShowTourActivity" />
         <activity android:name=".UI.Tour.TourListActivity" />
         <activity android:name=".UI.Museum.MuseumListActivity" />
+        <activity android:name=".UI.Tour.HelperActivity" />
         <activity android:name=".UI.Auth.SigninActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

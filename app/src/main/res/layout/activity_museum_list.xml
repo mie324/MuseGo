@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,17 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <nl.psdcompany.duonavigationdrawer.views.DuoMenuView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:orientation="vertical"
-        android:tag="@string/tag_menu"
-        app:footer="@layout/duo_view_footer_customized"
-        app:header="@layout/duo_view_header_customized"
-        app:contentScaleClosed="1.0"
-        app:contentScaleOpen="0.7"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +17,7 @@
         android:orientation="vertical"
         android:tag="@string/tag_content">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -40,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycleViewId"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -53,5 +43,5 @@
 
     </LinearLayout>
 
-</nl.psdcompany.duonavigationdrawer.views.DuoDrawerLayout>
+</LinearLayout>
 
